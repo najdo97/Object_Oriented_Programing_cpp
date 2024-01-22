@@ -75,7 +75,7 @@ public:
         this->max_vremetraenje=max_vremetraenje;
     }
 
-
+//izmena
     ~CD(){};
 
 
