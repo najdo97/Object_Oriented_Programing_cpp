@@ -79,8 +79,6 @@ public:
     ~CD(){};
 
 
-
-
     void dodadiPesna(Pesna p){
 
         int current_Length=0;
