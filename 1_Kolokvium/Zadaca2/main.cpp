@@ -8,23 +8,73 @@ private:
     int brojac;
 public:
     //constructor
+    List() {};
+
+    List(int *niza_broevi, int brojac) {
+        this->niza_broevi = new int[brojac];
+        for (int i = 0; i < brojac; i++) {
+            this->niza_broevi[i] = niza_broevi[i];
+        }
+
+        this->brojac=brojac;
+    }
     //copy constructor
+    List(const List& copyList){
+        this->niza_broevi = new int[copyList.brojac];
+
+        for (int i = 0; i < copyList.brojac; i++) {
+            this->niza_broevi[i] = copyList.niza_broevi[i];
+        }
+
+        this->brojac=copyList.brojac;
+    }
+
+
     //destructor
+    ~List(){
+        delete []niza_broevi;
+    }
     //operator =
+
+    List& operator=(const List& other)
+    {
+        if(this !=  &other) { // moze i bez ova, ama dobra praktika e da se proveri self assigment, ako vrednostite se isti na dvata objekta, nema potreba da se aktiviraat operaciite vo blokot naredbi
+            this->niza_broevi = new int[other.brojac];
+            for (int i = 0; i < other.brojac; i++) {
+                this->niza_broevi[i] = other.niza_broevi[i];
+            }
+            this->brojac = other.brojac;
+        }
+    return *this;
+    }
 
 //todo
     void pecati() {
+
+      //  cout<<""
         //[број на елементи во листата]: x1 x2 .. xn sum: [сума] average: [просек]
     }
 
 //todo
     int sum() {
+
+        int sum=0;
+
+        for(int i =0;i<this->brojac;i++)
+        {
+            sum=sum+this->niza_broevi[i];
+        }
         //vrakja suma na elementite vo listata
+    return sum;
     }
 
 //todo
     double average() {
+        double average=0.0;
+
+        average=sum()/this->brojac;
         //prosekot na broevite vo listata
+    return average;
     }
 };
 
