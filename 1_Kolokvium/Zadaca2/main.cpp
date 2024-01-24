@@ -151,7 +151,7 @@ public:
     List info: [испечатени информации за листата со методот List::pecati()] \n sum: [сума] average: [просек]
     доколку контејнерот е празен се печати само порака The list is empty.
 */
-    void pecati() {
+    void print() {
 
     }
 
@@ -163,19 +163,20 @@ public:
     void addNewList(List l) {
 
         this->obidi++;
-        bool check=false;
+        bool check = false;
 
-        for(int i=0;i<this->broj_na_listi;i++)
-        {
-            if(this->niza_listi[i].sum()==l.sum())
-            {
-                check=true;
+        for (int i = 0; i < this->broj_na_listi; i++) {
+            if (this->niza_listi[i].sum() == l.sum()) {
+                check = true;
                 break;
             }
         }
-        if(check == false) //if sucsessfull, zanci ima vekje ima lista so ista suma
+        if (check == false) //if sucsessfull, zanci ima vekje ima lista so ista suma
         {
-// todo dodadi ja novata lsita
+            // todo dodadi ja novata lsita
+            this->broj_na_listi++; // ne sum siguren deka ova e dovolno, bidejki ovdeka nikade ne go inicijalizirame ovoj nov clen
+            this->niza_listi[this->broj_na_listi]=l;  // ova e vozmozno bidejki go overloadnavme = operatorot
+
         }
 
     }
