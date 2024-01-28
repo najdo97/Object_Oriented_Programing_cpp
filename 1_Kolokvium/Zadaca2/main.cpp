@@ -102,6 +102,7 @@ public:
     //default construcotr - obidi se inicijalizira na 0
     ListContainer() {
 
+
         this->niza_listi = new List[25];
         this->broj_na_listi = 0;
         this->obidi = 0;
