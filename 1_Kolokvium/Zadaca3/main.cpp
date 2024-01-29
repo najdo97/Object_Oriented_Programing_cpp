@@ -14,27 +14,36 @@ private:
 
 public:
     //default constructor
+    StockRecord() {
+        strcpy(this->stock_id, " ");
+        strcpy(this->company_name, " ");
+
+        this->buying_price = 0.0;
+        this->current_price = 0.0;
+
+        this->number_of_shares = 0;
+    }
     // parametarized constructor
     // copy constructor
     // destructor ? - mislam deka nemora ova
 
 
     void setNewPrice(double c) {
-        this->current_price=c;
+        this->current_price = c;
     }
 
     double value() {
 
-        double value=0.0;
-        value=this->number_of_shares*this->current_price;
+        double value = 0.0;
+        value = this->number_of_shares * this->current_price;
 
         return value;
     };
 
     double profit() {
 
-        double profit=0.0;
-        profit=this->number_of_shares * (this->current_price - this->buying_price);
+        double profit = 0.0;
+        profit = this->number_of_shares * (this->current_price - this->buying_price);
 
         return profit;
 
@@ -51,13 +60,13 @@ public:
 
 class Client {
 
-    private:
+private:
     char name[60];
     int account_id;
     StockRecord owned_stocks;
     int num_of_owned_stocks;
 
-    public:
+public:
 
     //  default constructor
     //  paramteiziran konstruktor
@@ -67,20 +76,20 @@ class Client {
 /*todo - ја пресметува моменталната вредност на акциите кои ги поседува клиентот.
         Таа се пресметува како збир од вредноста на сите акции од секоја компанија од кои е составено клиентското портфолио
   */
-    double totalValue(){
+    double totalValue() {
 
     }
 
 
     //todo - преоптоварат оператор += за купување на нова компанија во портфолиото (додавање на нов објект од класата StockRecord во низата со компании
-    Client operator+=(){
+    Client operator+=() {
 
     }
 
 
     //todo- преоптоварат оператор  << за печатење на информации за портфолиото на клиентот така што во првиот ред ќе бидат прикажани ID на сметката и
     // моменталната вредност на портфолиото одделени со празно место, а во секој нареден ред ќе бидат прикажани компаниите од кои е составено портфолиото, секоја во посебен ред
-    Client operator<< (){
+    Client operator<<() {
 
     };
 };
