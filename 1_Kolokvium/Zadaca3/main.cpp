@@ -19,23 +19,24 @@ public:
     // destructor ? - mislam deka nemora ova
 
 
-    /* todo - set метода за моменталната цена со потпис void setNewPrice(double c)
-        formula----->   Вредност = број на акции * моментална цена
-     */
     void setNewPrice(double c) {
-
+        this->current_price=c;
     }
-
-    /* todo - Првата треба да ја пресметува вредноста на акциите,
-        formula----->   Профит = број на акции * (моментална цена - цена по која се купени)
-    */
 
     double value() {
 
+        double value=0.0;
+        value=this->number_of_shares*this->current_price;
+
+        return value;
     };
 
-    // todo -  треба да го пресметува моменталниот профит од акциите.
     double profit() {
+
+        double profit=0.0;
+        profit=this->number_of_shares * (this->current_price - this->buying_price);
+
+        return profit;
 
     };
 
