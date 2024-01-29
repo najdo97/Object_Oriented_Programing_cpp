@@ -24,6 +24,10 @@ public:
         this->number_of_shares = 0;
     }
     // parametarized constructor
+    StockRecord(char stock_id[12],char company_name[50],double buying_price,double current_price,int number_of_shares)
+    {
+
+    }
     // copy constructor
     // destructor ? - mislam deka nemora ova
 
