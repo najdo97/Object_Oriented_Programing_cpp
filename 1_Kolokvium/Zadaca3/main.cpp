@@ -14,10 +14,30 @@ private:
 
 public:
     //default constructor
-    // parametarized constructor
-    // copy constructor
-    // destructor ? - mislam deka nemora ova
 
+       StockRecord(){};
+
+    // parametarized constructor
+
+        StockRecord(char *stock_id, char *company_name, double buying_price, double current_price, int number_of_shares){
+
+            strcpy(this->stock_id,stock_id);
+            strcpy(this->company_name,company_name);
+
+            this->buying_price=buying_price;
+            this->current_price=current_price;
+            this->number_of_shares=number_of_shares;
+        };
+
+        // copy constructor
+    StockRecord(const StockRecord &other){
+            strcpy(this->stock_id,other.stock_id);
+            strcpy(this->company_name,other.company_name);
+
+            this->buying_price=other.buying_price;
+            this->current_price=other.current_price;
+            this->number_of_shares=other.number_of_shares;
+        }
 
     void setNewPrice(double c) {
         this->current_price=c;
@@ -51,24 +71,64 @@ public:
 
 class Client {
 
-    private:
+private:
     char name[60];
     int account_id;
-    StockRecord owned_stocks;
     int num_of_owned_stocks;
+    StockRecord *owned_stocks;
 
-    public:
+public:
 
-    //  default constructor
-    //  paramteiziran konstruktor
-    //  copy constructor
-    //  destruktor
+
+    Client(){};
+
+
+    Client(char *name, int account_id, int num_of_owned_stocks,StockRecord *owned_stocks){
+
+        strcpy(this->name,name);
+        this->account_id=account_id;
+        this->num_of_owned_stocks=num_of_owned_stocks;
+
+        this->owned_stocks=new StockRecord[num_of_owned_stocks];
+        for(int i=0; i<num_of_owned_stocks; i++)
+        {
+            this->owned_stocks[i]=owned_stocks[i];
+        }
+
+    };
+
+    Client(const Client &other){
+
+        strcpy(this->name,other.name);
+        this->account_id=other.account_id;
+        this->num_of_owned_stocks=other.num_of_owned_stocks;
+
+        this->owned_stocks=new StockRecord[other.num_of_owned_stocks];
+        for(int i=0; i<other.num_of_owned_stocks; i++)
+        {
+            this->owned_stocks[i]=other.owned_stocks[i];
+        }
+
+    };
+
+    ~Client()
+    {
+        delete [] owned_stocks;
+    }
 
 /*todo - ја пресметува моменталната вредност на акциите кои ги поседува клиентот.
         Таа се пресметува како збир од вредноста на сите акции од секоја компанија од кои е составено клиентското портфолио
   */
     double totalValue(){
 
+        double portfolioValue=0;
+
+        for(int i=0; i < this->num_of_owned_stocks;i++)
+        {
+            portfolioValue = portfolioValue + this->owned_stocks[i].value();
+        }
+
+        return portfolioValue;
     }
 
 
