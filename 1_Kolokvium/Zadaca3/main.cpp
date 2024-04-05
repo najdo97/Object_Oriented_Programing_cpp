@@ -107,7 +107,7 @@ public:
         strcpy(this->name,name);
         this->account_id=account_id;
         this-> num_of_owned_stocks=0;
-    //    this->owned_stocks= nullptr;
+        this->owned_stocks= nullptr;
     };
 
 
@@ -163,15 +163,17 @@ public:
     StockRecord *pom;
 
     pom=new StockRecord[this->num_of_owned_stocks+1];
-    for (int i = 0; i <= this->num_of_owned_stocks; i++) {
+    for (int i = 0; i < this->num_of_owned_stocks; i++) {
 
-        pom[i] = StockRecord(this->owned_stocks[i]);  // copy constructor
-        }
+            pom[i] = StockRecord(this->owned_stocks[i]);  // copy constructor
+
+
+    }
 
     pom[this->num_of_owned_stocks]=stock;
     this->num_of_owned_stocks++;
 
-   // delete [] this->owned_stocks;
+    delete [] this->owned_stocks;
 
     this->owned_stocks=new StockRecord[this->num_of_owned_stocks];
 
