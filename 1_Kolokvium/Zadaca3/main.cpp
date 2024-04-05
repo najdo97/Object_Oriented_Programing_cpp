@@ -13,13 +13,31 @@ private:
     int number_of_shares;
 
 public:
-    //default constructor
 
-       StockRecord(){};
+    char  *get_company_name()
+    {
+        return company_name;
+    }
+
+    //default constructor
+      StockRecord(){};
 
     // parametarized constructor
 
-        StockRecord(char *stock_id, char *company_name, double buying_price, double current_price, int number_of_shares){
+    StockRecord(char *stock_id, char *company_name, double buying_price, int number_of_shares){
+
+        strcpy(this->stock_id,stock_id);
+        strcpy(this->company_name,company_name);
+
+        this->buying_price=buying_price;
+        this->number_of_shares=number_of_shares;
+    };
+
+
+
+
+
+    StockRecord(char *stock_id, char *company_name, double buying_price, double current_price, int number_of_shares){
 
             strcpy(this->stock_id,stock_id);
             strcpy(this->company_name,company_name);
@@ -51,7 +69,8 @@ public:
         return value;
     };
 
-    double profit() {
+    // ne sum siguren deka ovaa funkcija mora / moze da e const
+     double profit() const {
 
         double profit=0.0;
         profit=this->number_of_shares * (this->current_price - this->buying_price);
@@ -61,10 +80,15 @@ public:
     };
 
 
-    //todo - да се преоптовари операторот << за печатење на објектот во следниот формат:
-    // Компанија БројНаАкции КуповнаЦена МоменталнаЦена Профит
-    StockRecord &operator<<() {
 
+    friend std::ostream& operator<<(std::ostream& os, const StockRecord& record) {
+
+       os   <<  record.company_name << '\n'
+            << record.number_of_shares << '\n'
+            << record.buying_price << '\n'
+            << record.current_price << '\n'
+            << record.profit()<<'\n';
+        return os;
     }
 
 };
@@ -81,6 +105,13 @@ public:
 
 
     Client(){};
+
+    // Client c(clientName, clientID);
+    Client(char *name, int account_id){
+
+        strcpy(this->name,name);
+        this->account_id=account_id;
+    };
 
 
     Client(char *name, int account_id, int num_of_owned_stocks,StockRecord *owned_stocks){
@@ -116,10 +147,8 @@ public:
         delete [] owned_stocks;
     }
 
-/*todo - ја пресметува моменталната вредност на акциите кои ги поседува клиентот.
-        Таа се пресметува како збир од вредноста на сите акции од секоја компанија од кои е составено клиентското портфолио
-  */
-    double totalValue(){
+
+    double totalValue() const{
 
         double portfolioValue=0;
 
@@ -133,16 +162,34 @@ public:
 
 
     //todo - преоптоварат оператор += за купување на нова компанија во портфолиото (додавање на нов објект од класата StockRecord во низата со компании
-    Client operator+=(){
 
+
+    // Razberi kako funkcionira ova !!
+
+    Client& operator+=(const StockRecord& stock) {
+
+        this->owned_stocks[this->num_of_owned_stocks+1]=stock;
+
+        return *this;
     }
 
 
-    //todo- преоптоварат оператор  << за печатење на информации за портфолиото на клиентот така што во првиот ред ќе бидат прикажани ID на сметката и
-    // моменталната вредност на портфолиото одделени со празно место, а во секој нареден ред ќе бидат прикажани компаниите од кои е составено портфолиото, секоја во посебен ред
-    Client operator<< (){
-// neznam ova kako se reshava
-    };
+    //todo- преоптоварат оператор  << за печатење на информации за портфолиото на клиентот така што во
+    // првиот ред ќе бидат прикажани ID на сметката и моменталната вредност на портфолиото одделени со празно место,
+    // а во секој нареден ред ќе бидат прикажани компаниите од кои е составено портфолиото, секоја во посебен ред
+
+
+     friend std::ostream& operator<<(std::ostream& os, const Client& record) {
+
+        os   <<  record.account_id << " " << record.totalValue() << '\n';
+        for(int i = 0 ; i<<record.num_of_owned_stocks; i++)
+        {
+            os   <<  record.owned_stocks[i].get_company_name()<< '\n';
+
+        }
+
+        return os;
+    }
 };
 
 
