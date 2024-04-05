@@ -19,10 +19,7 @@ public:
         return company_name;
     }
 
-    //default constructor
-      StockRecord(){};
-
-    // parametarized constructor
+    StockRecord(){};
 
     StockRecord(char *stock_id, char *company_name, double buying_price, int number_of_shares){
 
@@ -31,6 +28,8 @@ public:
 
         this->buying_price=buying_price;
         this->number_of_shares=number_of_shares;
+
+
     };
 
 
@@ -70,7 +69,7 @@ public:
     };
 
     // ne sum siguren deka ovaa funkcija mora / moze da e const
-     double profit() const {
+     double profit() const{
 
         double profit=0.0;
         profit=this->number_of_shares * (this->current_price - this->buying_price);
@@ -83,11 +82,7 @@ public:
 
     friend std::ostream& operator<<(std::ostream& os, const StockRecord& record) {
 
-       os   <<  record.company_name << '\n'
-            << record.number_of_shares << '\n'
-            << record.buying_price << '\n'
-            << record.current_price << '\n'
-            << record.profit()<<'\n';
+       os   <<  record.company_name << ' '<< record.number_of_shares << ' '<< record.buying_price << ' '<< record.current_price << ' '<< record.profit()<< endl ;
         return os;
     }
 
@@ -111,6 +106,8 @@ public:
 
         strcpy(this->name,name);
         this->account_id=account_id;
+        this-> num_of_owned_stocks=0;
+    //    this->owned_stocks= nullptr;
     };
 
 
@@ -161,42 +158,47 @@ public:
     }
 
 
-    //todo - преоптоварат оператор += за купување на нова компанија во портфолиото (додавање на нов објект од класата StockRecord во низата со компании
-
-
-    // Razberi kako funkcionira ova !!
-
     Client& operator+=(const StockRecord& stock) {
 
-        this->owned_stocks[this->num_of_owned_stocks+1]=stock;
+    StockRecord *pom;
+
+    pom=new StockRecord[this->num_of_owned_stocks+1];
+    for (int i = 0; i <= this->num_of_owned_stocks; i++) {
+
+        pom[i] = StockRecord(this->owned_stocks[i]);  // copy constructor
+        }
+
+    pom[this->num_of_owned_stocks]=stock;
+    this->num_of_owned_stocks++;
+
+   // delete [] this->owned_stocks;
+
+    this->owned_stocks=new StockRecord[this->num_of_owned_stocks];
+
+        for (int i = 0; i < this->num_of_owned_stocks ; i++) {
+            this->owned_stocks[i] = StockRecord(pom[i]); // copy constructor
+        }
+
+        delete [] pom;
 
         return *this;
     }
 
 
-    //todo- преоптоварат оператор  << за печатење на информации за портфолиото на клиентот така што во
-    // првиот ред ќе бидат прикажани ID на сметката и моменталната вредност на портфолиото одделени со празно место,
-    // а во секој нареден ред ќе бидат прикажани компаниите од кои е составено портфолиото, секоја во посебен ред
-
 
      friend std::ostream& operator<<(std::ostream& os, const Client& record) {
 
         os   <<  record.account_id << " " << record.totalValue() << '\n';
-        for(int i = 0 ; i<<record.num_of_owned_stocks; i++)
-        {
-            os   <<  record.owned_stocks[i].get_company_name()<< '\n';
 
+        for(int i = 0 ; i<= record.num_of_owned_stocks-1; i++)
+        {
+          os << record.owned_stocks[i];
         }
 
         return os;
     }
 };
 
-
-
-
-
-// ne menuvaj vo main-ot
 
 int main() {
 
@@ -247,7 +249,10 @@ int main() {
             cin >> shares;
             StockRecord sr(companyID, companyName, oldPrice, shares);
             sr.setNewPrice(newPrice);
+
             c += sr;
+            //  += vo client klasta trebad a se definira -> c = c +sr  -> client = client + stock record
+            //  mora da se prepokrie posho nemoze da sobirash 2 promenlivi od razlicen tip
             if (flag) {
                 cout << "Operator += OK" << endl;
                 flag = false;
