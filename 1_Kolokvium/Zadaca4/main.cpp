@@ -35,6 +35,9 @@ public:
     int getKlasa() const {
         return tip_vagon;
     }
+    const char  *getIme()  {
+        return ime;
+    }
 
     friend std::ostream &operator<<(std::ostream &os, const Patnik &patnik)
     {
@@ -109,35 +112,68 @@ public:
 
 //Оператор << - за печатење на крајната дестинација до која вози и листата на патници
 
+//Logikata ne mi e jasna, vo kaceni patnici treba samo kacenite da se kacat a ne site patnici!
+
     friend std::ostream& operator<<(std::ostream& os, const Voz& voz){
+        Patnik *kaceni_patnici=new Patnik[voz.br_patnici];
 
-        os << voz.destinacija;
+        for(int i =0; i<voz.br_patnici && voz.patnici[i].getKlasa()==1;i++){
+            if(voz.patnici[i].getVelosiped()==true){
+                if(i>voz.max_velosipedi){
+                    continue;
+                }else kaceni_patnici[i]= Patnik(voz.patnici[i]);
+            }else kaceni_patnici[i]= Patnik(voz.patnici[i]);
 
+        }
+
+        for(int i =0; i<voz.br_patnici && voz.patnici[i].getKlasa()==2;i++){
+            if(voz.patnici[i].getVelosiped()==true){
+                if(i>voz.max_velosipedi){
+                    continue;
+                }else kaceni_patnici[i]= Patnik(voz.patnici[i]);
+            }else kaceni_patnici[i]= Patnik(voz.patnici[i]);
+        }
+
+
+
+
+        os << voz.destinacija<< endl;
+
+        for(int i= 0 ; i<voz.br_patnici;i++)
+        {
+            os << kaceni_patnici[i].getIme()<< endl;
+            os << kaceni_patnici[i].getKlasa()<< endl;
+            os << kaceni_patnici[i].getVelosiped()<< endl;
+
+        }
         return os;
     }
 
 //Функција со потпис: patniciNemaMesto().
     void patniciNemaMesto(){
 
-        //Patnik *ostaveni_patnici;
+        Patnik *kaceni_patnici=new Patnik[this->br_patnici];
+
         int ostaveni_prva=0, ostaveni_vtora=0;
 
         for(int i =0; i<this->br_patnici && this->patnici[i].getKlasa()==1;i++){
             if(this->patnici[i].getVelosiped()==true){
                 if(i>this->max_velosipedi){
                     ostaveni_prva++;
-                    //ostaveni_patnici[i]= Patnik(this->patnici[i]);
+                    continue;
                     }
                 }
-            }
+            kaceni_patnici[i]= Patnik(this->patnici[i]);
+        }
 
         for(int i =0; i<this->br_patnici && this->patnici[i].getKlasa()==2;i++){
             if(this->patnici[i].getVelosiped()==true){
                 if(i>this->max_velosipedi){
                 ostaveni_vtora++;
-                    //    ostaveni_patnici[i]= Patnik(this->patnici[i]);
+                    continue;
                 }
             }
+            kaceni_patnici[i]= Patnik(this->patnici[i]);
         }
 
         cout<< "Brojot na patnici od 1-va klasa koi ostanale bez mesto e: " <<ostaveni_prva << endl;
