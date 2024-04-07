@@ -2,6 +2,58 @@
 #include <cstring>
 using namespace std;
 
+class Gitara{
+
+private:
+    char tip[40];
+    char seriski_broj[25];
+    int godina_proizvodstvo;
+    float nabavna_cena;
+
+public:
+    Gitara(){};     // so ovoj konstruktor se kreira objekt, mozno e da treba da se inicijaliziraat promenlivite
+
+    Gitara (char *tip, char *seriski_broj, int godina_proizvodstvo, float nabavna_cena)
+    {
+        strcpy(this->tip,tip);
+        strcpy(this->seriski_broj,seriski_broj);
+
+        this->godina_proizvodstvo=godina_proizvodstvo;
+        this->nabavna_cena=nabavna_cena;
+    };
+
+    ~Gitara(){};
+
+
+    const char *getTip()
+{
+        return this->tip;
+}
+    const char *getSeriski(){
+        return this->seriski_broj;
+    }
+    const int getGodina(){
+        return this->godina_proizvodstvo;
+    }
+    const float getNabavna()
+    {
+        return this->nabavna_cena;
+    }
+
+
+    bool daliIsti (Gitara pom){
+        if(strcmp(this->seriski_broj,pom.getSeriski()) == 0)        // this should work
+        {
+            return true;
+        }else return false;
+    }
+
+    void pecati()
+    {
+        cout<<this->seriski_broj <<" "<< this->tip <<" "<< this->nabavna_cena << endl;
+    }
+
+};
 
 
 
