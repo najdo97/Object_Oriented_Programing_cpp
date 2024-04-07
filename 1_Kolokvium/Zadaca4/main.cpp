@@ -1,6 +1,7 @@
 
 #include<iostream>
 #include<cstring>
+
 using namespace std;
 
 class Patnik {
@@ -11,43 +12,42 @@ private:
     bool velosiped;
 
 public:
-    Patnik(){};
+    Patnik() {};
 
-    Patnik(char *ime, int tip_vagon, bool velosiped)
-    {
-        strcpy(this->ime,ime);
-        this->tip_vagon=tip_vagon;
-        this->velosiped=velosiped;
+    Patnik(char *ime, int tip_vagon, bool velosiped) {
+        strcpy(this->ime, ime);
+        this->tip_vagon = tip_vagon;
+        this->velosiped = velosiped;
     };
 
-    Patnik(const Patnik& patnik)
-    {
-        strcpy(this->ime,patnik.ime);
-        this->tip_vagon=patnik.tip_vagon;
-        this->velosiped=patnik.velosiped;
+    Patnik(const Patnik &patnik) {
+        strcpy(this->ime, patnik.ime);
+        this->tip_vagon = patnik.tip_vagon;
+        this->velosiped = patnik.velosiped;
     };
 
-    ~Patnik(){};
+    ~Patnik() {};
 
     bool getVelosiped() const {
         return velosiped;
     }
+
     int getKlasa() const {
         return tip_vagon;
     }
-    const char  *getIme()  {
+
+    const char *getIme() {
         return ime;
     }
 
-    friend std::ostream &operator<<(std::ostream &os, const Patnik &patnik)
-    {
-       os << patnik.ime <<" "<< patnik.tip_vagon<<" "<< patnik.velosiped;
-       return os;
+    friend std::ostream &operator<<(std::ostream &os, const Patnik &patnik) {
+        os << patnik.ime << " " << patnik.tip_vagon << " " << patnik.velosiped;
+        return os;
     }
 };
 
 
-class Voz{
+class Voz {
 
 
     //Потоа да се креира клaса Voz во која се чува: крајна дестинација (низа од максимум 100 знаци), динамички алоцирана
@@ -59,126 +59,153 @@ private:
     int max_velosipedi;
 
 public:
-    Voz(){};
+    Voz() {};
 
-    Voz(char *destinacija, int brVelosipedi)
-    {
-        strcpy(this->destinacija,destinacija);
-        this->max_velosipedi=brVelosipedi;
+    Voz(char *destinacija, int brVelosipedi) {
+        strcpy(this->destinacija, destinacija);
+        this->max_velosipedi = brVelosipedi;
 
-        this->patnici= nullptr;
-        this->br_patnici=0;
+        this->patnici = nullptr;
+        this->br_patnici = 0;
     }
 
-    Voz(char *destinacija, Patnik *patnici, int brPatnici, int brVelosipedi)
-    {
-     strcpy(this->destinacija,destinacija);
+    Voz(char *destinacija, Patnik *patnici, int brPatnici, int brVelosipedi) {
+        strcpy(this->destinacija, destinacija);
 
-     this->patnici=new Patnik[this->br_patnici];
-     for(int i=0 ; i <br_patnici; i++){
-         this->patnici[i]= Patnik(patnici[i]);  // todo - copy constructor treba
-     }
-     this->br_patnici=brPatnici;
-     this->max_velosipedi=brVelosipedi;
+        this->patnici = new Patnik[this->br_patnici];
+        for (int i = 0; i < br_patnici; i++) {
+            this->patnici[i] = Patnik(patnici[i]);  // todo - copy constructor treba
+        }
+        this->br_patnici = brPatnici;
+        this->max_velosipedi = brVelosipedi;
     }
-    ~Voz()
-    {
+
+    ~Voz() {
         delete[] patnici;
     };
 
 //Оператор += – за додавање нов патник во воз. Патник со велосипед ќе може да се качи во воз само ако возот го дозволува тоа.
 
-    Voz& operator+=(const Patnik& patnik){
+    Voz &operator+=(const Patnik &patnik) {
 
-        Patnik *pom=new Patnik[this->br_patnici+1];
-        for(int i=0;i<this->br_patnici;i++)
-        {
-            pom[i]=Patnik(this->patnici[i]);
+        Patnik *pom = new Patnik[this->br_patnici + 1];
+        for (int i = 0; i < this->br_patnici; i++) {
+            pom[i] = Patnik(this->patnici[i]);
         }
-        pom[this->br_patnici]=patnik;
+        pom[this->br_patnici] = patnik;
         this->br_patnici++;
 
-        delete [] this->patnici;
-        this->patnici=new Patnik[this->br_patnici];
-        for(int i=0;i<this->br_patnici;i++)
-        {
-            this->patnici[i]=Patnik(pom[i]);
+        delete[] this->patnici;
+        this->patnici = new Patnik[this->br_patnici];
+        for (int i = 0; i < this->br_patnici; i++) {
+            this->patnici[i] = Patnik(pom[i]);
         }
 
-        delete [] pom;
+        delete[] pom;
 
-    return *this;
+        return *this;
     }
 
-//Оператор << - за печатење на крајната дестинација до која вози и листата на патници
 
-//Logikata ne mi e jasna, vo kaceni patnici treba samo kacenite da se kacat a ne site patnici!
+    friend std::ostream &operator<<(std::ostream &os, const Voz &voz) {
 
-    friend std::ostream& operator<<(std::ostream& os, const Voz& voz){
-        Patnik *kaceni_patnici=new Patnik[voz.br_patnici];
 
-        for(int i =0; i<voz.br_patnici && voz.patnici[i].getKlasa()==1;i++){
-            if(voz.patnici[i].getVelosiped()==true){
-                if(i>voz.max_velosipedi){
-                    continue;
-                }else kaceni_patnici[i]= Patnik(voz.patnici[i]);
-            }else kaceni_patnici[i]= Patnik(voz.patnici[i]);
+        Patnik *kaceni_patnici = new Patnik[voz.br_patnici];
 
+        int j = 0, kaceni_velosipedisti=0;
+
+        for (int i = 0; i < voz.br_patnici; i++) {
+            if (voz.patnici[i].getKlasa() == 1) {
+                if (voz.patnici[i].getVelosiped() == false) {
+                    kaceni_patnici[j] = Patnik(voz.patnici[i]);
+                    j++;
+                } else if (voz.patnici[i].getVelosiped() == true) {
+                    if (kaceni_velosipedisti < voz.max_velosipedi) {
+                        kaceni_patnici[j] = Patnik(voz.patnici[i]);
+                        j++;
+                        kaceni_velosipedisti++;
+                    }
+                }
+
+            } else if (voz.patnici[i].getKlasa() == 2) {
+                if (voz.patnici[i].getVelosiped() == false) {
+                    kaceni_patnici[j] = Patnik(voz.patnici[i]);
+                    j++;
+                } else if (voz.patnici[i].getVelosiped() == true) {
+                    if (kaceni_velosipedisti < voz.max_velosipedi) {
+                        kaceni_patnici[j] = Patnik(voz.patnici[i]);
+                        j++;
+                        kaceni_velosipedisti++;
+                    }
+                }
+            }
         }
 
-        for(int i =0; i<voz.br_patnici && voz.patnici[i].getKlasa()==2;i++){
-            if(voz.patnici[i].getVelosiped()==true){
-                if(i>voz.max_velosipedi){
-                    continue;
-                }else kaceni_patnici[i]= Patnik(voz.patnici[i]);
-            }else kaceni_patnici[i]= Patnik(voz.patnici[i]);
+        Patnik *pom = new Patnik[j];
+
+        for (int i = 0; i < j; i++) {
+            pom[i] = Patnik(kaceni_patnici[i]);
         }
 
+        delete[] kaceni_patnici;
+
+        kaceni_patnici = new Patnik[j];
+        for (int i = 0; i < j; i++) {
+            kaceni_patnici[i] = Patnik(pom[i]);
+        }
+        delete[] pom;
 
 
+        os << voz.destinacija << endl;
 
-        os << voz.destinacija<< endl;
-
-        for(int i= 0 ; i<voz.br_patnici;i++)
-        {
-            os << kaceni_patnici[i].getIme()<< endl;
-            os << kaceni_patnici[i].getKlasa()<< endl;
-            os << kaceni_patnici[i].getVelosiped()<< endl;
+        for (int i = 0; i < j; i++) {
+            os << kaceni_patnici[i].getIme() << endl;
+            os << kaceni_patnici[i].getKlasa() << endl;
+            os << kaceni_patnici[i].getVelosiped() << '\n' << endl;
 
         }
         return os;
     }
 
 //Функција со потпис: patniciNemaMesto().
-    void patniciNemaMesto(){
+    void patniciNemaMesto() {
 
-        Patnik *kaceni_patnici=new Patnik[this->br_patnici];
+        //Patnik *kaceni_patnici = new Patnik[this->br_patnici];
 
-        int ostaveni_prva=0, ostaveni_vtora=0;
+        int ostaveni_prva = 0, ostaveni_vtora = 0, kaceni_velosipedisti=0;
 
-        for(int i =0; i<this->br_patnici && this->patnici[i].getKlasa()==1;i++){
-            if(this->patnici[i].getVelosiped()==true){
-                if(i>this->max_velosipedi){
-                    ostaveni_prva++;
-                    continue;
-                    }
-                }
-            kaceni_patnici[i]= Patnik(this->patnici[i]);
-        }
 
-        for(int i =0; i<this->br_patnici && this->patnici[i].getKlasa()==2;i++){
-            if(this->patnici[i].getVelosiped()==true){
-                if(i>this->max_velosipedi){
-                ostaveni_vtora++;
-                    continue;
+        for (int i = 0; i < this->br_patnici && this->max_velosipedi!=0; i++)
+        {
+            if (this->patnici[i].getKlasa() == 1)
+            {
+                if (this->patnici[i].getVelosiped() == true)
+                {
+                    if (kaceni_velosipedisti >= this->max_velosipedi)
+                    {
+                        ostaveni_prva++;
+                    } else kaceni_velosipedisti++;
+
                 }
             }
-            kaceni_patnici[i]= Patnik(this->patnici[i]);
+        }
+        for (int i = 0; i < this->br_patnici && this->max_velosipedi!=0; i++)
+        {
+            if (this->patnici[i].getKlasa() == 2)
+            {
+                if (this->patnici[i].getVelosiped() == true)
+                {
+                    if (kaceni_velosipedisti >=  this->max_velosipedi)
+                    {
+                        ostaveni_vtora++;
+                    } else     kaceni_velosipedisti++;
+                }
+            }
         }
 
-        cout<< "Brojot na patnici od 1-va klasa koi ostanale bez mesto e: " <<ostaveni_prva << endl;
+        cout << "Brojot na patnici od 1-va klasa koi ostanale bez mesto e: " << ostaveni_prva << endl;
 
-        cout<< "Brojot na patnici od 2-ra klasa koi ostanale bez mesto e: " <<ostaveni_prva << endl;
+        cout << "Brojot na patnici od 2-ra klasa koi ostanale bez mesto e: " << ostaveni_vtora << endl;
     }
 
 
@@ -192,8 +219,7 @@ public:
 };
 
 
-int main()
-{
+int main() {
     Patnik p;
     char ime[100], destinacija[100];
     int n;
@@ -204,7 +230,7 @@ int main()
     cin >> n;
     Voz v(destinacija, maxv);
     //cout<<v<<endl;
-    for (int i = 0; i < n; i++){
+    for (int i = 0; i < n; i++) {
         cin >> ime >> klasa >> velosiped;
         Patnik p(ime, klasa, velosiped);
         //cout<<p<<endl;
