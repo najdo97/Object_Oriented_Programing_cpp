@@ -55,7 +55,7 @@ void najdobar_park(struct ZabavenPark *park, int n) {
 
                 traenje=0;
                 for (int j = 0; j < park[p].n; j++) {
-                    
+
                     traenje = traenje + park[p].niza[j].traenje;
                 }
                 if (max_traenje < traenje) {
