@@ -14,12 +14,16 @@ private:
 public:
 
     Ucesnik() {
-       // this->ime = nullptr;
+
+        this->ime = nullptr;
+       // strcpy(this->ime,"ime");
+        this->pol = false;
+        this->vozrast = 0;
     };
 
     Ucesnik(char *ime, bool pol, int vozrast) {
 
-        this->ime = new char[strlen(ime)];
+        this->ime = new char[strlen(ime)+1];
         strcpy(this->ime, ime);
 
         this->pol = pol;
@@ -28,11 +32,12 @@ public:
 
     Ucesnik(const Ucesnik &u) {
 
-        this->ime = new char[strlen(u.ime)];
+        this->ime = new char[strlen(u.ime)+1];
         strcpy(this->ime, u.ime);
 
         this->pol = u.pol;
         this->vozrast = u.vozrast;
+
     };
 
     ~Ucesnik() {
@@ -52,6 +57,16 @@ public:
         return output;
     };
 
+    Ucesnik& operator=(const Ucesnik& u){
+        delete[]this->ime;
+        this->ime = new char[strlen(u.ime)+1];
+        strcpy(this->ime, u.ime);
+
+        this->pol = u.pol;
+        this->vozrast = u.vozrast;
+        return *this;
+    }
+
     int getVozrast() {
         return this->vozrast;
     }
@@ -67,6 +82,7 @@ private:
 public:
 
     Maraton() {
+        strcpy(this->lokacija,"NaN");
         this->ucesnici = nullptr;
         this->br_ucesnici = 0;
     };
@@ -100,6 +116,16 @@ public:
         this->br_ucesnici = m.br_ucesnici;
     };
 
+     Maraton& operator=(const Maraton &m) {
+        strcpy(this->lokacija, m.lokacija);
+
+        this->ucesnici = new Ucesnik[m.br_ucesnici];
+        for (int i = 0; i < m.br_ucesnici; i++) {
+            this->ucesnici[i] = m.ucesnici[i];
+        }
+        this->br_ucesnici = m.br_ucesnici;
+        return *this;
+    };
 
     ~Maraton() {
         delete[] ucesnici;
@@ -107,18 +133,29 @@ public:
 
     Maraton &operator+=(const Ucesnik &u) {         // ne sum siguren deka return typeot e validen i toa sho se ocekuva
 
-        Ucesnik *pom = new Ucesnik[this->br_ucesnici + 1];
+        if (this->ucesnici != nullptr) {
+            Ucesnik *pom = new Ucesnik[this->br_ucesnici + 1];
 
-        for (int i = 0; i < this->br_ucesnici; i++) {
-            pom[i] = Ucesnik(this->ucesnici[i]);
+            for (int i = 0; i < this->br_ucesnici; i++) {
+                pom[i] = this->ucesnici[i];
+            }
+
+            pom[this->br_ucesnici] = u;
+            this->br_ucesnici++;
+
+
+
+            delete[]this->ucesnici;
+
+            this->ucesnici = pom;
+
+        } else if (this->ucesnici == nullptr) {
+
+            this->br_ucesnici++;
+            this->ucesnici = new Ucesnik[this->br_ucesnici];
+            this->ucesnici[0] = u;
+
         }
-        this->br_ucesnici++;
-        pom[this->br_ucesnici] = Ucesnik(u);
-
-        delete[]this->ucesnici;
-
-        this->ucesnici = pom;
-
         return *this;
     }
 
@@ -132,13 +169,13 @@ public:
         return prosecna;
     }
 
-    void pecatiPomladi(Ucesnik &u){
+    void pecatiPomladi(Ucesnik &u) {
 
         for (int i = 0; i < this->br_ucesnici; i++) {
-         if(u.getVozrast()>this->ucesnici[i].getVozrast())  // moze da se iskoristi  overloadnatiot > operator
-         {
-             cout << this->ucesnici[i];
-         }
+            if (u.getVozrast() > this->ucesnici[i].getVozrast())  // moze da se iskoristi  overloadnatiot > operator
+            {
+                cout << this->ucesnici[i];
+            }
         }
     }
 
