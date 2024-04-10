@@ -16,14 +16,14 @@ public:
     Ucesnik() {
 
         this->ime = nullptr;
-       // strcpy(this->ime,"ime");
+        // strcpy(this->ime,"ime");
         this->pol = false;
         this->vozrast = 0;
     };
 
     Ucesnik(char *ime, bool pol, int vozrast) {
 
-        this->ime = new char[strlen(ime)+1];
+        this->ime = new char[strlen(ime) + 1];
         strcpy(this->ime, ime);
 
         this->pol = pol;
@@ -32,7 +32,7 @@ public:
 
     Ucesnik(const Ucesnik &u) {
 
-        this->ime = new char[strlen(u.ime)+1];
+        this->ime = new char[strlen(u.ime) + 1];
         strcpy(this->ime, u.ime);
 
         this->pol = u.pol;
@@ -53,13 +53,20 @@ public:
     }
 
     friend ostream &operator<<(ostream &output, const Ucesnik &u) {
-        output << u.ime << " " << u.pol << " " << u.vozrast << " " << endl;
+        char pecati_pol[8];
+
+        if (u.pol == 0) {
+            strcpy(pecati_pol, "zhenski");
+        } else {
+            strcpy(pecati_pol, "mashki");
+        };
+        output << u.ime << "\n" << pecati_pol<< "\n" << u.vozrast << endl;
         return output;
     };
 
-    Ucesnik& operator=(const Ucesnik& u){
+    Ucesnik &operator=(const Ucesnik &u) {
         delete[]this->ime;
-        this->ime = new char[strlen(u.ime)+1];
+        this->ime = new char[strlen(u.ime) + 1];
         strcpy(this->ime, u.ime);
 
         this->pol = u.pol;
@@ -82,7 +89,7 @@ private:
 public:
 
     Maraton() {
-        strcpy(this->lokacija,"NaN");
+        strcpy(this->lokacija, "NaN");
         this->ucesnici = nullptr;
         this->br_ucesnici = 0;
     };
@@ -116,7 +123,7 @@ public:
         this->br_ucesnici = m.br_ucesnici;
     };
 
-     Maraton& operator=(const Maraton &m) {
+    Maraton &operator=(const Maraton &m) {
         strcpy(this->lokacija, m.lokacija);
 
         this->ucesnici = new Ucesnik[m.br_ucesnici];
@@ -142,7 +149,6 @@ public:
 
             pom[this->br_ucesnici] = u;
             this->br_ucesnici++;
-
 
 
             delete[]this->ucesnici;
