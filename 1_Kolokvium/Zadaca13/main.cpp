@@ -104,17 +104,54 @@ public:
 
     void setZichara(Zichara z) {
         this->imaZichara = true;
-        this->zichara = &z;
+        if (this->zichara != nullptr) {
+            delete[]this->zichara;
+        }
+        this->zichara=new Zichara[1];
+        this->zichara[0] = z;       //   I vaka da e napishano, bi trebalo da raboti     this->zichara[0] = p.zichara[0];
     };
 
     /// OVERLOAD OPERATOR = ZA OVAA KLASA !!!!!
+    PlaninarskiDom &operator=(const PlaninarskiDom &p) {
+        strcpy(this->ime, p.ime);
 
+        this->sezonska_cena[0] = p.sezonska_cena[0];  // leto
+        this->sezonska_cena[1] = p.sezonska_cena[1];  // zimo
+        this->klasa_na_dom = p.klasa_na_dom;
+        this->imaZichara = p.imaZichara;
+
+        if (this->zichara != nullptr) {
+            delete[]this->zichara;
+        }
+        this->zichara=new Zichara[1];
+        this->zichara[0] = p.zichara[0];       //   I vaka da e napishano, bi trebalo da raboti     this->zichara[0] = p.zichara[0];
+
+        return *this;
+    }
+
+  /*  PlaninarskiDom &operator=(const PlaninarskiDom *p) {
+        strcpy(this->ime, p[0].ime);
+
+        this->sezonska_cena[0] = p[0].sezonska_cena[0];  // leto
+        this->sezonska_cena[1] = p[0].sezonska_cena[1];  // zimo
+        this->klasa_na_dom = p[0].klasa_na_dom;
+        this->imaZichara = p[0].imaZichara;
+
+        if (this->zichara != nullptr) {
+            delete[]this->zichara;
+        }
+        this->zichara=new Zichara[1];
+        this->zichara[0] = p[0].zichara[0];       //   I vaka da e napishano, bi trebalo da raboti     this->zichara[0] = p.zichara[0];
+
+        return *this;
+    }
+*/
 
 
     friend ostream &operator<<(ostream &os, const PlaninarskiDom &dom) {
 
         if (dom.imaZichara) {
-            os << dom.ime << " klasa:" << dom.klasa_na_dom << " so zichara" << endl;
+            os << dom.ime << " klasa:" << dom.klasa_na_dom << " so Zichara" << endl;
         } else os << dom.ime << " klasa:" << dom.klasa_na_dom << endl;
 
         return os;
@@ -128,11 +165,8 @@ public:
         return *this;
     }
 
-    const bool &operator<=(char z) {
-
-        if (this->klasa_na_dom >= z) {
-            return true;
-        } else return false;
+    bool operator<=(char c) const {
+        return this->klasa_na_dom >= c;
     };
 
 
@@ -147,7 +181,7 @@ public:
             throw -1;
         }
 
-            cena =cena+ (mesec >= 4 && mesec <= 8) || mesec == 9 && den == 1 ? sezonska_cena[0] : sezonska_cena[1];
+        cena = cena + (mesec >= 4 && mesec <= 8) || mesec == 9 && den == 1 ? sezonska_cena[0] : sezonska_cena[1];
 
 
     };
@@ -170,6 +204,7 @@ int main() {
     //во следниот дел се внесуваат информации и за жичарата ако постои
     if (daliZichara) {
         cin >> mestoZichara >> dnevnakartaZichara;
+
         PlaninarskiDom pom(imePlaninarskiDom, ceni, klasa);
         Zichara r(mestoZichara, dnevnakartaZichara);
         pom.setZichara(r);
@@ -177,9 +212,11 @@ int main() {
     } else {
         PlaninarskiDom *pok = new PlaninarskiDom(imePlaninarskiDom, ceni, klasa);
         p = *pok;
+
     }
 
     //се намалува класата на планинарскиот дом за 2
+
     --p;
     --p;
 
@@ -190,7 +227,9 @@ int main() {
         p.presmetajDnevenPrestoj(den, mesec, cena); //тука се користи функцијата presmetajDnevenPrestoj
         cout << "Informacii za PlaninarskiDomot:" << endl;
         cout << p;
+
         if (p <= 'D')
+
             cout << "Planinarskiot dom za koj se vneseni informaciite ima klasa poniska ili ista so D\n";
 
         cout << "Cenata za " << den << "." << mesec << " e " << cena; //се печати цената за дадениот ден и месец
