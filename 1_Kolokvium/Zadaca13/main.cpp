@@ -107,7 +107,7 @@ public:
         if (this->zichara != nullptr) {
             delete[]this->zichara;
         }
-        this->zichara=new Zichara[1];
+        this->zichara = new Zichara[1];
         this->zichara[0] = z;       //   I vaka da e napishano, bi trebalo da raboti     this->zichara[0] = p.zichara[0];
     };
 
@@ -123,29 +123,34 @@ public:
         if (this->zichara != nullptr) {
             delete[]this->zichara;
         }
-        this->zichara=new Zichara[1];
-        this->zichara[0] = p.zichara[0];       //   I vaka da e napishano, bi trebalo da raboti     this->zichara[0] = p.zichara[0];
-
-        return *this;
-    }
-
-  /*  PlaninarskiDom &operator=(const PlaninarskiDom *p) {
-        strcpy(this->ime, p[0].ime);
-
-        this->sezonska_cena[0] = p[0].sezonska_cena[0];  // leto
-        this->sezonska_cena[1] = p[0].sezonska_cena[1];  // zimo
-        this->klasa_na_dom = p[0].klasa_na_dom;
-        this->imaZichara = p[0].imaZichara;
-
-        if (this->zichara != nullptr) {
-            delete[]this->zichara;
+        if (p.zichara != nullptr) {
+            this->zichara = new Zichara[1];
+            this->zichara[0] = p.zichara[0];       //   I vaka da e napishano, bi trebalo da raboti     this->zichara[0] = p.zichara[0];
+        } else {
+            this->zichara = nullptr;
         }
-        this->zichara=new Zichara[1];
-        this->zichara[0] = p[0].zichara[0];       //   I vaka da e napishano, bi trebalo da raboti     this->zichara[0] = p.zichara[0];
+
 
         return *this;
     }
-*/
+
+    /*  PlaninarskiDom &operator=(const PlaninarskiDom *p) {
+          strcpy(this->ime, p[0].ime);
+
+          this->sezonska_cena[0] = p[0].sezonska_cena[0];  // leto
+          this->sezonska_cena[1] = p[0].sezonska_cena[1];  // zimo
+          this->klasa_na_dom = p[0].klasa_na_dom;
+          this->imaZichara = p[0].imaZichara;
+
+          if (this->zichara != nullptr) {
+              delete[]this->zichara;
+          }
+          this->zichara=new Zichara[1];
+          this->zichara[0] = p[0].zichara[0];       //   I vaka da e napishano, bi trebalo da raboti     this->zichara[0] = p.zichara[0];
+
+          return *this;
+      }
+  */
 
 
     friend ostream &operator<<(ostream &os, const PlaninarskiDom &dom) {
@@ -170,7 +175,7 @@ public:
     };
 
 
-    void presmetajDnevenPrestoj(int den, int mesec, int cena) {
+    void presmetajDnevenPrestoj(int den, int mesec, int &cena) {
 
         cena = 0;
         if (this->imaZichara) {
@@ -179,10 +184,13 @@ public:
 
         if (mesec < 1 || mesec > 12 || den < 1 || den > 31) {
             throw -1;
+        } else {
+            if ((mesec >= 4 && mesec <= 8) || mesec == 9 && den == 1) {
+                cena = cena + this->sezonska_cena[0];
+            } else {
+                cena = cena + this->sezonska_cena[1];
+            }
         }
-
-        cena = cena + (mesec >= 4 && mesec <= 8) || mesec == 9 && den == 1 ? sezonska_cena[0] : sezonska_cena[1];
-
 
     };
 };
