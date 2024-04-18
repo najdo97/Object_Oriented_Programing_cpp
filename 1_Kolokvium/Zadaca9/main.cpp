@@ -111,32 +111,33 @@ void print(ITStore prodavnica) {
     cout << prodavnica.store_name << " " << prodavnica.store_location << endl;
 
     for (int i = 0; i < prodavnica.br_laptopi; i++) {
-        cout << prodavnica.dostapni_laptopi[i].proizvoditel << prodavnica.dostapni_laptopi[i].monitor_size
+        cout << prodavnica.dostapni_laptopi[i].proizvoditel << " " << prodavnica.dostapni_laptopi[i].monitor_size << " "
              << prodavnica.dostapni_laptopi[i].cena << endl;
     }
 }
 
-void najeftina_ponuda(ITStore *niza_prodavnici) {
+void najeftina_ponuda(ITStore *niza_prodavnici, int num) {
 
     char cheapest_store[100] = "NaN";
-    int cheapest_price = 0;
-    int brojac = 0;
+    char cheapest_store_location[100] = "NaN";
+    int cheapest_price = 9999999;
 
-    while (niza_prodavnici != nullptr) {
-        for (int i = 0; i < niza_prodavnici[brojac].br_laptopi; i++) {
-            if ((niza_prodavnici[brojac].dostapni_laptopi[i].isTouch == true) &&
-                (cheapest_price > niza_prodavnici[brojac].dostapni_laptopi[i].cena)) {
+    for (int j = 0; j < num; j++) {
 
-                strcpy(cheapest_store, niza_prodavnici[brojac].store_name);
-                cheapest_price = niza_prodavnici[brojac].dostapni_laptopi[i].cena;
+        for (int i = 0; i < niza_prodavnici[j].br_laptopi; i++) {
+            if ((niza_prodavnici[j].dostapni_laptopi[i].isTouch == true) &&
+                (cheapest_price > niza_prodavnici[j].dostapni_laptopi[i].cena)) {
+
+                strcpy(cheapest_store, niza_prodavnici[j].store_name);
+                strcpy(cheapest_store_location, niza_prodavnici[j].store_location);
+
+                cheapest_price = niza_prodavnici[j].dostapni_laptopi[i].cena;
+
             }
         }
-
-        brojac++;
-        niza_prodavnici++;
     }
 
-    cout << "Najeftina ponuda ima prodavnicata: " << cheapest_store << endl;
+    cout << "Najeftina ponuda ima prodavnicata: \n" << cheapest_store << " " << cheapest_store_location << endl;
     cout << "Najniskata cena iznesuva: " << cheapest_price << endl;
 
 
@@ -164,7 +165,9 @@ int main() {
     for (int i = 0; i < n; i++) {
 
         cin >> store_name;
+
         cin >> store_location;  // ovdeka pagja vtoriot pat
+
         cin >> br_laptopi;
 
         ITStore pom_prodavnica;
@@ -173,17 +176,19 @@ int main() {
         strcpy(pom_prodavnica.store_location, store_location);
         pom_prodavnica.br_laptopi = br_laptopi;
 
-        for (int j = 0; i < br_laptopi; j++) {
+        for (int j = 0; j < br_laptopi; j++) {
             cin >> proizvoditel;
             cin >> monitor_size;
             cin >> isTouch;
             cin >> cena;
             Laptop pom = Laptop(proizvoditel, monitor_size, isTouch, cena);
-
+            //  cout<<"test"<<endl;
             pom_prodavnica.dostapni_laptopi[j] = pom;
 
         }
-        lista_prodavnici[i]=pom_prodavnica;
+
+
+        lista_prodavnici[i] = pom_prodavnica;
     }
 
     //pecatenje na site prodavnici
@@ -194,7 +199,7 @@ int main() {
 
 
     //povik na glavnata metoda
-    najeftina_ponuda(lista_prodavnici);
+    najeftina_ponuda(lista_prodavnici, n);
 
     return 0;
 }
