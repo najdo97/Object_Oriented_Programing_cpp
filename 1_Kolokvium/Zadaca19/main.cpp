@@ -70,20 +70,126 @@ public:
     }
 
 
-    IceCream &operator++(const int i) {
+    friend ostream &operator<<(ostream &os, const IceCream &c) {
 
+        if (c.popust == 0) {
+            os << c.ime << " " << c.sostav << " " << c.cena << endl;
+        } else {
+
+            int cena_so_popust = 0;
+            cena_so_popust = c.cena - (c.cena * c.popust / 100);
+            os << c.ime << " " << c.sostav << " " << cena_so_popust << endl;
+        }
+        return os;
     }
 
-    IceCream &operator+(const IceCream &i) {
+    IceCream &operator++() {
 
-
-        return * this;
+        this->popust = this->popust + 5;
+        return *this;
     }
 
-    IceCream &operator-() // ne sum siguren deka treba ovoj
-    {
+    IceCream &operator+(const char *i) {
 
+        char *pom = new char[strlen(this->ime) + strlen(i) + 1];
+
+        strcpy(pom, this->ime);
+        strcat(pom, i);     // mislam deka nema da ima prazno mesto vo dodadeniot zbor
+
+        delete[]this->ime;
+
+        this->ime = pom;
+
+        return *this;
     }
+
+
+};
+
+
+class IceCreamShop {
+
+private:
+
+    char ime[50];
+    IceCream *sladoledi;
+    int br_sladoledi;
+
+public:
+
+    IceCreamShop() {
+        strcpy(this->ime, "NaN");
+        this->sladoledi = nullptr;
+        this->br_sladoledi = 0;
+    };
+
+    IceCreamShop(char *ime) {
+
+        strcpy(this->ime, ime);
+
+        this->sladoledi = nullptr;
+        this->br_sladoledi = 0;
+
+    };
+
+    IceCreamShop(char *ime, IceCream *sladoledi, int br_sladoledi) {
+        strcpy(this->ime, ime);
+
+        this->sladoledi = new IceCream[br_sladoledi];
+        for (int i = 0; i < br_sladoledi; i++) {
+            this->sladoledi[i] = sladoledi[i];
+        }
+        this->br_sladoledi = br_sladoledi;
+    };
+
+    IceCreamShop(const IceCreamShop &ice) {
+        strcpy(this->ime, ice.ime);
+
+        this->sladoledi = new IceCream[ice.br_sladoledi];
+        for (int i = 0; i < ice.br_sladoledi; i++) {
+            this->sladoledi[i] = ice.sladoledi[i];
+        }
+        this->br_sladoledi = ice.br_sladoledi;
+    };
+
+    ~IceCreamShop() {
+        delete[]this->sladoledi;
+    };
+
+    IceCreamShop &operator=(const IceCreamShop &ice) {
+        strcpy(this->ime, ice.ime);
+
+        delete[]this->sladoledi;
+
+        this->sladoledi = new IceCream[ice.br_sladoledi];
+        for (int i = 0; i < ice.br_sladoledi; i++) {
+            this->sladoledi[i] = ice.sladoledi[i];
+        }
+        this->br_sladoledi = ice.br_sladoledi;
+
+        return *this;
+    };
+
+
+    //todo
+    IceCreamShop &operator+=(const IceCream &i){
+
+        return*this;
+    }
+
+    //todo
+    friend ostream &operator<<(ostream &os, const IceCreamShop &shop) {
+
+        os  << shop.ime << endl;
+
+        for(int i=0;i<shop.br_sladoledi;i++) {
+
+            os << shop.sladoledi[i]. << endl;
+
+        }
+        return os;
+    }
+
 
 };
 
