@@ -73,12 +73,12 @@ public:
     friend ostream &operator<<(ostream &os, const IceCream &c) {
 
         if (c.popust == 0) {
-            os << c.ime << " " << c.sostav << " " << c.cena << endl;
+            os << c.ime << ": " << c.sostav << " " << c.cena << endl;
         } else {
 
             int cena_so_popust = 0;
             cena_so_popust = c.cena - (c.cena * c.popust / 100);
-            os << c.ime << " " << c.sostav << " " << cena_so_popust << endl;
+            os << c.ime << ": " << c.sostav << " " << c.cena <<" ("<< cena_so_popust <<")"<< endl;
         }
         return os;
     }
@@ -171,20 +171,33 @@ public:
     };
 
 
-    //todo
-    IceCreamShop &operator+=(const IceCream &i){
 
-        return*this;
+    IceCreamShop &operator+=(const IceCream &ice) {
+
+        IceCream *pom = new IceCream[this->br_sladoledi + 1];
+
+        for (int i = 0; i < this->br_sladoledi; i++) {
+            pom[i] = this->sladoledi[i];
+        }
+
+        pom[this->br_sladoledi] = ice;
+        this->br_sladoledi++;
+
+        delete[]this->sladoledi;
+
+        this->sladoledi = pom;
+
+        return *this;
     }
 
-    //todo
-    friend ostream &operator<<(ostream &os, const IceCreamShop &shop) {
 
-        os  << shop.ime << endl;
+    friend ostream &operator<<(ostream &os, const IceCreamShop &prodavnica) {
 
-        for(int i=0;i<shop.br_sladoledi;i++) {
+        os << prodavnica.ime << endl;
 
-            os << shop.sladoledi[i]. << endl;
+        for (int i = 0; i < prodavnica.br_sladoledi; i++) {
+
+            os << prodavnica.sladoledi[i];
 
         }
         return os;
