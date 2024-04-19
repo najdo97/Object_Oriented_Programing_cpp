@@ -4,9 +4,88 @@
 using namespace std;
 
 
-// vashiot kod ovde
+class IceCream {
 
-// zabraneto e menuvanje na main funkcijata
+private:
+    char *ime;
+    char sostav[100];
+    float cena;
+    int popust;
+
+public:
+
+    IceCream() {
+        this->ime = nullptr;
+
+        strcpy(this->sostav, "NaN");
+        this->cena = 0.0;
+        this->popust = 0;
+    };
+
+    IceCream(char *ime, char *sostav, float cena) {
+
+        this->ime = new char[strlen(ime) + 1];
+        strcpy(this->ime, ime);
+
+        strcpy(this->sostav, sostav);
+        this->cena = cena;
+        this->popust = 0;
+    };
+
+    IceCream(const IceCream &i) {
+        this->ime = new char[strlen(i.ime) + 1];
+        strcpy(this->ime, i.ime);
+
+        strcpy(this->sostav, i.sostav);
+        this->cena = i.cena;
+        this->popust = i.popust;
+    };
+
+    ~IceCream() {
+        delete[] this->ime;
+    };
+
+
+    IceCream &operator=(const IceCream &i) {
+
+        delete[]this->ime;
+        this->ime = new char[strlen(i.ime) + 1];
+        strcpy(this->ime, i.ime);
+
+        strcpy(this->sostav, i.sostav);
+        this->cena = i.cena;
+        this->popust = i.popust;
+
+        return *this;
+    }
+
+    void setName(char *ime) {
+        delete[]this->ime;
+        this->ime = new char[strlen(ime) + 1];
+        strcpy(this->ime, ime);
+    }
+
+    void setDiscount(int popust) {
+        this->popust = popust;      // rangot e od 0-100, moze ke treba if-uslov i throw error message za nadvor od tie granici
+    }
+
+
+    IceCream &operator++(const int i) {
+
+    }
+
+    IceCream &operator+(const IceCream &i) {
+
+
+        return * this;
+    }
+
+    IceCream &operator-() // ne sum siguren deka treba ovoj
+    {
+
+    }
+
+};
 
 int main() {
     char name[100];
