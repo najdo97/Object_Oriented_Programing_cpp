@@ -73,12 +73,12 @@ public:
     friend ostream &operator<<(ostream &os, const IceCream &c) {
 
         if (c.popust == 0) {
-            os << c.ime << ": " << c.sostav << " " << c.cena << endl;
+            os << c.ime << ": " << c.sostav << " " << c.cena;
         } else {
 
             int cena_so_popust = 0;
             cena_so_popust = c.cena - (c.cena * c.popust / 100);
-            os << c.ime << ": " << c.sostav << " " << c.cena <<" ("<< cena_so_popust <<")"<< endl;
+            os << c.ime << ": " << c.sostav << " " << c.cena <<" ("<< cena_so_popust <<")" ;
         }
         return os;
     }
@@ -91,14 +91,17 @@ public:
 
     IceCream &operator+(const char *i) {
 
-        char *pom = new char[strlen(this->ime) + strlen(i) + 1];
+        char *pom = new char[strlen(this->ime) + strlen(i) + 4];
 
         strcpy(pom, this->ime);
+        strcat(pom, " + ");     // mislam deka nema da ima prazno mesto vo dodadeniot zbor
         strcat(pom, i);     // mislam deka nema da ima prazno mesto vo dodadeniot zbor
 
         delete[]this->ime;
 
         this->ime = pom;
+
+        this->cena=this->cena+10;
 
         return *this;
     }
@@ -197,7 +200,7 @@ public:
 
         for (int i = 0; i < prodavnica.br_sladoledi; i++) {
 
-            os << prodavnica.sladoledi[i];
+            os << prodavnica.sladoledi[i]<< endl;
 
         }
         return os;
