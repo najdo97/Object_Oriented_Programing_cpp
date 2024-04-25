@@ -35,6 +35,7 @@ public:
 
         this->osnovna_cena = b.osnovna_cena;
     }
+    ~ Book(){};
 
     Book &operator=(const Book &b) {
         strcpy(this->ISBN, b.ISBN);
@@ -98,7 +99,7 @@ private:
     int golemina;
 
 public:
-    OnlineBook() {
+    OnlineBook() : Book() {
         this->url = nullptr;
         this->golemina = 0;
     }
@@ -135,17 +136,89 @@ public:
         return *this;
     }
 
+
+    void bookPrice() override {
+
+        if (this->golemina > 20) {
+            float nova_cena = 0;
+            nova_cena = getOsnovnaCena() + (getOsnovnaCena() / 100 * 20);
+            setOsnovnaCena(nova_cena);
+        }
+    };
+
+    bool operator>(const OnlineBook &b) {
+        if (this->getOsnovnaCena() > b.getOsnovnaCena()) {
+            return true;
+        } else return false;
+    };
+
 };
 
 class PrintBook : public Book {
 private:
-
     float tezina;
     bool naLager;
 
 public:
 
+    PrintBook() : Book() {
+        this->tezina = 0.0;
+        this->naLager = false;
+    };
+
+    PrintBook(char *ISBN, char *naslov, char *avtor, float osnovna_cena, float tezina, bool naLager) :
+            Book(ISBN, naslov, avtor, osnovna_cena) {
+        this->tezina = tezina;
+        this->naLager = naLager;
+    };
+
+    PrintBook(const PrintBook &p) : Book(p) {
+        this->tezina = p.tezina;
+        this->naLager = p.naLager;
+    };
+
+    //operator=
+    PrintBook &operator=(const PrintBook &p) {
+
+        Book::operator=(p);
+        this->tezina = p.tezina;
+        this->naLager = p.naLager;
+        return *this;
+    }
+
+    void bookPrice() override {
+        if (this->tezina > 0.7) {
+            float nova_cena = 0;
+            nova_cena = getOsnovnaCena() + (getOsnovnaCena() / 100 * 15);
+            setOsnovnaCena(nova_cena);
+        }
+    }
+
+    bool operator>(const PrintBook &b) {
+        if (this->getOsnovnaCena() > b.getOsnovnaCena()) {
+            return true;
+        } else return false;
+    }
+
 };
+
+void mostExpensiveBook(Book **books, int n) {
+
+    int onlineBooks=0, printBooks=0;
+    Book *mostExpensive;
+
+    for (int i = 0; i < n; i++) {
+        books[i].
+
+    }
+
+    cout<<"Total number of online books: "<< 2 <<endl;
+    cout<<"Total number of print books: "<< 2 <<endl;
+
+
+    cout<<"The most expensive book is: "<< <<endl;
+
+}
 
 int main() {
 
