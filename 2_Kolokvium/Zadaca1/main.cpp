@@ -112,7 +112,7 @@ public:
         this->golemina = golemina;
     }
 
-    OnlineBook(const OnlineBook &o) : Book (o) {
+    OnlineBook(const OnlineBook &o) : Book(o) {
 
         this->url = new char[strlen(o.url) + 1];
         strcpy(this->url, o.url);
@@ -123,6 +123,17 @@ public:
         delete[] this->url;
     }
 
+    OnlineBook &operator=(const OnlineBook &o) {
+
+        Book::operator=(o);
+
+        delete[]this->url;
+        this->url = new char[strlen(o.url) + 1];
+        strcpy(this->url, o.url);
+        this->golemina = o.golemina;
+
+        return *this;
+    }
 
 };
 
