@@ -35,7 +35,8 @@ public:
 
         this->osnovna_cena = b.osnovna_cena;
     }
-    ~ Book(){};
+
+    ~ Book() {};
 
     Book &operator=(const Book &b) {
         strcpy(this->ISBN, b.ISBN);
@@ -204,19 +205,28 @@ public:
 
 void mostExpensiveBook(Book **books, int n) {
 
-    int onlineBooks=0, printBooks=0;
+    int onlineBooks = 0, printBooks = 0;
     Book *mostExpensive;
 
     for (int i = 0; i < n; i++) {
-        books[i].
+        if (dynamic_cast<OnlineBook *>(books[i])) {
+            onlineBooks++;
+        }
+        else if(dynamic_cast<PrintBook*>(books[i]))
+        {
+            printBooks++;
+        }
+
+
+        ///??????
 
     }
 
-    cout<<"Total number of online books: "<< 2 <<endl;
-    cout<<"Total number of print books: "<< 2 <<endl;
+    cout << "Total number of online books: " << 2 << endl;
+    cout << "Total number of print books: " << 2 << endl;
 
 
-    cout<<"The most expensive book is: "<< <<endl;
+    cout << "The most expensive book is: " << << endl;
 
 }
 
