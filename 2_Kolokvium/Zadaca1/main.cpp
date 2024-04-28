@@ -82,14 +82,14 @@ public:
     }
 
 
-    virtual void bookPrice() = 0;
+    virtual float bookPrice() = 0;
 
-    virtual bool operator>(const Book &b) {  //neznam dali vaka se deklarira ova
+    virtual bool operator>(const Book &b) {
         return false;
     };
 
-    friend ostream &operator<<(ostream &os, const Book &book) {  // neznam dali vaka se deklarira ova
-        os << book.ISBN << ": " << book.naslov << ", " << book.avtor << " " << book.osnovna_cena<<endl;
+    friend ostream &operator<<(ostream &os,  Book &book) {
+        os << book.ISBN << ": " << book.naslov << ", " << book.avtor << " " << book.bookPrice() << endl;
         return os;
     }
 };
@@ -138,13 +138,15 @@ public:
     }
 
 
-    void bookPrice() override {
+    float bookPrice() override {
+
+        float nova_cena = this->getOsnovnaCena();
 
         if (this->golemina > 20) {
-            float nova_cena = 0;
             nova_cena = getOsnovnaCena() + (getOsnovnaCena() / 100 * 20);
-            setOsnovnaCena(nova_cena);
         }
+        return nova_cena;
+
     };
 
     bool operator>(const OnlineBook &b) {
@@ -152,6 +154,7 @@ public:
             return true;
         } else return false;
     };
+
 
 };
 
@@ -187,12 +190,13 @@ public:
         return *this;
     }
 
-    void bookPrice() override {
+    float bookPrice() override {
+        float nova_cena = this->getOsnovnaCena();
+
         if (this->tezina > 0.7) {
-            float nova_cena = 0;
             nova_cena = getOsnovnaCena() + (getOsnovnaCena() / 100 * 15);
-            setOsnovnaCena(nova_cena);
         }
+        return nova_cena;
     }
 
     bool operator>(const PrintBook &b) {
@@ -205,7 +209,7 @@ public:
 
 void mostExpensiveBook(Book **books, int n) {
 
-    int onlineBooks = 0, printBooks = 0, mostExpensive=0,mostExpensiveBrojac=0;
+    int onlineBooks = 0, printBooks = 0, mostExpensive = 0, mostExpensiveBrojac = 0;
 
 
     for (int i = 0; i < n; i++) {
@@ -216,10 +220,9 @@ void mostExpensiveBook(Book **books, int n) {
             printBooks++;
         }
 
-        if(books[i]->getOsnovnaCena()>mostExpensive)
-        {
-            mostExpensive=books[i]->getOsnovnaCena();
-            mostExpensiveBrojac=i;
+        if (books[i]->getOsnovnaCena() > mostExpensive) {
+            mostExpensive = books[i]->getOsnovnaCena();
+            mostExpensiveBrojac = i;
         }
 
     }
@@ -229,7 +232,7 @@ void mostExpensiveBook(Book **books, int n) {
     cout << "Total number of print books: " << printBooks << endl;
 
 
-    cout << "The most expensive book is: \n" << books[mostExpensiveBrojac]<< endl;
+    cout << "The most expensive book is: \n" << (*books[mostExpensiveBrojac]) << endl;
 
 }
 
