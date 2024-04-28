@@ -85,7 +85,9 @@ public:
     virtual float bookPrice() = 0;
 
     virtual bool operator>(const Book &b) {
-        return false;
+        if (this->getOsnovnaCena() > b.getOsnovnaCena()) {
+            return true;
+        } else return false;
     };
 
     friend ostream &operator<<(ostream &os,  Book &book) {
