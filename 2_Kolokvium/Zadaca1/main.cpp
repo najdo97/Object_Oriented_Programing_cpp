@@ -89,7 +89,7 @@ public:
     };
 
     friend ostream &operator<<(ostream &os, const Book &book) {  // neznam dali vaka se deklarira ova
-        os << book.ISBN << " " << book.naslov << " " << book.avtor << " " << book.osnovna_cena;
+        os << book.ISBN << ": " << book.naslov << ", " << book.avtor << " " << book.osnovna_cena<<endl;
         return os;
     }
 };
@@ -205,28 +205,31 @@ public:
 
 void mostExpensiveBook(Book **books, int n) {
 
-    int onlineBooks = 0, printBooks = 0;
-    Book *mostExpensive;
+    int onlineBooks = 0, printBooks = 0, mostExpensive=0,mostExpensiveBrojac=0;
+
 
     for (int i = 0; i < n; i++) {
         if (dynamic_cast<OnlineBook *>(books[i])) {
             onlineBooks++;
-        }
-        else if(dynamic_cast<PrintBook*>(books[i]))
-        {
+
+        } else if (dynamic_cast<PrintBook *>(books[i])) {
             printBooks++;
         }
 
-
-        ///??????
+        if(books[i]->getOsnovnaCena()>mostExpensive)
+        {
+            mostExpensive=books[i]->getOsnovnaCena();
+            mostExpensiveBrojac=i;
+        }
 
     }
+    cout << "FINKI-Education" << endl;
 
-    cout << "Total number of online books: " << 2 << endl;
-    cout << "Total number of print books: " << 2 << endl;
+    cout << "Total number of online books: " << onlineBooks << endl;
+    cout << "Total number of print books: " << printBooks << endl;
 
 
-    cout << "The most expensive book is: " << << endl;
+    cout << "The most expensive book is: \n" << books[mostExpensiveBrojac]<< endl;
 
 }
 
