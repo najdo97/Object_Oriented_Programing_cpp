@@ -51,6 +51,8 @@ public:
 
     virtual void danok() = 0;
 
+    virtual float zarabotuvacka() = 0;
+
     int getBrTrki() {
         return this->br_trki;
     }
@@ -67,6 +69,18 @@ private:
     float cena_na_avto;
 
 public:
+//konstuktori , operator =
+
+// DA SE PREPOKRIE
+// friend ostream &operator<<(ostream &os, const Vozac &vozac) {}
+
+        float zarabotuvacka() {
+
+        float zarabotil = 0.0;
+        zarabotil = this->cena_na_avto / 5;
+
+        return zarabotil;
+    }
 
     void danok() override {
         if (getBrTrki() > 10) {
@@ -81,11 +95,24 @@ public:
 
 class Motociklist : Vozac {
 
+
 private:
     int mokjnost_motor;
 
 public:
+//konstuktori , operator =
 
+// DA SE PREPOKRIE
+// friend ostream &operator<<(ostream &os, const Vozac &vozac) {}
+
+
+    float zarabotuvacka() {
+
+        float zarabotil = 0.0;
+        zarabotil = this->mokjnost_motor * 20;
+
+        return zarabotil;
+    }
 
     void danok() override {
         if (getVeteran() == true) {
