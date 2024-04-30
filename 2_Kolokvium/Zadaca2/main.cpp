@@ -18,7 +18,7 @@ public:
         this->isVeteran = false;
     };
 
-    Vozac(char ime[100], int vozrast, int br_trki, bool isVeteran) {
+    Vozac(char *ime, int vozrast, int br_trki, bool isVeteran) {
         strcpy(this->ime, ime);
         this->vozrast = vozrast;
         this->br_trki = br_trki;
@@ -69,12 +69,32 @@ private:
     float cena_na_avto;
 
 public:
-//konstuktori , operator =
 
-// DA SE PREPOKRIE
+    Avtomobilist() : Vozac() {
+        this->cena_na_avto = 0.0;
+    }
+
+    Avtomobilist(char *ime, int vozrast, int br_trki, bool isVeteran, float cena_na_avto) : Vozac(ime, vozrast, br_trki,
+                                                                                                  isVeteran) {
+        this->cena_na_avto = cena_na_avto;
+    }
+
+    Avtomobilist(const Avtomobilist &a) : Vozac(a) {
+
+        this->cena_na_avto = a.cena_na_avto;
+    }
+
+    Avtomobilist &operator=(const Avtomobilist &a) {
+        Vozac::operator=(a);
+        this->cena_na_avto = a.cena_na_avto;
+        return *this;
+    }
+
+
+
 // friend ostream &operator<<(ostream &os, const Vozac &vozac) {}
-
-        float zarabotuvacka() {
+// virtual bool operator==(const Vozac &v) = 0;
+    float zarabotuvacka() {
 
         float zarabotil = 0.0;
         zarabotil = this->cena_na_avto / 5;
@@ -94,16 +114,35 @@ public:
 };
 
 class Motociklist : Vozac {
-
-
 private:
     int mokjnost_motor;
 
 public:
-//konstuktori , operator =
 
-// DA SE PREPOKRIE
+    Motociklist() : Vozac() {
+        this->mokjnost_motor = 0;
+    }
+
+    Motociklist(char *ime, int vozrast, int br_trki, bool isVeteran, int mokjnost_motor) : Vozac(ime, vozrast, br_trki,
+                                                                                                 isVeteran) {
+        this->mokjnost_motor = mokjnost_motor;
+    }
+
+    Motociklist(const Motociklist &m) : Vozac(m) {
+        this->mokjnost_motor = 0;
+    }
+
+    Motociklist &operator=(const Motociklist &m) {
+
+        Vozac::operator=(m);
+        this->mokjnost_motor = m.mokjnost_motor;
+
+        return *this;
+    }
+
+
 // friend ostream &operator<<(ostream &os, const Vozac &vozac) {}
+  //  virtual bool operator==(const Vozac &v) = 0;
 
 
     float zarabotuvacka() {
