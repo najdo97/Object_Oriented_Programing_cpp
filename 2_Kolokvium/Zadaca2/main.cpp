@@ -43,10 +43,18 @@ public:
     };
 
     friend ostream &operator<<(ostream &os, const Vozac &vozac) {
-        os << vozac.ime <<'\n'
-        << vozac.vozrast <<'\n'
-        << vozac.br_trki <<'\n'
-        << vozac.isVeteran; // veteran ne treba da se pecati na sekoe
+
+        if (vozac.isVeteran) {
+            os << vozac.ime << '\n'
+               << vozac.vozrast << '\n'
+               << vozac.br_trki << '\n'
+               << "VETERAN"<<'\n'; // veteran ne treba da se pecati na sekoe
+        } else {
+            os << vozac.ime << '\n'
+               << vozac.vozrast << '\n'
+               << vozac.br_trki << '\n';
+
+        }
         return os;
     }
 
@@ -114,11 +122,15 @@ public:
     }
 
     float danok() const override {
+        float platen_danok = 0.0;
 
         if (getBrTrki() > 10) {
-            return 15;
+
+            platen_danok = (this->zarabotuvacka() / 100) * 15;
+            return platen_danok;
         } else {
-            return 10;
+            platen_danok = (this->zarabotuvacka() / 100) * 10;
+            return platen_danok;
         }
 
     }
@@ -169,11 +181,18 @@ public:
         return zarabotil;
     }
 
+   
+
     float danok() const override {
-        if (this->getVeteran() == true) {
-            return 25;
+        float platen_danok = 0.0;
+
+        if (this->getVeteran()) {
+
+            platen_danok = (this->zarabotuvacka() / 100) * 25;
+            return platen_danok;
         } else {
-            return 20;
+            platen_danok = (this->zarabotuvacka() / 100) * 20;
+            return platen_danok;
         }
 
     }
