@@ -43,7 +43,10 @@ public:
     };
 
     friend ostream &operator<<(ostream &os, const Vozac &vozac) {
-        os << vozac.ime << vozac.vozrast << vozac.br_trki << vozac.isVeteran; // veteran ne treba da se pecati na sekoe
+        os << vozac.ime <<'\n'
+        << vozac.vozrast <<'\n'
+        << vozac.br_trki <<'\n'
+        << vozac.isVeteran; // veteran ne treba da se pecati na sekoe
         return os;
     }
 
@@ -177,7 +180,16 @@ public:
 
 };
 
-void soIstaZarabotuvachka(){
+int soIstaZarabotuvachka(Vozac **niza, int brojac, Vozac *sporeduvan_vozac) {
+    int ista_zarabotka_brojac = 0;
+
+    for (int i = 0; i < brojac; i++) {
+        if (niza[i]->zarabotuvacka() == sporeduvan_vozac->zarabotuvacka()) {
+            ista_zarabotka_brojac++;
+        }
+    }
+
+    return ista_zarabotka_brojac;
 
 };
 
