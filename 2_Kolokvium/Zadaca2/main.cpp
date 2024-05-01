@@ -47,17 +47,17 @@ public:
         return os;
     }
 
-    virtual bool operator==(const Vozac &v) = 0;
+    virtual bool operator==(const Vozac &v) const = 0;
 
-    virtual void danok() = 0;
+    virtual float danok() const = 0;
 
-    virtual float zarabotuvacka() = 0;
+    virtual float zarabotuvacka() const = 0;
 
-    int getBrTrki() {
+    int getBrTrki() const {
         return this->br_trki;
     }
 
-    bool getVeteran() {
+    bool getVeteran() const {
         return this->isVeteran;
     }
 };
@@ -91,10 +91,29 @@ public:
     }
 
 
-
 // friend ostream &operator<<(ostream &os, const Vozac &vozac) {}
-// virtual bool operator==(const Vozac &v) = 0;
-    float zarabotuvacka() {
+
+    bool operator==(const Avtomobilist &v) const override {
+
+        float plata = 0.0, danok = 0.0, plata1 = 1, danok1 = 0.0;
+
+        plata = this->zarabotuvacka();
+        danok = this->danok();
+        plata = plata - (plata / 100 * danok);
+
+
+        plata1 = v.zarabotuvacka();
+        danok1 = v.danok();
+        plata1 = plata1 - (plata1 / 100 * danok1);
+
+
+        if (plata == plata1) {
+            return true;
+        } else return false;
+    };
+
+
+    float zarabotuvacka() const override {
 
         float zarabotil = 0.0;
         zarabotil = this->cena_na_avto / 5;
@@ -102,11 +121,12 @@ public:
         return zarabotil;
     }
 
-    void danok() override {
+    float danok() const override {
+
         if (getBrTrki() > 10) {
-            //danok 15%
+            return 15;
         } else {
-            // danok 10%
+            return 10;
         }
 
     }
@@ -142,10 +162,29 @@ public:
 
 
 // friend ostream &operator<<(ostream &os, const Vozac &vozac) {}
-  //  virtual bool operator==(const Vozac &v) = 0;
 
 
-    float zarabotuvacka() {
+    bool operator==(const Motociklist &v) {
+
+        float plata = 0.0, danok = 0.0, plata1 = 1, danok1 = 0.0;
+
+        plata = this->zarabotuvacka();
+        danok = this->danok();
+        plata = plata - (plata / 100 * danok);
+
+
+        plata1 = v.zarabotuvacka();
+        danok1 = v.danok();
+        plata1 = plata1 - (plata1 / 100 * danok1);
+
+
+        if (plata == plata1) {
+            return true;
+        } else return false;
+    };
+
+
+    float zarabotuvacka() const override {
 
         float zarabotil = 0.0;
         zarabotil = this->mokjnost_motor * 20;
@@ -153,11 +192,11 @@ public:
         return zarabotil;
     }
 
-    void danok() override {
-        if (getVeteran() == true) {
-            //danok 25%
+    float danok() const override {
+        if (this->getVeteran() == true) {
+            return 25;
         } else {
-            // danok 20%
+            return 20;
         }
 
     }
