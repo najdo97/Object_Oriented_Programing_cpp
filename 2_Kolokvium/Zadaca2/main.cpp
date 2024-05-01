@@ -47,7 +47,9 @@ public:
         return os;
     }
 
-    virtual bool operator==(const Vozac &v) const = 0;
+    bool operator==(const Vozac &v) {
+        return false; //neznam sho drugo da staam
+    };
 
     virtual float danok() const = 0;
 
@@ -63,7 +65,7 @@ public:
 };
 
 
-class Avtomobilist : Vozac {
+class Avtomobilist : public Vozac {
 
 private:
     float cena_na_avto;
@@ -93,23 +95,10 @@ public:
 
 // friend ostream &operator<<(ostream &os, const Vozac &vozac) {}
 
-    bool operator==(const Avtomobilist &v) const override {
+    bool operator==(const Vozac &v) {
 
-        float plata = 0.0, danok = 0.0, plata1 = 1, danok1 = 0.0;
+        return this->zarabotuvacka() == v.zarabotuvacka();
 
-        plata = this->zarabotuvacka();
-        danok = this->danok();
-        plata = plata - (plata / 100 * danok);
-
-
-        plata1 = v.zarabotuvacka();
-        danok1 = v.danok();
-        plata1 = plata1 - (plata1 / 100 * danok1);
-
-
-        if (plata == plata1) {
-            return true;
-        } else return false;
     };
 
 
@@ -133,7 +122,7 @@ public:
 
 };
 
-class Motociklist : Vozac {
+class Motociklist : public Vozac {
 private:
     int mokjnost_motor;
 
@@ -165,22 +154,7 @@ public:
 
 
     bool operator==(const Motociklist &v) {
-
-        float plata = 0.0, danok = 0.0, plata1 = 1, danok1 = 0.0;
-
-        plata = this->zarabotuvacka();
-        danok = this->danok();
-        plata = plata - (plata / 100 * danok);
-
-
-        plata1 = v.zarabotuvacka();
-        danok1 = v.danok();
-        plata1 = plata1 - (plata1 / 100 * danok1);
-
-
-        if (plata == plata1) {
-            return true;
-        } else return false;
+        return this->zarabotuvacka() == v.zarabotuvacka();
     };
 
 
@@ -200,6 +174,10 @@ public:
         }
 
     }
+
+};
+
+void soIstaZarabotuvachka(){
 
 };
 
