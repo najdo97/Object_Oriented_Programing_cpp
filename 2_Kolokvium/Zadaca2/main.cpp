@@ -181,7 +181,7 @@ public:
         return zarabotil;
     }
 
-   
+
 
     float danok() const override {
         float platen_danok = 0.0;
