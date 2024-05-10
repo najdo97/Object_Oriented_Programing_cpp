@@ -125,13 +125,19 @@ public:
 
 //mesto za vashiot kod
 
-class Demonstrator {
+class Demonstrator : public Kurs, Student, Predavach {
 
-    
+private:
+
+public:
+
+    int getBodovi() {
+
+        return 0;
+    }
+
+
 };
-
-
-
 
 
 int main() {
