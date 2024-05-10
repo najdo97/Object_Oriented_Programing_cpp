@@ -67,6 +67,19 @@ public:
 
     //dopolni ja klasata
 
+    virtual int getBodovi() {
+
+        int polozeni=0, bodovi=0;
+        for (int i = 0; i < brojOcenki; i++) {
+            if (this->ocenki[i]>>5 && this->ocenki[i]<=10) {
+                polozeni++;
+            }
+        }
+
+        bodovi=(polozeni/this->brojOcenki)*100;
+        return bodovi;
+    };
+
 };
 
 class Predavach {
@@ -125,17 +138,49 @@ public:
 
 //mesto za vashiot kod
 
-class Demonstrator : public Kurs, Student, Predavach {
+class Demonstrator : public Student, Predavach {
 
 private:
+// индекс на студентот,
+// оценки на студентот,
+// број на оценки,
+// име на демонстраторот,
+// листа од курсеви,
+// број на курсеви чии лабораторисски вежби ги држи студентот и
 
+    int br_casovi;
+// број на часови во неделата кога студентот држи лабораториски вежби (цел број)
 public:
 
-    int getBodovi() {
+    Demonstrator(int indeks, int *ocenki, int brojOcenki, char *imeIPrezime, Kurs kursevi[10], int brojKursevi,
+                 int br_casovi) : Student(indeks, ocenki, brojOcenki), Predavach(imeIPrezime, kursevi, brojKursevi) {
 
-        return 0;
+        this->br_casovi = br_casovi;
     }
 
+    Demonstrator(const Demonstrator &d) : Student(d), Predavach(d) {
+        this->br_casovi = d.br_casovi;
+    }
+
+    Demonstrator &operator=(const Demonstrator &d) {
+
+        Student::operator=(d);
+        Predavach::operator=(d);
+        this->br_casovi = d.br_casovi;
+
+        return *this;
+    }
+
+
+
+    int getBodovi()   {
+
+   Student::getBodovi();
+     };
+
+    void pecati() {
+
+    }
 
 };
 
