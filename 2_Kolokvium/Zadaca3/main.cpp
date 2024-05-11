@@ -3,6 +3,17 @@
 
 using namespace std;
 
+class NoCourseException {
+    int index;
+public:
+    NoCourseException(int indeks) {
+        this->index = indeks;
+    }
+
+    void message() {
+        cout << "Demonstratorot so indeks " << index << " ne drzi laboratoriski vezbi" << endl;
+    }
+};
 
 class Kurs {
 private:
@@ -69,16 +80,21 @@ public:
 
     virtual int getBodovi() {
 
-        int polozeni=0, bodovi=0;
+        int polozeni = 0, bodovi = 0;
         for (int i = 0; i < brojOcenki; i++) {
-            if (this->ocenki[i]>>5 && this->ocenki[i]<=10) {
+            if (this->ocenki[i] >> 5 && this->ocenki[i] <= 10) {
                 polozeni++;
             }
         }
 
-        bodovi=(polozeni/this->brojOcenki)*100;
+        bodovi = (polozeni / this->brojOcenki) * 100;
         return bodovi;
     };
+
+    virtual void pecati() {
+        cout << indeks;
+    }
+
 
 };
 
@@ -138,7 +154,7 @@ public:
 
 //mesto za vashiot kod
 
-class Demonstrator : public Student, Predavach {
+class Demonstrator : public Student, public Predavach {
 
 private:
 // индекс на студентот,
@@ -172,18 +188,37 @@ public:
     }
 
 
+    int getBodovi() {
 
-    int getBodovi()   {
+        int demosntrator_bodovi = Student::getBodovi();
 
-   Student::getBodovi();
-     };
+        try {
+            if (Predavach::getBrojKursevi() <= 0) {
+                throw NoCourseException(indeks);
+            } else {
+                demosntrator_bodovi = demosntrator_bodovi + ((20 * this->br_casovi) / Predavach::getBrojKursevi());
+            }
+        } catch (NoCourseException) {}
+
+        return demosntrator_bodovi;
+    };
 
     void pecati() {
+        Student::pecati();
+        Predavach::pecati();
 
     }
 
 };
 
+Student& vratiNajdobroRangiran(Student ** studenti, int n ){
+
+};
+
+void pecatiDemonstratoriKurs (char* kurs, Student** studenti, int n)
+{
+
+};
 
 int main() {
 
