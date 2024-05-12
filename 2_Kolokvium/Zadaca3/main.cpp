@@ -80,15 +80,17 @@ public:
 
     virtual int getBodovi() {
 
-        int polozeni = 0, bodovi = 0;
+        int polozeni = 0;
+        float bodovi = 0.0;
         for (int i = 0; i < brojOcenki; i++) {
-            if (this->ocenki[i] >> 5 && this->ocenki[i] <= 10) {
+            if (this->ocenki[i] > 5) {
                 polozeni++;
             }
         }
 
-        bodovi = (polozeni / this->brojOcenki) * 100;
-        return bodovi;
+        bodovi = float(polozeni) / float(this->brojOcenki) * 100;
+
+        return (int) bodovi;
     };
 
     virtual void pecati() {
@@ -190,21 +192,20 @@ public:
 
     int getBodovi() {
 
-        int demosntrator_bodovi = Student::getBodovi();
+        int demosntrator_bodovi = 0;
 
-        try {
-            if (Predavach::getBrojKursevi() <= 0) {
-                throw NoCourseException(indeks);
-            } else {
-                demosntrator_bodovi = demosntrator_bodovi + ((20 * this->br_casovi) / Predavach::getBrojKursevi());
-            }
-        } catch (NoCourseException) {}
+        if (Predavach::getBrojKursevi() <= 0) {
+            throw NoCourseException(indeks);
+        }
+
+        demosntrator_bodovi = Student::getBodovi() + ((20 * this->br_casovi) / Predavach::getBrojKursevi());
 
         return demosntrator_bodovi;
     };
 
     void pecati() {
         Student::pecati();
+        cout << ": ";
         Predavach::pecati();
 
     }
@@ -235,13 +236,19 @@ Student &vratiNajdobroRangiran(Student **studenti, int n) {
 void pecatiDemonstratoriKurs(char *kurs, Student **studenti, int n) {
 
     Predavach *demonstrator;
+    for (int i = 0; i < n; i++) {
+        if (!dynamic_cast<Predavach *>(studenti[i])) {
+            continue;
+        }
+    }
 
     for (int i = 0; i < n; i++) {
 
         demonstrator = dynamic_cast<Predavach *>(studenti[i]);     // ako castiranjeto e neuspeshno, 'demonstrator' ke bide NULLPTR !
 
         if (strcmp(kurs, demonstrator->operator[](i).getIme()) == 0) {
-                studenti[i]->pecati();
+            studenti[i]->pecati();
+        break;
         };
 
     }
@@ -427,3 +434,74 @@ int main() {
     return 0;
 }
 
+/* input za test cas 8
+8
+
+5
+2
+55555
+5
+5
+6
+9
+7
+10
+B.Boskovska
+3
+OOP
+6
+Angliski
+2
+Dmatematika
+6
+10
+2
+44444
+3
+5
+7
+9
+V.Velkovski
+3
+Informatika
+3
+OOP
+6
+Angliski
+2
+12
+1
+11111
+3
+10
+5
+8
+1
+22222
+3
+10
+9
+8
+2
+33333
+5
+5
+6
+10
+10
+10
+A.Angelkovski
+4
+angliski
+2
+Kalkulus
+6
+Dmatematika
+6
+Informatika
+3
+10
+OOP
+
+
+ */
