@@ -237,22 +237,20 @@ void pecatiDemonstratoriKurs(char *kurs, Student **studenti, int n) {
 
     Predavach *demonstrator;
     for (int i = 0; i < n; i++) {
-        if (!dynamic_cast<Predavach *>(studenti[i])) {
-            continue;
+        if (!dynamic_cast<Predavach *>(studenti[i])) {  // ako castiranjeto e neuspeshno, znaci studenti[i] objektot nema 'Predavach' objekt vo sebe
+            // sho zanci deka dyanmic_cast ke vrati nullptr, odnosno ke fejlne
+            // ako ovoj uslov se ispolni, zanci studentot ne e demosntrtator,ako fejlne castot,pseudo code: !nullptr == true
+            continue;       // ripni go ovoj student
+        }
+        demonstrator = dynamic_cast<Predavach *>(studenti[i]);
+        for (int j = 0; j < demonstrator->getBrojKursevi(); j++) {
+            if (strcmp(kurs,  demonstrator->operator[](j).getIme()) == 0) {
+                studenti[i]->pecati();
+                cout<<'\n';
+              break;      // ovoj ne igra golema uloga, zacuvuva vreme i e poefikasen kodot, ama i da se izbrishe bi trebalo da raboti programata
+            };
         }
     }
-
-    for (int i = 0; i < n; i++) {
-
-        demonstrator = dynamic_cast<Predavach *>(studenti[i]);     // ako castiranjeto e neuspeshno, 'demonstrator' ke bide NULLPTR !
-
-        if (strcmp(kurs, demonstrator->operator[](i).getIme()) == 0) {
-            studenti[i]->pecati();
-        break;
-        };
-
-    }
-
 
 };
 
