@@ -215,13 +215,17 @@ Student &vratiNajdobroRangiran(Student **studenti, int n) {
 
     int max_bodovi = (*studenti[0]).getBodovi(), max_index = 0;
 
-//tuka treba try & catch scenario
 
     for (int i = 0; i < n; i++) {
-        if (max_bodovi < (*studenti[i]).getBodovi()) {
-            max_bodovi = (*studenti[i]).getBodovi();
-            max_index = i;
-        }
+
+        try {
+            if (max_bodovi < (*studenti[i]).getBodovi()) {
+                max_bodovi = (*studenti[i]).getBodovi();
+                max_index = i;
+            }
+        } catch (NoCourseException &e) {
+            e.message();
+        };
     }
 
 
@@ -229,6 +233,19 @@ Student &vratiNajdobroRangiran(Student **studenti, int n) {
 };
 
 void pecatiDemonstratoriKurs(char *kurs, Student **studenti, int n) {
+
+    Predavach *demonstrator;
+
+    for (int i = 0; i < n; i++) {
+
+        demonstrator = dynamic_cast<Predavach *>(studenti[i]);     // ako castiranjeto e neuspeshno, 'demonstrator' ke bide NULLPTR !
+
+        if (strcmp(kurs, demonstrator->operator[](i).getIme()) == 0) {
+                studenti[i]->pecati();
+        };
+
+    }
+
 
 };
 
