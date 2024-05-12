@@ -214,7 +214,8 @@ public:
 Student &vratiNajdobroRangiran(Student **studenti, int n) {
 
     int max_bodovi = (*studenti[0]).getBodovi(), max_index = 0;
-    
+
+//tuka treba try & catch scenario
 
     for (int i = 0; i < n; i++) {
         if (max_bodovi < (*studenti[i]).getBodovi()) {
