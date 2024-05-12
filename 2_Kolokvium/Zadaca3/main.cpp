@@ -211,12 +211,23 @@ public:
 
 };
 
-Student& vratiNajdobroRangiran(Student ** studenti, int n ){
+Student &vratiNajdobroRangiran(Student **studenti, int n) {
 
+    int max_bodovi = (*studenti[0]).getBodovi(), max_index = 0;
+    
+
+    for (int i = 0; i < n; i++) {
+        if (max_bodovi < (*studenti[i]).getBodovi()) {
+            max_bodovi = (*studenti[i]).getBodovi();
+            max_index = i;
+        }
+    }
+
+
+    return *studenti[max_index];
 };
 
-void pecatiDemonstratoriKurs (char* kurs, Student** studenti, int n)
-{
+void pecatiDemonstratoriKurs(char *kurs, Student **studenti, int n) {
 
 };
 
