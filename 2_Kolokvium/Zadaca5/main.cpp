@@ -97,17 +97,24 @@ public:
         this->vidKupuvac = vidKupuvac;
     }
 
+    void setOsnoven(int i) {
+        this->osnoven_popust = i;
+    };
+
+    void setDopolnitelen(int i) {
+        this->dopolnitelen_popust = i;
+    };
+
+
     int aktivenPopust() const {
         int vkupen_popust = 0;
 
         if (this->vidKupuvac == standarden) {
             vkupen_popust = vkupen_popust + 0;
-        }
-        if (this->vidKupuvac == lojalen) {
-            vkupen_popust = vkupen_popust + osnoven_popust;
-        }
-        if (this->vidKupuvac == vip) {
-            vkupen_popust = vkupen_popust + osnoven_popust + dopolnitelen_popust;
+        } else if (this->vidKupuvac == lojalen) {
+            vkupen_popust = vkupen_popust + this->osnoven_popust;
+        } else if (this->vidKupuvac == vip) {
+            vkupen_popust = vkupen_popust + this->osnoven_popust + this->dopolnitelen_popust;
         }
 
         return vkupen_popust;
@@ -241,11 +248,28 @@ public:
     void update() {
 
         for (int i = 0; i < this->br_reg_customers; i++) {
-            if (this->reg_customers[i].getBrKupeniProizvodi() > 5 &&
-                this->reg_customers[i].getBrKupeniProizvodi() <= 10) {
-                this->reg_customers[i].setVidKupuvac(lojalen);
-            } else if (this->reg_customers[i].getBrKupeniProizvodi() > 10) {
+
+            /*
+            if (this->reg_customers[i].getBrKupeniProizvodi() <= 5) {
+                this->reg_customers[i].setVidKupuvac(standarden);
+
+                this->reg_customers[i].setOsnoven(0);
+                this->reg_customers[i].setDopolnitelen(0);
+            }*/
+            if (this->reg_customers[i].getBrKupeniProizvodi() >= 10 &&
+                (this->reg_customers[i].getVidKupuvac() == lojalen)) {
                 this->reg_customers[i].setVidKupuvac(vip);
+
+                this->reg_customers[i].setOsnoven(10);
+                this->reg_customers[i].setDopolnitelen(20);
+            }
+            if (this->reg_customers[i].getBrKupeniProizvodi() > 5  &&
+                (this->reg_customers[i].getVidKupuvac() == standarden)) {  // iako ova nema logika, ama za da projde bez greshka, vaka treba da e
+
+                this->reg_customers[i].setVidKupuvac(lojalen);
+
+                this->reg_customers[i].setOsnoven(10);
+                this->reg_customers[i].setDopolnitelen(0);
             }
 
         }
