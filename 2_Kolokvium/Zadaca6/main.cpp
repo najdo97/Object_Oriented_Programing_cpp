@@ -53,7 +53,7 @@ public:
         return ime;
     }
 
-    float getCena() const {
+    virtual float getCena() const {
         return cena;
     }
 
@@ -236,7 +236,7 @@ public:
         // treba da gi sporedime site igri so 'g', za da vidime dali se povtoruva
 
         for (int i = 0; i < this->br_igri; i++) {
-            if(this->kupeni_igri[i]==g){
+            if (this->kupeni_igri[i] == g) {
                 throw ExistingGame();
             }
         }
@@ -258,6 +258,32 @@ public:
         return *this;
     }
 
+    void total_spent() {
+        for (int i = 0; i < this->br_igri; i++) {
+
+            if (this->kupeni_igri[i].isKupenaNaRasprodazba() == true) {
+                // 30% popust
+            }
+
+
+            //    -- &this->kupeni_igri[i] --  toa sho se naogja na adresava , probaj da najdesh i da mi vratish
+            //    pokazuvac kon objekt od SubscriptonGame klasata
+            if (dynamic_cast<SubscriptionGame *>(&this->kupeni_igri[i]) == nullptr) {
+                // igrata ne e subscripton
+            } else {
+                //igrata e so subscribtion
+            }
+
+        }
+
+
+    }
+
+    friend ostream &operator<<(ostream &os, const User &user) {
+
+
+        return os;
+    }
 
 };
 
