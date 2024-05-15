@@ -174,30 +174,90 @@ public:
     User() {
         strcpy(this->username, "nan");
         this->kupeni_igri = nullptr;
-        this->br_igri=0;
+        this->br_igri = 0;
     }
 
-    User(char *username, Game *kupeni_igri) {
+    User(char *username) {
+        strcpy(this->username, username);
+        this->kupeni_igri = nullptr;
+        this->br_igri = 0;
+    }
+
+
+    User(char *username, Game *kupeni_igri, int br_igri) {
+
         strcpy(this->username, username);
 
-        for (int i = 0; !(this->kupeni_igri) ; i++) {
-
+        this->kupeni_igri = new Game[br_igri];
+        for (int i = 0; i < br_igri; i++) {
+            this->kupeni_igri[i] = kupeni_igri[i];
         }
+        this->br_igri = br_igri;
     }
 
-    User() {
-        strcpy(this->username, "nan");
-        this->kupeni_igri = nullptr;
+    User(const User &u) {
+
+        strcpy(this->username, u.username);
+
+        this->kupeni_igri = new Game[u.br_igri];
+        for (int i = 0; i < u.br_igri; i++) {
+            this->kupeni_igri[i] = u.kupeni_igri[i];
+        }
+
+        this->br_igri = u.br_igri;
     }
 
     ~User() {
         delete[] kupeni_igri;
     }
 
+    User &operator=(const User &u) {
+
+        strcpy(this->username, u.username);
+
+        delete[]kupeni_igri;
+        this->kupeni_igri = new Game[u.br_igri];
+        for (int i = 0; i < u.br_igri; i++) {
+            this->kupeni_igri[i] = u.kupeni_igri[i];
+        }
+
+        this->br_igri = u.br_igri;
+
+        return *this;
+    }
+
+
     /*     Да се преоптовари операторот += кој ќе овозможи додавање на нова игра во колекцијата на игри.
          Притоа ако корисникот ја има веќе купено играта, потребно е да се креира исклучок од типот ExistingGame.
          Класата за имплементација на исклучоци потребно е има соодветен конструктор и метода message за печатење на порака на екран.
-*/
+    */
+    User &operator+=(const Game &g) {
+
+        // treba da gi sporedime site igri so 'g', za da vidime dali se povtoruva
+
+        for (int i = 0; i < this->br_igri; i++) {
+            if(this->kupeni_igri[i]==g){
+                throw ExistingGame();
+            }
+        }
+
+
+        Game *pom = new Game[this->br_igri + 1];
+
+        for (int i = 0; i < this->br_igri; i++) {
+            pom[i] = this->kupeni_igri[i];
+        }
+
+        pom[this->br_igri] = g;
+        this->br_igri++;
+
+        delete[] this->kupeni_igri;
+        this->kupeni_igri = pom;
+
+
+        return *this;
+    }
+
 
 };
 
