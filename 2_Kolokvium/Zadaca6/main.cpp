@@ -3,6 +3,54 @@
 
 using namespace std;
 
+class ExistingGame {
+
+public:
+
+    ExistingGame() {};
+
+    void message() {
+        cout << "Igrata e vekje kupena" << endl;
+    }
+
+};
+
+class Game {
+
+private:
+    char ime[50];
+    float cena;
+    bool kupena_na_rasprodazba;
+
+public:
+
+};
+
+
+class SubscriptionGame : public Game {
+
+private:
+    float pretplata;
+    int mesec_kupuvanje;
+    int godina_kupuvanje;
+
+public:
+
+
+};
+
+class User {
+
+private:
+    char username[100];
+    Game *kupeni_igri;
+
+public:
+
+
+};
+
+
 int main() {
     int test_case_num;
 
