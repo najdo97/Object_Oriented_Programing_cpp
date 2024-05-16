@@ -79,14 +79,20 @@ public:
     */
 
     friend ostream &operator<<(ostream &os, const Game &game) {
-        os << "- Game: " << game.ime << ", regular price: $" << game.cena << ", " << game.kupena_na_rasprodazba << endl;
+
+        if (game.isKupenaNaRasprodazba() == true) {
+            os << "Game: " << game.ime << ", regular price: $" << game.cena << ", bought on sale";
+        } else os << "Game: " << game.ime << ", regular price: $" << game.cena;
 
         return os;
     }
 
     friend istream &operator>>(istream &is, Game &game) {
 
-        is >> game.ime >> game.cena >> game.kupena_na_rasprodazba;
+        is.get();
+        is.getline(game.ime, 100);
+
+        is >> game.cena >> game.kupena_na_rasprodazba;
 
         return is;
     }
@@ -138,16 +144,20 @@ public:
     }
 
     friend ostream &operator<<(ostream &os, const SubscriptionGame &game) {
-        os << dynamic_cast<const Game &>(game) << ", monthly fee:  " << game.pretplata << "  purchased: " << game.mesec_kupuvanje << "-" << game.godina_kupuvanje << " " << endl;
+        os << dynamic_cast<const Game &>(game) << ", monthly fee: $" << game.pretplata << ", purchased: "
+           << game.mesec_kupuvanje << "-" << game.godina_kupuvanje;
 
         return os;
     }
 
     friend istream &operator>>(istream &is, SubscriptionGame &game) {
 
-        char *ime;
-        is >> ime;
-        game.setIme(ime);
+
+        char *ime = new char[100];
+        is.get();
+        is.getline(ime, 100);
+        dynamic_cast<Game *>(&game)->setIme(ime);
+
 
         int cena;
         is >> cena;
@@ -157,9 +167,9 @@ public:
         is >> isRasprodazba;
         game.setKupenaNaRasprodazba(isRasprodazba);
 
+        is >> game.pretplata;
         is >> game.mesec_kupuvanje;
         is >> game.godina_kupuvanje;
-        is >> game.pretplata;
 
 
         return is;
@@ -277,14 +287,20 @@ public:
             }
         }
 
-
+//koga se dodava nekoj objekt od klasata Game ama kreiran preku konstruktorot SubscriptionGame
+//mora da se iskoristi operator= od subscription game za da se zacuva celiot objekt
         Game *pom = new Game[this->br_igri + 1];
 
         for (int i = 0; i < this->br_igri; i++) {
             pom[i] = this->kupeni_igri[i];
         }
 
-        pom[this->br_igri] = g;
+        
+        if (dynamic_cast<SubscriptionGame *>(&this->kupeni_igri[this->br_igri]) == nullptr) {
+            pom[this->br_igri] = g;
+        } else {
+            dynamic_cast<SubscriptionGame *>(&pom[this->br_igri])->operator=(*(dynamic_cast<SubscriptionGame *>(&this->kupeni_igri[this->br_igri])));
+        }
         this->br_igri++;
 
         delete[] this->kupeni_igri;
@@ -302,7 +318,9 @@ public:
 
             if (this->kupeni_igri[i].isKupenaNaRasprodazba() == true) {
                 vkupno = vkupno + (this->kupeni_igri[i].getCena() - ((this->kupeni_igri[i].getCena() / 100) * 30));
-            }
+            } else vkupno = vkupno + this->kupeni_igri[i].getCena();
+
+
             //    -- &this->kupeni_igri[i] --  toa sho se naogja na adresava , probaj da najdesh i da mi vratish
             //    pokazuvac kon objekt od SubscriptonGame klasata
 
@@ -310,9 +328,11 @@ public:
                 // Ako vleze tuka, igrata e bez subscriptopn, vekje e presmetana cenata na igrata vo 'vkupno' vo prethodniot if
             } else {
 
-                for (int j = dynamic_cast<SubscriptionGame *>(&this->kupeni_igri[i])->getGodinaKupuvanje(); j <= 2018; j++) {
+                for (int j = dynamic_cast<SubscriptionGame *>(&this->kupeni_igri[i])->getGodinaKupuvanje();
+                     j <= 2018; j++) {
 
-                    for (int p = dynamic_cast<SubscriptionGame *>(&this->kupeni_igri[i])->getMesecKupuvanje(); p <= 12; p++) {
+                    for (int p = dynamic_cast<SubscriptionGame *>(&this->kupeni_igri[i])->getMesecKupuvanje();
+                         p <= 12; p++) {
 
                         if (j == 2018 && p == 5) {
                             break;
@@ -327,19 +347,16 @@ public:
 
     friend ostream &operator<<(ostream &os, const User &user) {
 
-        os << "\n User: " << user.username << endl;
-
+        os << "\nUser: " << user.username << endl;
 
         for (int i = 0; i < user.br_igri; i++) {
-            // za sekoja igra da se proveri dali e so ili bez subscripton i da se iskoristat prepokrienite << operatori
 
-            if (dynamic_cast<SubscriptionGame *>(&user.kupeni_igri[i]) != nullptr) {
-                os << dynamic_cast<SubscriptionGame *>(&user.kupeni_igri[i]);
-            } else os << user.kupeni_igri[i];
+            if (dynamic_cast<SubscriptionGame *>(&user.kupeni_igri[i]) == nullptr) {
+                os << "- tukaa" << user.kupeni_igri[i] << endl;
+            } else os << "- " << dynamic_cast<SubscriptionGame *>(&user.kupeni_igri[i]) << endl;
         }
         return os;
     }
-
 };
 
 
