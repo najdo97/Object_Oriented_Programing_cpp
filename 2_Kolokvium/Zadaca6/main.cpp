@@ -295,12 +295,18 @@ public:
             pom[i] = this->kupeni_igri[i];
         }
 
-        
+
         if (dynamic_cast<SubscriptionGame *>(&this->kupeni_igri[this->br_igri]) == nullptr) {
+            cout << "problem1" << endl;
             pom[this->br_igri] = g;
+            cout << "problem2" << endl;
         } else {
+            cout << "problem3" << endl;
             dynamic_cast<SubscriptionGame *>(&pom[this->br_igri])->operator=(*(dynamic_cast<SubscriptionGame *>(&this->kupeni_igri[this->br_igri])));
+            cout << "problem4" << endl;
         }
+
+
         this->br_igri++;
 
         delete[] this->kupeni_igri;
