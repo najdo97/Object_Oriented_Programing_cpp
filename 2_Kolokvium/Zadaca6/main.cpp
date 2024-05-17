@@ -42,6 +42,10 @@ public:
     };
 
     Game &operator=(const Game &g) {
+        if (this == &g) {
+            return *this;
+        }
+
         strcpy(this->ime, g.ime);
         this->cena = g.cena;
         this->kupena_na_rasprodazba = g.kupena_na_rasprodazba;
@@ -134,6 +138,10 @@ public:
     }
 
     SubscriptionGame &operator=(const SubscriptionGame &s) {
+        if (this == &s) {
+            return *this;
+        }
+
         Game::operator=(s);
 
         this->pretplata = s.pretplata;
@@ -213,7 +221,7 @@ class User {
 
 private:
     char username[100];
-    Game *kupeni_igri;
+    Game **kupeni_igri;
     int br_igri;
 
 public:
@@ -234,9 +242,9 @@ public:
 
         strcpy(this->username, username);
 
-        this->kupeni_igri = new Game[br_igri];
+        this->kupeni_igri = new Game *[br_igri];
         for (int i = 0; i < br_igri; i++) {
-            this->kupeni_igri[i] = kupeni_igri[i];
+            this->kupeni_igri[i] = new Game(kupeni_igri[i]);
         }
         this->br_igri = br_igri;
     }
@@ -245,9 +253,9 @@ public:
 
         strcpy(this->username, u.username);
 
-        this->kupeni_igri = new Game[u.br_igri];
+        this->kupeni_igri = new Game *[u.br_igri];
         for (int i = 0; i < u.br_igri; i++) {
-            this->kupeni_igri[i] = u.kupeni_igri[i];
+            this->kupeni_igri[i] = new Game(*(u.kupeni_igri[i]));
         }
 
         this->br_igri = u.br_igri;
@@ -262,9 +270,9 @@ public:
         strcpy(this->username, u.username);
 
         delete[]kupeni_igri;
-        this->kupeni_igri = new Game[u.br_igri];
+        this->kupeni_igri = new Game *[u.br_igri];
         for (int i = 0; i < u.br_igri; i++) {
-            this->kupeni_igri[i] = u.kupeni_igri[i];
+            this->kupeni_igri[i] = new Game(*(u.kupeni_igri[i])); //go povikuvame copy construktorot na Game
         }
 
         this->br_igri = u.br_igri;
@@ -275,43 +283,48 @@ public:
     //koga se dodava nekoj objekt od klasata Game ama kreiran preku konstruktorot SubscriptionGame
 //mora da se iskoristi operator= od subscription game za da se zacuva celiot objekt
 
-//        if (dynamic_cast<SubscriptionGame *>(&this->kupeni_igri[this->br_igri]) == nullptr) {
-//            cout << "problem1" << endl;
-//            pom[this->br_igri] = g;
-//            cout << "problem2" << endl;
-//        } else {
-//            cout << "problem3" << endl;
-//            dynamic_cast<SubscriptionGame *>(&pom[this->br_igri])->operator=(*(dynamic_cast<SubscriptionGame *>(&this->kupeni_igri[this->br_igri])));
-//            cout << "problem4" << endl;
-//        }
-
-
     User &operator+=(Game &g) {
 
         for (int i = 0; i < this->br_igri; i++) {
-            if (this->kupeni_igri[i] == g) {
+            if (*(this->kupeni_igri[i]) == g) {
                 throw ExistingGame();
             }
         }
-        Game *pom = new Game[this->br_igri + 1];
+        Game **pom = new Game*[this->br_igri + 1];
 
         for (int i = 0; i < this->br_igri; i++) {
-            pom[i] = this->kupeni_igri[i];
+            *(pom[i]) = *(this->kupeni_igri[i]);
         }
 
         if (dynamic_cast<SubscriptionGame *>(&g) == nullptr) {
-            cout << "problem1" << endl;
-            pom[this->br_igri] = g;
-            cout << "problem2" << endl;
+            pom[this->br_igri] = new Game(g);
+
         } else {
-            cout << "problem3" << endl;
+            //todo
             dynamic_cast<SubscriptionGame *>(&pom[this->br_igri])->operator=(*(dynamic_cast<SubscriptionGame *>(&g)));
-            cout << "problem4" << endl;
+
         }
+
+
+//        SubscriptionGame *pom = new SubscriptionGame[this->br_igri + 1];
+//        for (int i = 0; i < this->br_igri; i++) {
+//            if (dynamic_cast<SubscriptionGame *>(&this->kupeni_igri[i]) == nullptr) {
+//                dynamic_cast<Game *>(&pom[i])->operator=(this->kupeni_igri[i]);         //ovde vleguva ako igrata e obicna, pa zatoa na pom mu praime UP CAST
+//            } else {
+//                pom[i] = *(dynamic_cast<SubscriptionGame *>(&this->kupeni_igri[i]));       //Ovde vleguva ako igrata e so Subscribcija
+//            }
+//        }
+//
+//        if (dynamic_cast<SubscriptionGame *>(&g) == nullptr) {
+//            dynamic_cast<Game *>(&pom[this->br_igri])->operator=(g);
+//        } else {
+//            pom[this->br_igri] = *(dynamic_cast<SubscriptionGame *>(&g));
+//        }
+
         this->br_igri++;
 
         delete[] this->kupeni_igri;
-        this->kupeni_igri = pom;
+        this->kupeni_igri = pom;        // tuka moze da pojavi greshka bidejki ednacam Game pointer  so SubscriptionGame pointer so
 
         return *this;
     }
@@ -357,9 +370,10 @@ public:
 
         for (int i = 0; i < user.br_igri; i++) {
 
+
             if (dynamic_cast<SubscriptionGame *>(&user.kupeni_igri[i]) == nullptr) {
                 os << "- tukaa" << user.kupeni_igri[i] << endl;
-            } else os << "- " << dynamic_cast<SubscriptionGame *>(&user.kupeni_igri[i]) << endl;
+            } else os << "- bla" << *(dynamic_cast<SubscriptionGame *>(&user.kupeni_igri[i])) << endl;
         }
         return os;
     }
