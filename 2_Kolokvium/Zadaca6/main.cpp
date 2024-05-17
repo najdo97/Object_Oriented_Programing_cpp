@@ -280,8 +280,6 @@ public:
         return *this;
     }
 
-    //koga se dodava nekoj objekt od klasata Game ama kreiran preku konstruktorot SubscriptionGame
-//mora da se iskoristi operator= od subscription game za da se zacuva celiot objekt
 
     User &operator+=(Game &g) {
 
@@ -290,41 +288,21 @@ public:
                 throw ExistingGame();
             }
         }
-        Game **pom = new Game*[this->br_igri + 1];
+        Game **pom = new Game *[this->br_igri + 1];
 
         for (int i = 0; i < this->br_igri; i++) {
-            *(pom[i]) = *(this->kupeni_igri[i]);
+            pom[i] = this->kupeni_igri[i];
         }
 
         if (dynamic_cast<SubscriptionGame *>(&g) == nullptr) {
             pom[this->br_igri] = new Game(g);
-
         } else {
-            //todo
-            dynamic_cast<SubscriptionGame *>(&pom[this->br_igri])->operator=(*(dynamic_cast<SubscriptionGame *>(&g)));
-
+            pom[this->br_igri] = new SubscriptionGame(*(dynamic_cast<SubscriptionGame *>(&g)));     // se povikuva copy constructorot, istiot vrakja referenca, direkten pristap do kreiraniot objekt
         }
-
-
-//        SubscriptionGame *pom = new SubscriptionGame[this->br_igri + 1];
-//        for (int i = 0; i < this->br_igri; i++) {
-//            if (dynamic_cast<SubscriptionGame *>(&this->kupeni_igri[i]) == nullptr) {
-//                dynamic_cast<Game *>(&pom[i])->operator=(this->kupeni_igri[i]);         //ovde vleguva ako igrata e obicna, pa zatoa na pom mu praime UP CAST
-//            } else {
-//                pom[i] = *(dynamic_cast<SubscriptionGame *>(&this->kupeni_igri[i]));       //Ovde vleguva ako igrata e so Subscribcija
-//            }
-//        }
-//
-//        if (dynamic_cast<SubscriptionGame *>(&g) == nullptr) {
-//            dynamic_cast<Game *>(&pom[this->br_igri])->operator=(g);
-//        } else {
-//            pom[this->br_igri] = *(dynamic_cast<SubscriptionGame *>(&g));
-//        }
-
         this->br_igri++;
 
         delete[] this->kupeni_igri;
-        this->kupeni_igri = pom;        // tuka moze da pojavi greshka bidejki ednacam Game pointer  so SubscriptionGame pointer so
+        this->kupeni_igri = pom;
 
         return *this;
     }
@@ -335,32 +313,34 @@ public:
 
         for (int i = 0; i < this->br_igri; i++) {
 
-            if (this->kupeni_igri[i].isKupenaNaRasprodazba() == true) {
-                vkupno = vkupno + (this->kupeni_igri[i].getCena() - ((this->kupeni_igri[i].getCena() / 100) * 30));
-            } else vkupno = vkupno + this->kupeni_igri[i].getCena();
+            if ((this->kupeni_igri[i])->isKupenaNaRasprodazba() == true) {
+                vkupno = vkupno + (this->kupeni_igri[i]->getCena() - ((this->kupeni_igri[i]->getCena() / 100) * 30));
+            } else vkupno = vkupno + this->kupeni_igri[i]->getCena();
 
 
             //    -- &this->kupeni_igri[i] --  toa sho se naogja na adresava , probaj da najdesh i da mi vratish
             //    pokazuvac kon objekt od SubscriptonGame klasata
 
-            if (dynamic_cast<SubscriptionGame *>(&this->kupeni_igri[i]) == nullptr) {
+            if (dynamic_cast<SubscriptionGame *>(this->kupeni_igri[i]) == nullptr) {        //vo this->kupeni[i] e smesten pokazuvac, dynamic_cast prakja reference , odnosno adresa preku koja se pristapuva do objekotot
+                                                                                            // koga vekje imame smesteno pointer (referenca) vo nizata, nema potreba od '&'
                 // Ako vleze tuka, igrata e bez subscriptopn, vekje e presmetana cenata na igrata vo 'vkupno' vo prethodniot if
             } else {
 
-                for (int j = dynamic_cast<SubscriptionGame *>(&this->kupeni_igri[i])->getGodinaKupuvanje();
+                for (int j = dynamic_cast<SubscriptionGame *>(this->kupeni_igri[i])->getGodinaKupuvanje();
                      j <= 2018; j++) {
 
-                    for (int p = dynamic_cast<SubscriptionGame *>(&this->kupeni_igri[i])->getMesecKupuvanje();
+                    for (int p = dynamic_cast<SubscriptionGame *>(this->kupeni_igri[i])->getMesecKupuvanje();
                          p <= 12; p++) {
 
                         if (j == 2018 && p == 5) {
                             break;
                         }
-                        vkupno = vkupno + dynamic_cast<SubscriptionGame *>(&this->kupeni_igri[i])->getPretplata();
+                        vkupno = vkupno + dynamic_cast<SubscriptionGame *>(this->kupeni_igri[i])->getPretplata();
                     }
                 }
             }
         }
+
         return vkupno;
     }
 
@@ -371,9 +351,9 @@ public:
         for (int i = 0; i < user.br_igri; i++) {
 
 
-            if (dynamic_cast<SubscriptionGame *>(&user.kupeni_igri[i]) == nullptr) {
-                os << "- tukaa" << user.kupeni_igri[i] << endl;
-            } else os << "- bla" << *(dynamic_cast<SubscriptionGame *>(&user.kupeni_igri[i])) << endl;
+            if (dynamic_cast<SubscriptionGame *>(user.kupeni_igri[i]) == nullptr) {
+                os << "- " << *user.kupeni_igri[i] << endl;
+            } else os << "- " << *(dynamic_cast<SubscriptionGame *>(user.kupeni_igri[i])) << endl;
         }
         return os;
     }
@@ -603,7 +583,7 @@ int main() {
         }
 
         cout << u;
-
+        cout<<'\n';
         cout << "Total money spent: $" << u.total_spent() << endl;
     }
 }
