@@ -272,46 +272,46 @@ public:
         return *this;
     }
 
+    //koga se dodava nekoj objekt od klasata Game ama kreiran preku konstruktorot SubscriptionGame
+//mora da se iskoristi operator= od subscription game za da se zacuva celiot objekt
 
-    /*     Да се преоптовари операторот += кој ќе овозможи додавање на нова игра во колекцијата на игри.
-         Притоа ако корисникот ја има веќе купено играта, потребно е да се креира исклучок од типот ExistingGame.
-         Класата за имплементација на исклучоци потребно е има соодветен конструктор и метода message за печатење на порака на екран.
-    */
-    User &operator+=(const Game &g) {
+//        if (dynamic_cast<SubscriptionGame *>(&this->kupeni_igri[this->br_igri]) == nullptr) {
+//            cout << "problem1" << endl;
+//            pom[this->br_igri] = g;
+//            cout << "problem2" << endl;
+//        } else {
+//            cout << "problem3" << endl;
+//            dynamic_cast<SubscriptionGame *>(&pom[this->br_igri])->operator=(*(dynamic_cast<SubscriptionGame *>(&this->kupeni_igri[this->br_igri])));
+//            cout << "problem4" << endl;
+//        }
 
-        // treba da gi sporedime site igri so 'g', za da vidime dali se povtoruva
+
+    User &operator+=(Game &g) {
 
         for (int i = 0; i < this->br_igri; i++) {
             if (this->kupeni_igri[i] == g) {
                 throw ExistingGame();
             }
         }
-
-//koga se dodava nekoj objekt od klasata Game ama kreiran preku konstruktorot SubscriptionGame
-//mora da se iskoristi operator= od subscription game za da se zacuva celiot objekt
         Game *pom = new Game[this->br_igri + 1];
 
         for (int i = 0; i < this->br_igri; i++) {
             pom[i] = this->kupeni_igri[i];
         }
 
-
-        if (dynamic_cast<SubscriptionGame *>(&this->kupeni_igri[this->br_igri]) == nullptr) {
+        if (dynamic_cast<SubscriptionGame *>(&g) == nullptr) {
             cout << "problem1" << endl;
             pom[this->br_igri] = g;
             cout << "problem2" << endl;
         } else {
             cout << "problem3" << endl;
-            dynamic_cast<SubscriptionGame *>(&pom[this->br_igri])->operator=(*(dynamic_cast<SubscriptionGame *>(&this->kupeni_igri[this->br_igri])));
+            dynamic_cast<SubscriptionGame *>(&pom[this->br_igri])->operator=(*(dynamic_cast<SubscriptionGame *>(&g)));
             cout << "problem4" << endl;
         }
-
-
         this->br_igri++;
 
         delete[] this->kupeni_igri;
         this->kupeni_igri = pom;
-
 
         return *this;
     }
