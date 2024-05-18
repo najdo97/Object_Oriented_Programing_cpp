@@ -48,25 +48,31 @@ public:
         return *this;
     }
 
+    bool getDopolnitelenPin() {
+        return this->povekjePin;
+    }
+
     const char *getSmetka() const {
         return smetka;
     }
 
-    int getPin() const {
-        return pin;
-    }
-
-    void setPin(int pin) {
-        Karticka::pin = pin;
-    }
-
-    bool getDopolnitelenPin() const {
-        return povekjePin;
-    }
-
     void setPovekjePin(bool povekjePin) {
-        Karticka::povekjePin = povekjePin;
+        this->povekjePin = povekjePin;
     }
+
+//
+//    int getPin() const {
+//        return pin;
+//    }
+//
+//    void setPin(int pin) {
+//        Karticka::pin = pin;
+//    }
+//
+//    bool getDopolnitelenPin() const {
+//        return povekjePin;
+//    }
+//
 
 
     virtual int tezinaProbivanje() {  //kolku e podolg pinot, tolku e potezok
@@ -101,6 +107,7 @@ public:
     }
 
     SpecijalnaKarticka(char *smetka, int pin) : Karticka(smetka, pin) {//     SpecijalnaKarticka(smetka, pin); vakov konstruktor se koristi vo main
+        Karticka::povekjePin = true;
         this->dopolnitelenPin = nullptr;
         this->num_of_pin = 0;
     }
@@ -143,6 +150,10 @@ public:
 
     SpecijalnaKarticka &operator+=(int nov_pin) {
 
+        if (this->povekjePin == false) {
+            this->povekjePin = true;
+        }
+
         for (int i = 0; i < num_of_pin; i++) {
             if (this->num_of_pin == P) {
                 throw OutOfBoundException();
@@ -167,21 +178,21 @@ public:
     }
 
 
-    int *getDopolnitelenPin() const {
-        return dopolnitelenPin;
-    }
-
-    void setDopolnitelenPin(int *dopolnitelenPin) {
-        SpecijalnaKarticka::dopolnitelenPin = dopolnitelenPin;
-    }
-
-    int getNumOfPin() const {
-        return num_of_pin;
-    }
-
-    void setNumOfPin(int numOfPin) {
-        num_of_pin = numOfPin;
-    }
+//    int *getDopolnitelenPin() const {
+//        return dopolnitelenPin;
+//    }
+//
+//    void setDopolnitelenPin(int *dopolnitelenPin) {
+//        SpecijalnaKarticka::dopolnitelenPin = dopolnitelenPin;
+//    }
+//
+//    int getNumOfPin() const {
+//        return num_of_pin;
+//    }
+//
+//    void setNumOfPin(int numOfPin) {
+//        num_of_pin = numOfPin;
+//    }
 };
 
 class Banka {
@@ -201,7 +212,9 @@ public:
             //ako kartickata ima dopolnitelni pin kodovi
             if (karticki[i]->getDopolnitelenPin()) {
                 this->karticki[i] = new SpecijalnaKarticka(*dynamic_cast<SpecijalnaKarticka *>(karticki[i]));
-            } else this->karticki[i] = new Karticka(*karticki[i]);
+            } else {
+                this->karticki[i] = new Karticka(*karticki[i]);
+            }
         }
         this->broj = broj;
     }
@@ -219,8 +232,16 @@ public:
         cout << "Vo bankata " << this->naziv << " moze da se probijat kartickite:" << endl;
 
         for (int i = 0; i < this->broj; i++) {
-            if (this->karticki[i]->tezinaProbivanje() < LIMIT) {
-                cout << *this->karticki[i];
+            if (this->karticki[i]->tezinaProbivanje() <= LIMIT) {
+                if (dynamic_cast<SpecijalnaKarticka *>(this->karticki[i]) == nullptr) { // castnuvanjeto sekogash fjlnuva, vrakja nullptr sekogas, nz zsohto
+
+                    cout << *this->karticki[i];
+                    //cout << "Pecatenje obicna karticka"<<endl;
+
+                } else {
+                    cout << *dynamic_cast<SpecijalnaKarticka *>(this->karticki[i]);     // problemot e sho nikogash en vlaga ovde
+                  //  cout << "Pecatenje Specijalna"<<endl;
+                }
             }
 
         }
@@ -228,15 +249,22 @@ public:
 
     void dodadiDopolnitelenPin(char *smetka, int novPin) {
 
-        SpecijalnaKarticka *tmp;
+        //nie tuka vekje imame lista od pokazuvaci kon site objekti od dvata tipa na klasi
 
         for (int i = 0; i < this->broj; i++) {
-            if ((strcmp(this->karticki[i]->getSmetka(), smetka) == 0) && (dynamic_cast<SpecijalnaKarticka *>(this->karticki[i])) != nullptr) {
-                this->karticki[i]->setPovekjePin(true);
+            if ((strcmp(this->karticki[i]->getSmetka(), smetka) == 0) && this->karticki[i]->getDopolnitelenPin() == true) {
+
                 dynamic_cast<SpecijalnaKarticka *>(this->karticki[i])->operator+=(novPin);
 
             }
         }
+//        for (int i = 0; i < this->broj; i++) {
+//            if ((strcmp(this->karticki[i]->getSmetka(), smetka) == 0) && (dynamic_cast<SpecijalnaKarticka *>(this->karticki[i])) != nullptr) {
+//                this->karticki[i]->setPovekjePin(true);
+//                dynamic_cast<SpecijalnaKarticka *>(this->karticki[i])->operator+=(novPin);
+//
+//            }
+//        }
     }
 
 };
