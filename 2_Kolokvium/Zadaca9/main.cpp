@@ -7,6 +7,14 @@ using namespace std;
 static int konferenciski_trud = 1;
 static int spisanie_trud = 3;
 
+void setKonf(int p) {
+    konferenciski_trud = p;
+}
+
+void setSpis(int p) {
+    spisanie_trud = p;
+}
+
 class Exception {
 private:
 public:
@@ -143,7 +151,7 @@ public:
 
     virtual float rang() {
 
-        float prosek;
+        float prosek = 0.0;
 
         for (int i = 0; i < this->br_polozeni; i++) {
             prosek = prosek + (float) this->ocenki_polozeni[i];
@@ -178,16 +186,21 @@ public:
     PhDStudent(char *ime, int indeks, int godina_upis, int *ocenki_polozeni, int br_polozeni, Trud *listaTrudovi,
                int br_trudovi) : Student(ime, indeks, godina_upis, ocenki_polozeni, br_polozeni) {
 
+//
+//        for (int i = 0; i < br_trudovi; i++) {
+//            if (listaTrudovi[i].getGodIzdavanje() < this->getGodinaUpis()) {
+//                Exception().message();
+//                continue;
+//            };
+//        }
 
+        this->listaTrudovi = new Trud[br_trudovi];
         for (int i = 0; i < br_trudovi; i++) {
+
             if (listaTrudovi[i].getGodIzdavanje() < this->getGodinaUpis()) {
                 Exception().message();
                 continue;
             };
-        }
-
-        this->listaTrudovi = new Trud[br_trudovi];
-        for (int i = 0; i < br_trudovi; i++) {
             this->listaTrudovi[i] = listaTrudovi[i];
         }
 
@@ -223,12 +236,12 @@ public:
 
     float rang() {
 
-        float total = 0, poeni_od_trudovi = 0;
+        float total = 0.0, poeni_od_trudovi = 0.0;
 
         for (int i = 0; i < this->br_trudovi; i++) {
-            if (this->listaTrudovi[i].getVidTrud() == 'c'||this->listaTrudovi[i].getVidTrud() == 'C') {
+            if (this->listaTrudovi[i].getVidTrud() == 'c' || this->listaTrudovi[i].getVidTrud() == 'C') {
                 poeni_od_trudovi = poeni_od_trudovi + konferenciski_trud;
-            } else if (this->listaTrudovi[i].getVidTrud() == 'j'||this->listaTrudovi[i].getVidTrud() == 'J') {
+            } else if (this->listaTrudovi[i].getVidTrud() == 'j' || this->listaTrudovi[i].getVidTrud() == 'J') {
                 poeni_od_trudovi = poeni_od_trudovi + spisanie_trud;
             };
         }
@@ -340,8 +353,8 @@ int main() {
         for (int i = 0; i < m; i++) {
             if (niza[i]->getIndeks() == indeks && dynamic_cast<PhDStudent *>(niza[i]) != nullptr) {
                 dynamic_cast<PhDStudent *>(niza[i])->operator+=(t);
-            }else if(niza[i]->getIndeks() == indeks && dynamic_cast<PhDStudent *>(niza[i]) == nullptr)
-                cout<<"\nNe postoi PhD student so indeks "<<indeks;
+            } else if (niza[i]->getIndeks() == indeks && dynamic_cast<PhDStudent *>(niza[i]) == nullptr)
+                cout << "Ne postoi PhD student so indeks " << indeks << '\n';
 
         }
 
@@ -412,14 +425,14 @@ int main() {
             cin >> oceni[j];
         cin >> n_tr;
 
-            for (int j = 0; j < n_tr; j++) {
-                cin >> tip;
-                cin >> god_tr;
-                Trud t(tip, god_tr);
-                trud[j] = t;
-            }
-            PhDStudent phd(ime, indeks, god, oceni, n, trud, n_tr);
-            cout << phd;
+        for (int j = 0; j < n_tr; j++) {
+            cin >> tip;
+            cin >> god_tr;
+            Trud t(tip, god_tr);
+            trud[j] = t;
+        }
+        PhDStudent phd(ime, indeks, god, oceni, n, trud, n_tr);
+        cout << phd;
 
     }
     if (testCase == 5) {
@@ -513,7 +526,8 @@ int main() {
         cin >> journal;
 
         //postavete gi soodvetnite vrednosti za statickite promenlivi
-
+        setSpis(journal);
+        setKonf(conf);
         // pecatenje na site studenti
         cout << "\nLista na site studenti:\n";
         for (int i = 0; i < m; i++)
