@@ -146,9 +146,9 @@ public:
         float prosek;
 
         for (int i = 0; i < this->br_polozeni; i++) {
-            prosek = prosek + this->ocenki_polozeni[i];
+            prosek = prosek + (float) this->ocenki_polozeni[i];
         }
-        prosek = prosek / this->br_polozeni;
+        prosek = prosek / (float) this->br_polozeni;
 
         return prosek;
     }
@@ -175,7 +175,15 @@ public:
         this->br_trudovi = 0;
     }
 
-    PhDStudent(char *ime, int indeks, int godina_upis, int *ocenki_polozeni, int br_polozeni, Trud *listaTrudovi, int br_trudovi) : Student(ime, indeks, godina_upis, ocenki_polozeni, br_polozeni) {
+    PhDStudent(char *ime, int indeks, int godina_upis, int *ocenki_polozeni, int br_polozeni, Trud *listaTrudovi,
+               int br_trudovi) : Student(ime, indeks, godina_upis, ocenki_polozeni, br_polozeni) {
+
+
+        for (int i = 0; i < br_trudovi; i++) {
+            if (listaTrudovi[i].getGodIzdavanje() < this->getGodinaUpis()) {
+                throw Exception();
+            };
+        }
 
         this->listaTrudovi = new Trud[br_trudovi];
         for (int i = 0; i < br_trudovi; i++) {
@@ -217,9 +225,9 @@ public:
         float total = 0, poeni_od_trudovi = 0;
 
         for (int i = 0; i < this->br_trudovi; i++) {
-            if (this->listaTrudovi[i].getVidTrud() == 'C') {
+            if (this->listaTrudovi[i].getVidTrud() == 'c') {
                 poeni_od_trudovi = poeni_od_trudovi + konferenciski_trud;
-            } else if (this->listaTrudovi[i].getVidTrud() == 'J') {
+            } else if (this->listaTrudovi[i].getVidTrud() == 'j') {
                 poeni_od_trudovi = poeni_od_trudovi + spisanie_trud;
             };
         }
@@ -331,7 +339,8 @@ int main() {
         for (int i = 0; i < m; i++) {
             if (niza[i]->getIndeks() == indeks && dynamic_cast<PhDStudent *>(niza[i]) != nullptr) {
                 dynamic_cast<PhDStudent *>(niza[i])->operator+=(t);
-            }
+            }else if(niza[i]->getIndeks() == indeks && dynamic_cast<PhDStudent *>(niza[i]) == nullptr)
+                cout<<"\nNe postoi PhD student so indeks "<<indeks;
 
         }
 
@@ -401,14 +410,20 @@ int main() {
         for (int j = 0; j < n; j++)
             cin >> oceni[j];
         cin >> n_tr;
-        for (int j = 0; j < n_tr; j++) {
-            cin >> tip;
-            cin >> god_tr;
-            Trud t(tip, god_tr);
-            trud[j] = t;
+        try {
+
+            for (int j = 0; j < n_tr; j++) {
+                cin >> tip;
+                cin >> god_tr;
+                Trud t(tip, god_tr);
+                trud[j] = t;
+            }
+            PhDStudent phd(ime, indeks, god, oceni, n, trud, n_tr);
+            cout << phd;
+        } catch (Exception &e) {
+            e.message();
         }
-        PhDStudent phd(ime, indeks, god, oceni, n, trud, n_tr);
-        cout << phd;
+
     }
     if (testCase == 5) {
         cout << "===== Testiranje na isklucoci ======" << endl;
