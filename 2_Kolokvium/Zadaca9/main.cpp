@@ -4,13 +4,253 @@
 
 using namespace std;
 
+static int konferenciski_trud = 1;
+static int spisanie_trud = 3;
+
+class Exception {
+private:
+public:
+
+    void message() {
+        cout << "Ne moze da se vnese dadeniot trud" << endl;
+    }
+};
 
 
+class Trud {
+private:
+
+    char vidTrud; //(еден знак и тоа C за конференциски труд, J за труд во списание)
+    int godIzdavanje;
+
+public:
+
+    char getVidTrud() const {
+        return vidTrud;
+    }
+
+    int getGodIzdavanje() const {
+        return godIzdavanje;
+    }
+
+    Trud() {
+        this->vidTrud = 'z';
+        this->godIzdavanje = 0;
+    }
+
+    Trud(char vidTrud, int godIzdavanje) {
+        this->vidTrud = vidTrud;
+        this->godIzdavanje = godIzdavanje;
+    }
+
+    Trud(const Trud &t) {
+        this->vidTrud = t.vidTrud;
+        this->godIzdavanje = t.godIzdavanje;
+    }
+
+    Trud &operator=(const Trud &t) {
+        this->vidTrud = t.vidTrud;
+        this->godIzdavanje = t.godIzdavanje;
+
+        return *this;
+    }
+
+    friend istream &operator>>(istream &is, Trud &trud) {
+
+        is >> trud.vidTrud >> trud.godIzdavanje;
+
+        return is;
+    }
+
+};
+
+class Student {
+
+private:
+
+    char ime[30];
+    int indeks;
+    int godina_upis;
+    int *ocenki_polozeni;
+    int br_polozeni;
+
+public:
+
+    int getGodinaUpis() const {
+        return godina_upis;
+    }
+
+    int getIndeks() const {
+        return indeks;
+    }
+
+    Student() {
+        strcpy(this->ime, "Nan");
+        this->indeks = 0;
+        this->godina_upis = 0;
+        this->ocenki_polozeni = nullptr;
+        this->br_polozeni = 0;
+
+    };
+
+    Student(char *ime, int indeks, int godina_upis, int *ocenki_polozeni, int br_polozeni) {
+
+        strcpy(this->ime, ime);
+
+        this->indeks = indeks;
+        this->godina_upis = godina_upis;
+
+        this->ocenki_polozeni = new int[br_polozeni];
+        for (int i = 0; i < br_polozeni; i++) {
+            this->ocenki_polozeni[i] = ocenki_polozeni[i];
+        }
+
+        this->br_polozeni = br_polozeni;
+    };
+
+    Student(const Student &s) {
+
+        strcpy(this->ime, s.ime);
+
+        this->indeks = s.indeks;
+        this->godina_upis = s.godina_upis;
+
+        this->ocenki_polozeni = new int[s.br_polozeni];
+        for (int i = 0; i < s.br_polozeni; i++) {
+            this->ocenki_polozeni[i] = s.ocenki_polozeni[i];
+        }
+
+        this->br_polozeni = s.br_polozeni;
+    };
+
+    Student &operator=(const Student &s) {
+
+        strcpy(this->ime, s.ime);
+
+        this->indeks = s.indeks;
+        this->godina_upis = s.godina_upis;
+
+        delete[]this->ocenki_polozeni;
+        this->ocenki_polozeni = new int[s.br_polozeni];
+        for (int i = 0; i < s.br_polozeni; i++) {
+            this->ocenki_polozeni[i] = s.ocenki_polozeni[i];
+        }
+
+        this->br_polozeni = s.br_polozeni;
+
+        return *this;
+    };
+
+    virtual float rang() {
+
+        float prosek;
+
+        for (int i = 0; i < this->br_polozeni; i++) {
+            prosek = prosek + this->ocenki_polozeni[i];
+        }
+        prosek = prosek / this->br_polozeni;
+
+        return prosek;
+    }
+
+    friend ostream &operator<<(ostream &os, Student &student) {
+
+        os << student.indeks << " " << student.ime << " " << student.godina_upis << " " << student.rang() << endl;
+
+        return os;
+    }
+
+};
+
+class PhDStudent : public Student {
+
+private:
+    Trud *listaTrudovi;
+    int br_trudovi;
+
+public:
+
+    PhDStudent() : Student() {
+        this->listaTrudovi = nullptr;
+        this->br_trudovi = 0;
+    }
+
+    PhDStudent(char *ime, int indeks, int godina_upis, int *ocenki_polozeni, int br_polozeni, Trud *listaTrudovi, int br_trudovi) : Student(ime, indeks, godina_upis, ocenki_polozeni, br_polozeni) {
+
+        this->listaTrudovi = new Trud[br_trudovi];
+        for (int i = 0; i < br_trudovi; i++) {
+            this->listaTrudovi[i] = listaTrudovi[i];
+        }
+
+        this->br_trudovi = br_trudovi;
+    }
+
+    PhDStudent(const PhDStudent &p) : Student(p) {
+
+        this->listaTrudovi = new Trud[p.br_trudovi];
+        for (int i = 0; i < p.br_trudovi; i++) {
+            this->listaTrudovi[i] = p.listaTrudovi[i];
+        }
+
+        this->br_trudovi = p.br_trudovi;
+    }
+
+    PhDStudent &operator=(const PhDStudent &p) {
+
+        Student::operator=(p);
+
+        delete[]this->listaTrudovi;
+
+        this->listaTrudovi = new Trud[p.br_trudovi];
+        for (int i = 0; i < p.br_trudovi; i++) {
+            this->listaTrudovi[i] = p.listaTrudovi[i];
+        }
+
+        this->br_trudovi = p.br_trudovi;
+
+        return *this;
+    }
 
 
+    float rang() {
 
+        float total = 0, poeni_od_trudovi = 0;
 
+        for (int i = 0; i < this->br_trudovi; i++) {
+            if (this->listaTrudovi[i].getVidTrud() == 'C') {
+                poeni_od_trudovi = poeni_od_trudovi + konferenciski_trud;
+            } else if (this->listaTrudovi[i].getVidTrud() == 'J') {
+                poeni_od_trudovi = poeni_od_trudovi + spisanie_trud;
+            };
+        }
 
+        total = Student::rang() + poeni_od_trudovi;
+
+        return total;
+    }
+
+    PhDStudent &operator+=(const Trud &t) {
+
+        if (t.getGodIzdavanje() < this->getGodinaUpis()) {
+            throw Exception();
+        }
+
+        Trud *tmp = new Trud[this->br_trudovi + 1];
+
+        for (int i = 0; i < this->br_trudovi; i++) {
+            tmp[i] = this->listaTrudovi[i];
+        }
+
+        tmp[this->br_trudovi] = t;
+        this->br_trudovi++;
+
+        delete[] this->listaTrudovi;
+        this->listaTrudovi = tmp;
+
+        return *this;
+    }
+
+};
 
 int main() {
     int testCase;
@@ -88,6 +328,13 @@ int main() {
         cin >> t;
 
         // vmetnete go kodot za dodavanje nov trud so pomos na operatorot +=
+        for (int i = 0; i < m; i++) {
+            if (niza[i]->getIndeks() == indeks && dynamic_cast<PhDStudent *>(niza[i]) != nullptr) {
+                dynamic_cast<PhDStudent *>(niza[i])->operator+=(t);
+            }
+
+        }
+
 
         // pecatenje na site studenti
         cout << "\nLista na site studenti:\n";
@@ -132,6 +379,12 @@ int main() {
         cin >> t;
 
         // vmetnete go kodot za dodavanje nov trud so pomos na operatorot += od Testcase 2
+        for (int i = 0; i < m; i++) {
+            if (niza[i]->getIndeks() == indeks && dynamic_cast<PhDStudent *>(niza[i]) != nullptr) {
+                dynamic_cast<PhDStudent *>(niza[i])->operator+=(t);
+            }
+
+        }
 
 
         // pecatenje na site studenti
@@ -195,6 +448,16 @@ int main() {
         cin >> t;
 
         // vmetnete go kodot za dodavanje nov trud so pomos na operatorot += i spravete se so isklucokot
+        try {
+            for (int i = 0; i < m; i++) {
+                if (niza[i]->getIndeks() == indeks && dynamic_cast<PhDStudent *>(niza[i]) != nullptr) {
+                    dynamic_cast<PhDStudent *>(niza[i])->operator+=(t);
+                }
+            }
+        } catch (Exception &e) {
+            e.message();
+        }
+
 
         // pecatenje na site studenti
         cout << "\nLista na site studenti:\n";
@@ -237,7 +500,7 @@ int main() {
         cin >> conf;
         cin >> journal;
 
-        //postavete gi soodvetnite vrednosti za statickite promenlivi 
+        //postavete gi soodvetnite vrednosti za statickite promenlivi
 
         // pecatenje na site studenti
         cout << "\nLista na site studenti:\n";
