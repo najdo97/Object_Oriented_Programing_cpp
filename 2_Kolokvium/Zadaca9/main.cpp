@@ -226,9 +226,9 @@ public:
         float total = 0, poeni_od_trudovi = 0;
 
         for (int i = 0; i < this->br_trudovi; i++) {
-            if (this->listaTrudovi[i].getVidTrud() == 'c') {
+            if (this->listaTrudovi[i].getVidTrud() == 'c'||this->listaTrudovi[i].getVidTrud() == 'C') {
                 poeni_od_trudovi = poeni_od_trudovi + konferenciski_trud;
-            } else if (this->listaTrudovi[i].getVidTrud() == 'j') {
+            } else if (this->listaTrudovi[i].getVidTrud() == 'j'||this->listaTrudovi[i].getVidTrud() == 'J') {
                 poeni_od_trudovi = poeni_od_trudovi + spisanie_trud;
             };
         }
