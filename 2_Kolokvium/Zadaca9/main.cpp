@@ -181,7 +181,8 @@ public:
 
         for (int i = 0; i < br_trudovi; i++) {
             if (listaTrudovi[i].getGodIzdavanje() < this->getGodinaUpis()) {
-                throw Exception();
+                Exception().message();
+                continue;
             };
         }
 
@@ -410,7 +411,6 @@ int main() {
         for (int j = 0; j < n; j++)
             cin >> oceni[j];
         cin >> n_tr;
-        try {
 
             for (int j = 0; j < n_tr; j++) {
                 cin >> tip;
@@ -420,9 +420,6 @@ int main() {
             }
             PhDStudent phd(ime, indeks, god, oceni, n, trud, n_tr);
             cout << phd;
-        } catch (Exception &e) {
-            e.message();
-        }
 
     }
     if (testCase == 5) {
