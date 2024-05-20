@@ -1,0 +1,3 @@
+C:/Users/Borjan/Desktop/Object_Oriented_Programing_cpp/2_Kolokvium/Zadaca10/cmake-build-debug/CMakeFiles/Zadaca10.dir
+C:/Users/Borjan/Desktop/Object_Oriented_Programing_cpp/2_Kolokvium/Zadaca10/cmake-build-debug/CMakeFiles/edit_cache.dir
+C:/Users/Borjan/Desktop/Object_Oriented_Programing_cpp/2_Kolokvium/Zadaca10/cmake-build-debug/CMakeFiles/rebuild_cache.dir
