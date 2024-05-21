@@ -72,6 +72,10 @@ public:
         return this->igrano_delo;
     }
 
+    int getProdadeniKarti() const {
+        return prodadeni_karti;
+    }
+
     Pretstava() {
         this->igrano_delo = Delo();
         this->prodadeni_karti = 0;
@@ -183,9 +187,9 @@ int prihod(Pretstava **pretstavi, int n) {
     for (int i = 0; i < n; i++) {
 
         if (dynamic_cast<Balet *>(pretstavi[i]) != nullptr) {
-            vkupen_prihod = vkupen_prihod + dynamic_cast<Balet *>(pretstavi[i])->cena();
+            vkupen_prihod = vkupen_prihod + (dynamic_cast<Balet *>(pretstavi[i])->cena()*dynamic_cast<Balet *>(pretstavi[i])->getProdadeniKarti());
         } else {
-            vkupen_prihod = vkupen_prihod + pretstavi[i]->cena();
+            vkupen_prihod = vkupen_prihod + (pretstavi[i]->cena()*pretstavi[i]->getProdadeniKarti());
         }
     }
 
