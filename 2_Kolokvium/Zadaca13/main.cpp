@@ -86,7 +86,7 @@ public:
         return *this;
     }
 
-    virtual double fileSize() const {
+    virtual int fileSize() const {
         double picture_size;
 
         picture_size = this->visina * this->sirina * 3;
@@ -97,7 +97,7 @@ public:
 
     friend ostream &operator<<(ostream &os, const Image &image) {
 
-        os << image.ime_slika << " " << image.ime_korisnik << " " << image.fileSize();
+        os << image.ime_slika << " " << image.ime_korisnik << " " << image.fileSize() << endl;
 
         return os;
     }
@@ -119,7 +119,7 @@ protected:
     bool isTransparent;
 public:
     TransparentImage() : Image() {
-        this->isTransparent = false;
+        this->isTransparent = true;
     }
 
     TransparentImage(char *ime_slika, char *ime_korisnik, int sirina, int visina, bool isTransparent) : Image(ime_slika, ime_korisnik, sirina, visina) {
@@ -138,7 +138,7 @@ public:
     }
 
 
-    double fileSize() const {
+    int fileSize() const {
         double picture_size;
 
         if (this->isTransparent == true) {
@@ -151,7 +151,7 @@ public:
 
     friend ostream &operator<<(ostream &os, const TransparentImage &image) {
 
-        os << image.getImeSlika() << " " << image.getImeKorisnik() << " " << image.fileSize();
+        os << image.getImeSlika() << " " << image.getImeKorisnik() << " " << image.fileSize() << endl;
 
         return os;
     }
@@ -176,13 +176,14 @@ protected:
 
 public:
 
+    ~Folder() {
+    }
+
     Folder() {
         strcpy(this->ime_folder, "unknown");
         strcpy(this->sopstevenik_folder, "unknown");
-//
-//        for (int i = 0; i < 100; i++) {
-//            this->sliki[i] = nullptr;
-//        }
+
+
         this->br_sliki = 0;
     }
 
@@ -190,9 +191,6 @@ public:
         strcpy(this->ime_folder, ime_folder);
         strcpy(this->sopstevenik_folder, sopstevenik_folder);
 
-        for (int i = 0; i < 100; i++) {
-            this->sliki[i] = nullptr;
-        }
         this->br_sliki = 0;
     }
 
@@ -211,7 +209,7 @@ public:
         strcpy(this->ime_folder, f.ime_folder);
         strcpy(this->sopstevenik_folder, f.sopstevenik_folder);
 
-        for (int i = 0; i < 100; i++) {
+        for (int i = 0; i < this->br_sliki; i++) {
             this->sliki[i] = f.sliki[i];
         }
         this->br_sliki = f.br_sliki;
@@ -219,14 +217,19 @@ public:
     }
 
     Folder &operator=(const Folder &f) {
+        if (this == &f) {
+            return *this;
+        }
+
         strcpy(this->ime_folder, f.ime_folder);
         strcpy(this->sopstevenik_folder, f.sopstevenik_folder);
 
-        for (int i = 0; i < 100; i++) {
-            delete[]this->sliki[i];
-        }
 
-        for (int i = 0; i < 100; i++) {
+//        for (int i = 0; i < this->br_sliki; i++) {
+//            delete[]this->sliki[i];
+//        }
+
+        for (int i = 0; i < f.br_sliki; i++) {
             this->sliki[i] = f.sliki[i];
         }
 
@@ -235,21 +238,33 @@ public:
         return *this;
     }
 
+//    Folder &operator+=(Image &i) {
+//
+//        if (this->br_sliki >= 100) {
+//            return *this;
+//        } else {
+//            this->sliki[br_sliki] = &i;
+//            br_sliki++;
+//        }
+//        return *this;
+//    }
+
     Folder &operator+=(Image &i) {
 
         if (this->br_sliki >= 100) {
             return *this;
         } else {
-            this->sliki[br_sliki++] = &i;
+
+            this->sliki[br_sliki] = &i;
             br_sliki++;
         }
         return *this;
     }
 
 
-    double folderSize() {
+    int folderSize() {
 
-        double total_size = 0.0;
+        int total_size = 0.0;
 
         for (int i = 0; i < this->br_sliki; i++) {
             if (dynamic_cast<TransparentImage *>(this->sliki[i]) != nullptr) {
@@ -263,30 +278,39 @@ public:
 
     Image *getMaxFile() {
 
-        Image *max_file = sliki[0];
         int max_index = 0;
+//        for (int i = 0; i < this->br_sliki; i++) {
+//            if (dynamic_cast<TransparentImage *>(this->sliki[i]) == nullptr) {
+//                if (this->sliki[i] > max_file) {
+//                    max_file = this->sliki[i];
+//                    max_index = i;
+//                    cout<<"vlaga obicna slika"<<endl;
+//                }
+//            } else {
+//                if (dynamic_cast<TransparentImage *>(this->sliki[i]) > max_file) {
+//                    max_file = dynamic_cast<TransparentImage *>(this->sliki[i]);
+//                    max_index = i;
+//                    cout<<"vlaga transparentna slika slika"<<endl;
+//                }
+//            }
+//        }
+
         for (int i = 0; i < this->br_sliki; i++) {
-            if (dynamic_cast<TransparentImage *>(this->sliki[i]) == nullptr) {
-                if (this->sliki[i] > max_file) {
-                    max_file = this->sliki[i];
-                    max_index=i;
-                }
-            } else {
-                if (dynamic_cast<TransparentImage *>(this->sliki[i]) >max_file) {
-                    max_file = dynamic_cast<TransparentImage *>(this->sliki[i]);
-                    max_index = i;
-                }
+            if (this->sliki[i]->fileSize() > this->sliki[max_index]->fileSize()) {
+                max_index = i;
             }
         }
-
         return this->sliki[max_index];
+
     }
 
     friend ostream &operator<<(ostream &os, Folder &folder) {
         os << folder.ime_folder << " " << folder.sopstevenik_folder << endl;
+        os << "--" << endl;
         for (int i = 0; i < folder.br_sliki; i++) {
-            os << folder.sliki[i]->getImeSlika() << folder.sliki[i]->getImeKorisnik() << folder.sliki[i]->fileSize() << endl;
+            os << *folder.sliki[i];
         }
+        os << "--" << endl;
         os << "Folder size: " << folder.folderSize() << endl;
 
 
@@ -514,6 +538,7 @@ int main() {
                 }
             }
             dir_list[i] = dir;
+
         }
 
         cout << max_folder_size(dir_list, folders_num);
