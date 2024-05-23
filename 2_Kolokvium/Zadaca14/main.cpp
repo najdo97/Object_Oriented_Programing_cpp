@@ -7,7 +7,7 @@ using namespace std;
 class SMS {
 private:
     float osnovna_cena;
-    char target_broj[12];
+    char target_broj[14];
 
     static float danok;
 public:
@@ -43,10 +43,10 @@ public:
         return *this;
     }
 
-    virtual float SMS_cena() {};
+    virtual float SMS_cena() = 0;
 
-    friend ostream &operator<<(ostream &os, const SMS &sms) {
-        os << "ne treba da se ispecati ova" << endl;
+    friend ostream &operator<<(ostream &os, SMS &sms) {
+        os << "Tel: " << sms.target_broj << " - cena: " << sms.SMS_cena() << "den." << endl;
         return os;
     }
 };
@@ -61,7 +61,7 @@ private:
 public:
 
     static void set_rProcent(float stranstvoDanok) {
-        stranstvo_danok = stranstvoDanok;
+        stranstvo_danok = stranstvoDanok / 100;
     }
 
     RegularSMS() : SMS() {
@@ -100,20 +100,22 @@ public:
         float nova_cena = 0.0;
         int br_poraki = 0;
 
-        br_poraki = (int) strlen(this->text) / 160;
 
-        if (br_poraki == 0) {
+        br_poraki = ((int) strlen(this->text) / 160) + 1;
+
+        if (br_poraki == 1) {
             if (this->isRoamingUsed == true) {
-                nova_cena = this->getOsnovnaCena() + (this->getOsnovnaCena() * 3);
+                nova_cena = this->getOsnovnaCena() + (this->getOsnovnaCena() * stranstvo_danok);
             } else {
                 nova_cena = this->getOsnovnaCena() + (this->getOsnovnaCena() * 0.18);
             }
-        } else {
+        }
+        if (br_poraki > 1) {
             for (int i = 0; i < br_poraki; i++) {
                 if (this->isRoamingUsed == true) {
-                    nova_cena = this->getOsnovnaCena() + (this->getOsnovnaCena() * 3);
+                    nova_cena += (this->getOsnovnaCena() + (this->getOsnovnaCena() * stranstvo_danok));
                 } else {
-                    nova_cena = this->getOsnovnaCena() + (this->getOsnovnaCena() * 0.18);
+                    nova_cena += (this->getOsnovnaCena() + (this->getOsnovnaCena() * 0.18));
                 }
             }
         }
@@ -121,11 +123,11 @@ public:
         return nova_cena;
     }
 
-    friend ostream &operator<<(ostream &os, RegularSMS &sms) {
-
-        os << sms.getTargetBroj() << " " << sms.SMS_cena() << endl;
-        return os;
-    }
+//    friend ostream &operator<<(ostream &os, RegularSMS &sms) {
+//
+//        os << "Tel: " << sms.getTargetBroj() << " - cena:  " << sms.SMS_cena() << endl;
+//        return os;
+//    }
 
 
 };
@@ -139,7 +141,7 @@ private:
 public:
 
     static void set_sProcent(float specijalenDanok) {
-        specijalen_danok = specijalenDanok;
+        specijalen_danok = specijalenDanok / 100;
     }
 
     SpecialSMS() : SMS() {
@@ -167,17 +169,17 @@ public:
         if (this->isHumanitarna == true) {
             return this->getOsnovnaCena();
         } else {
-            nova_cena = this->getOsnovnaCena() + (this->getOsnovnaCena() * 1.5);
+            nova_cena = this->getOsnovnaCena() + (this->getOsnovnaCena() * specijalen_danok);
         }
         return nova_cena;
     }
 
-
-    friend ostream &operator<<(ostream &os, SpecialSMS &sms) {
-
-        os << sms.getTargetBroj() << " " << sms.SMS_cena() << endl;
-        return os;
-    }
+//
+//    friend ostream &operator<<(ostream &os, SpecialSMS &sms) {
+//
+//        os << "Tel: " << sms.getTargetBroj() << " - cena:  " << sms.SMS_cena() << endl;
+//        return os;
+//    }
 };
 
 void vkupno_SMS(SMS **poraka, int n) {
