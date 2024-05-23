@@ -3,6 +3,12 @@
 
 using namespace std;
 
+
+//todo
+//  StudentKursUsno mora da bide ima true vrednost vo daliUsno za sekoj objekt
+//  operator+= treba da se prereshi celosno
+
+
 class BadInputException {
 private:
 public:
