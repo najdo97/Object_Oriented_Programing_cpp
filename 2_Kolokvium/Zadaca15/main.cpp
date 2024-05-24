@@ -102,15 +102,24 @@ public:
     StudentKursUsno(char *ime, int finalenIspit, char *opisnaOcenka) : StudentKurs(ime, finalenIspit) {
         this->opisnaOcenka = new char[strlen(opisnaOcenka) + 1];
         strcpy(this->opisnaOcenka, opisnaOcenka);
+        this->daliUsno = true;
+
     }
 
     StudentKursUsno(char *ime, int finalenIspit) : StudentKurs(ime, finalenIspit) {
         this->opisnaOcenka = nullptr;
+        this->daliUsno = true;
+
     }
 
     StudentKursUsno(const StudentKursUsno &s) : StudentKurs(s) {
-        this->opisnaOcenka = new char[strlen(s.opisnaOcenka) + 1];
-        strcpy(this->opisnaOcenka, s.opisnaOcenka);
+        if (s.opisnaOcenka != nullptr) {
+            this->opisnaOcenka = new char[strlen(s.opisnaOcenka) + 1];
+            strcpy(this->opisnaOcenka, s.opisnaOcenka);
+        } else {
+            this->opisnaOcenka = nullptr;
+            this->daliUsno = true;
+        }
     }
 
     StudentKursUsno &operator=(const StudentKursUsno &s) {
@@ -125,33 +134,59 @@ public:
 
 
     StudentKursUsno &operator+=(char *novaOpisnaOcenka) {    // sekoe novo dodaovanje ke ja prebrishuva starata ocenka, nema logika da se redat u niza
+        bool imaBroj = false;
 
         char *tmp = new char[strlen(novaOpisnaOcenka) + 1];
         int j = 0;
+
+        for (int i = 0; i < strlen(novaOpisnaOcenka); i++) {
+            if (!isalpha(novaOpisnaOcenka[i])) {
+                imaBroj = true;
+            }
+        }
         for (int i = 0; i <= strlen(novaOpisnaOcenka); i++) {
             if (isalpha(novaOpisnaOcenka[i])) {
                 tmp[j] = novaOpisnaOcenka[i];
                 j++;
-            } else {
-                throw BadInputException();
             }
+
         }
+//        char *tmp2 = new char[j + 1];
+//        for (int i = 0; i < j; i++) {
+//            tmp2[i] = tmp[i];
+//        }
+//        tmp2[j] = NULL;
+//
+//        cout<<"Originalna: "<<novaOpisnaOcenka<<" strlen: "<<strlen(novaOpisnaOcenka)<<endl;
+//
+//        cout<<"Trganit broevi:"<<tmp<<" strlen: "<<strlen(tmp)<<endl;
+//
+//        cout<<"Trganti broevi + skratena nizata: "<<tmp2<<" strlen: "<<strlen(tmp2)<<endl;
 
         delete[]this->opisnaOcenka;
-        this->opisnaOcenka = new char[strlen(novaOpisnaOcenka) + 1];
-        strcpy(this->opisnaOcenka, novaOpisnaOcenka);
+        this->opisnaOcenka = new char[strlen(tmp) + 1];
+        strcpy(this->opisnaOcenka, tmp);
 
-        if (strcmp(tmp, "odlicen") == 0) {
+        if (strcmp(tmp, "odlicen") == 0 && (this->ocenka + 2) < MAX) {
             this->ocenka = this->ocenka + 2;
-        } else if (strcmp(tmp, "dobro") == 0) {
+        } else if (strcmp(tmp, "dobro") == 0 && (this->ocenka + 1) < MAX) {
             this->ocenka = this->ocenka + 1;
         } else if (strcmp(tmp, "losho") == 0) {
             this->ocenka = this->ocenka - 1;
         }
 
+        if (imaBroj == true) {
+            throw BadInputException();
+        }
+
+
         return *this;
     }
 
+    friend ostream &operator<<(ostream &os, const StudentKursUsno &usno) {
+        os << usno.ime << " --- " << usno.ocenka << endl;
+        return os;
+    }
 
 };
 
@@ -191,8 +226,10 @@ public:
 
         for (int i = 0; i < this->broj; i++) {
 
-            if (this->studenti[i]->getOcenka() > this->studenti[i]->getMinocenka()) {       // neznam kako poinaku da pristapam do static promenlivava
-                cout << *this->studenti[i] << endl;
+            //  cout << this->studenti[i]->getIme() <<" ima ocenka: " <<this->studenti[i]->getOcenka() <<"" <<endl;
+
+            if (this->studenti[i]->getOcenka() >= this->studenti[i]->getMinocenka()) {       // neznam kako poinaku da pristapam do static promenlivava
+                cout << this->studenti[i]->getIme() << " --- " << this->studenti[i]->getOcenka() << endl;
             }
         }
     }
@@ -200,7 +237,8 @@ public:
     void postaviOpisnaOcenka(char *ime, char *opisnaOcenka) {
 
         for (int i = 0; i < broj; i++) {
-            if (strcmp(this->studenti[i]->getIme(), ime) == 0) {
+
+            if (strcmp(this->studenti[i]->getIme(), ime) == 0 && this->studenti[i]->getDaliUsno() == true) {
                 dynamic_cast<StudentKursUsno *>(this->studenti[i])->operator+=(opisnaOcenka);
             }
         }
