@@ -160,17 +160,6 @@ public:
 void pecatiPoloshiPonudi(Transport **ponudi, int n, AvtomobilTransport benchmark) {
 
     Transport *tmp;
-    //i=0 ; j=1
-    //400
-    //900
-    //400
-    //1040
-
-    //i=1 ; j=
-    //400
-    //400
-    //900
-    //1040
 
     for (int i = 0; i < n - 1; i++) {
         for (int j = i + 1; j < n; j++) {
