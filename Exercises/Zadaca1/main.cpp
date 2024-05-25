@@ -74,13 +74,21 @@ public:
             discPrice += ad[i]->computePrice();
         }
         cout << "Total price: " << discPrice << endl;
-
-
         cout << "Total price with discount: " << (discPrice - ((discPrice / 100) * discount)) << endl;
-
     }
 
-  //   virtual bool operator<( AlcoholicDrink &a){}
+    friend ostream &operator<<(ostream &os, AlcoholicDrink &drink) {
+        os << (&drink)->getName() << " " << (&drink)->getCountryOrigin() << " " << drink.computePrice();
+        return os;
+    }
+
+    bool operator<(AlcoholicDrink &a) {
+        if (this->computePrice() < a.computePrice())
+        {
+            return true;
+        }
+        else return false;
+    }
 };
 
 class Beer : public AlcoholicDrink {
@@ -165,31 +173,17 @@ public:
 };
 
 
-//bool  AlcoholicDrink::operator<(AlcoholicDrink &a) {
-//    if (dynamic_cast<Beer *>(&a) != nullptr) {
-//        if (this->computePrice() < dynamic_cast<Beer *>(&a)->computePrice()) {
-//            return true;
-//        }
+//ostream &operator<<(ostream &os, AlcoholicDrink &drink) {
+//    if (dynamic_cast<Beer *>(&drink) != nullptr) {
+//        os << dynamic_cast<Beer *>(&drink)->getName() << " " << dynamic_cast<Beer *>(&drink)->getCountryOrigin() << " "
+//           << dynamic_cast<Beer *>(&drink)->computePrice();
 //    }
-//    if (dynamic_cast<Wine *>(&a) != nullptr) {
-//        if (this->computePrice() < dynamic_cast<Wine *>(&a)->computePrice()) {
-//            return true;
-//        }
+//    if (dynamic_cast<Wine *>(&drink) != nullptr) {
+//        os << dynamic_cast<Wine *>(&drink)->getName() << " " << dynamic_cast<Wine *>(&drink)->getCountryOrigin() << " "
+//           << dynamic_cast<Wine *>(&drink)->computePrice();
 //    }
-//    return false;
+//    return os;
 //}
-
-ostream &operator<<(ostream &os, AlcoholicDrink &drink) {
-    if (dynamic_cast<Beer *>(&drink) != nullptr) {
-        os << dynamic_cast<Beer *>(&drink)->getName() << " " << dynamic_cast<Beer *>(&drink)->getCountryOrigin() << " "
-           << dynamic_cast<Beer *>(&drink)->computePrice();
-    }
-    if (dynamic_cast<Wine *>(&drink) != nullptr) {
-        os << dynamic_cast<Wine *>(&drink)->getName() << " " << dynamic_cast<Wine *>(&drink)->getCountryOrigin() << " "
-           << dynamic_cast<Wine *>(&drink)->computePrice();
-    }
-    return os;
-}
 
 void lowestPrice(AlcoholicDrink **drinks, int n) {
 
