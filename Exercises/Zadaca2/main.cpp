@@ -141,17 +141,18 @@ public:
 
     UserProfile &operator+=(Bill &b) {
 
-        if (this->numBills != 0) {
+        if (this->billsArray != nullptr) {
             for (int i = 0; i < this->numBills; i++) {
-
+              //  cout << "vlaga - i:" << i << endl;
                 if ((this->billsArray[i].operator==(b)) == true) {
                     throw ExistingBill();
                 }
             }
         }
 
-        this->billsArray[this->numBills + 1] = b;
+        this->billsArray[this->numBills] = b;
         numBills++;
+
 
         return *this;
     }
@@ -163,7 +164,7 @@ public:
         for (int i = 0; i < profile.numBills; i++) {
             if (profile.billsArray[i].getIsPaied() == false) {
 
-                cout << profile.billsArray[i] << endl;
+                cout << profile.billsArray[i];
             }
         }
         return os;
