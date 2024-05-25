@@ -11,7 +11,12 @@ private:
     float alc_percent;
     float base_price;
 
+    static int discount;
 public:
+
+    static void changeDiscount(int d) {
+        discount = d;
+    }
 
     AlcoholicDrink() {
         strcpy(this->name, "nan");
@@ -20,10 +25,11 @@ public:
         this->base_price = 0;
     }
 
-    AlcoholicDrink(char *name, char *country_origin, float alc_percent, float base_price) {
+    AlcoholicDrink(float alc_percent, char *name, char *country_origin, float base_price) {
+        this->alc_percent = alc_percent;
+
         strcpy(this->name, name);
         strcpy(this->country_origin, country_origin);
-        this->alc_percent = alc_percent;
         this->base_price = base_price;
     }
 
@@ -53,7 +59,26 @@ public:
         return country_origin;
     }
 
+    float getAlcPercent() const {
+        return alc_percent;
+    }
 
+    float getBasePrice() const {
+        return base_price;
+    }
+
+    static void total(AlcoholicDrink **ad, int n) {
+        float discPrice = 0.0;
+
+        for (int i = 0; i < n; i++) {
+            discPrice += ad[i]->computePrice();
+        }
+        cout << "Total price: " << discPrice << endl;
+
+
+        cout << "Total price with discount: " << (discPrice - ((discPrice / 100) * discount)) << endl;
+
+    }
 
 };
 
@@ -66,7 +91,9 @@ public:
         this->ingridient = false;
     }
 
-    Beer(char *name, char *country_origin, float alc_percent, float base_price, bool ingridient) : AlcoholicDrink(name, country_origin, alc_percent, base_price) {
+
+    Beer(float alc_percent, char *name, char *country_origin, float base_price, bool ingridient) : AlcoholicDrink(
+            alc_percent, name, country_origin, base_price) {
         this->ingridient = ingridient;
     }
 
@@ -79,6 +106,17 @@ public:
         this->ingridient = b.ingridient;
 
         return *this;
+    }
+
+    float computePrice() {
+        float new_price = this->getBasePrice();
+        if (this->ingridient == false) {
+            new_price = new_price + (this->getBasePrice() * 0.1);
+        }
+        if (strcmp(this->getCountryOrigin(), "Germany") == 0) {
+            new_price = new_price + (this->getBasePrice() * 0.05);
+        }
+        return new_price;
     }
 };
 
@@ -93,7 +131,8 @@ public:
         strcpy(this->grapes_type, "NaN");
     }
 
-    Wine(char *name, char *country_origin, float alc_percent, float base_price, int manufacturing_year, char *grapes_type) : AlcoholicDrink(name, country_origin, alc_percent, base_price) {
+    Wine(float alc_percent, char *name, char *country_origin, float base_price, int manufacturing_year,
+         char *grapes_type) : AlcoholicDrink(alc_percent, name, country_origin, base_price) {
         this->manufacturing_year = manufacturing_year;
         strcpy(this->grapes_type, grapes_type);
     }
@@ -112,21 +151,60 @@ public:
         return *this;
     }
 
+    float computePrice() {
+        float new_price = this->getBasePrice();
+        if (this->manufacturing_year < 2005) {
+            new_price = new_price + (this->getBasePrice() * 0.15);
+        }
+        if (strcmp(this->getCountryOrigin(), "Italy") == 0) {
+            new_price = new_price + (this->getBasePrice() * 0.05);
+        }
+        return new_price;
+    }
 };
 
-bool operator<(const AlcoholicDrink &a){
-
-}
+//
+// bool operator<(AlcoholicDrink &a) {
+//    if (dynamic_cast<Beer *>(&a) != nullptr) {
+//        if (this->computePrice() < dynamic_cast<Beer *>(&a)->computePrice()) {
+//            return true;
+//        }
+//    }
+//    if (dynamic_cast<Wine *>(&a) != nullptr) {
+//        if (this->computePrice() < dynamic_cast<Wine *>(&a)->computePrice()) {
+//            return true;
+//        }
+//    }
+//    return false;
+//}
 
 ostream &operator<<(ostream &os, AlcoholicDrink &drink) {
     if (dynamic_cast<Beer *>(&drink) != nullptr) {
-        os << dynamic_cast<Beer *>(&drink)->getName() << " " << dynamic_cast<Beer *>(&drink)->getCountryOrigin() << "" << dynamic_cast<Beer *>(&drink)->computePrice() << endl;
+        os << dynamic_cast<Beer *>(&drink)->getName() << " " << dynamic_cast<Beer *>(&drink)->getCountryOrigin() << " "
+           << dynamic_cast<Beer *>(&drink)->computePrice() << endl;
     }
     if (dynamic_cast<Wine *>(&drink) != nullptr) {
-        os << dynamic_cast<Wine *>(&drink)->getName() << " " << dynamic_cast<Wine *>(&drink)->getCountryOrigin() << "" << dynamic_cast<Wine *>(&drink)->computePrice() << endl;
+        os << dynamic_cast<Wine *>(&drink)->getName() << " " << dynamic_cast<Wine *>(&drink)->getCountryOrigin() << " "
+           << dynamic_cast<Wine *>(&drink)->computePrice() << endl;
     }
     return os;
 }
+
+void lowestPrice(AlcoholicDrink **drinks, int n) {
+
+    float cheapest = drinks[0]->computePrice();
+    int cheapest_idx;
+    for (int i = 0; i < n; i++) {
+        if (drinks[i]->computePrice() < cheapest) {
+            cheapest = drinks[i]->computePrice();
+            cheapest_idx = i;
+        }
+    }
+
+    cout << *drinks[cheapest_idx] << endl;
+}
+
+int AlcoholicDrink::discount = 5;
 
 
 int main() {
