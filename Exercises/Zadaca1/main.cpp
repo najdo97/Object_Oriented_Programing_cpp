@@ -80,6 +80,7 @@ public:
 
     }
 
+  //   virtual bool operator<( AlcoholicDrink &a){}
 };
 
 class Beer : public AlcoholicDrink {
@@ -163,8 +164,8 @@ public:
     }
 };
 
-//
-// bool operator<(AlcoholicDrink &a) {
+
+//bool  AlcoholicDrink::operator<(AlcoholicDrink &a) {
 //    if (dynamic_cast<Beer *>(&a) != nullptr) {
 //        if (this->computePrice() < dynamic_cast<Beer *>(&a)->computePrice()) {
 //            return true;
@@ -181,11 +182,11 @@ public:
 ostream &operator<<(ostream &os, AlcoholicDrink &drink) {
     if (dynamic_cast<Beer *>(&drink) != nullptr) {
         os << dynamic_cast<Beer *>(&drink)->getName() << " " << dynamic_cast<Beer *>(&drink)->getCountryOrigin() << " "
-           << dynamic_cast<Beer *>(&drink)->computePrice() << endl;
+           << dynamic_cast<Beer *>(&drink)->computePrice();
     }
     if (dynamic_cast<Wine *>(&drink) != nullptr) {
         os << dynamic_cast<Wine *>(&drink)->getName() << " " << dynamic_cast<Wine *>(&drink)->getCountryOrigin() << " "
-           << dynamic_cast<Wine *>(&drink)->computePrice() << endl;
+           << dynamic_cast<Wine *>(&drink)->computePrice();
     }
     return os;
 }
@@ -205,7 +206,6 @@ void lowestPrice(AlcoholicDrink **drinks, int n) {
 }
 
 int AlcoholicDrink::discount = 5;
-
 
 int main() {
     int testCase;
