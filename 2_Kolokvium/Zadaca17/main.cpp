@@ -49,10 +49,11 @@ public:
     FudbalskaEkipa &operator+=(const int dadeni_golovi) {
 
         int tmp[10];
-        for (int i = 0, j = 1; i < 10; i++, j++) {
+
+        for (int i = 1, j = 0; i < 10; i++, j++) {
             tmp[j] = this->dadeni_golovi[i];
         }
-        tmp[0] = dadeni_golovi;
+        tmp[9] = dadeni_golovi;
 
         for (int i = 0; i < 10; i++) {
             this->dadeni_golovi[i] = tmp[i];
@@ -61,15 +62,6 @@ public:
         return *this;
     }
 
-    //todo
-    friend ostream &operator<<(ostream &os, const FudbalskaEkipa &ekipa) {
-
-        return os;
-    }
-
-    bool operator>(FudbalskaEkipa &f) {
-
-    }
 
 };
 
@@ -80,6 +72,10 @@ private:
     char *ime_klub;
     int br_tituli;
 public:
+
+    char *getImeKlub() const {
+        return ime_klub;
+    }
 
     Klub() : FudbalskaEkipa() {
         this->ime_klub = nullptr;
@@ -121,15 +117,11 @@ public:
         for (int i = 0; i < 10; i++) {
             vkupno_golovi = vkupno_golovi + this->dadeni_golovi[i];
         }
-        total_uspeh = vkupno_golovi * 3 + this->br_tituli * 1000;
+        total_uspeh = (vkupno_golovi * 3) + (this->br_tituli * 1000);
 
         return total_uspeh;
     }
 
-    friend ostream &operator<<(ostream &os, Klub &klub) {
-        os << klub.ime_klub << " " << klub.getTrener() << " " << klub.uspeh() << endl;
-        return os;
-    }
 
 };
 
@@ -176,6 +168,9 @@ public:
         return *this;
     }
 
+    char *getImeRep() {
+        return this->ime_drzava;
+    }
 
     int uspeh() {
         int vkupno_golovi = 0;
@@ -184,23 +179,39 @@ public:
             vkupno_golovi = vkupno_golovi + this->dadeni_golovi[i];
         }
         total_uspeh = vkupno_golovi * 3 + this->nastapi * 50;
-//todo
-//Ne kontam shot e toa so 150 megjunarodni asptapi, trial and error treba da praish
-        return total_uspeh;
-    }
 
-    friend ostream &operator<<(ostream &os, Reprezentacija &reprezentacija) {
-        os << reprezentacija.ime_drzava << " " << reprezentacija.getTrener() << " " << reprezentacija.uspeh() << endl;
-        return os;
+        return total_uspeh;
     }
 
 
 };
 
-//todo
-void najdobarTrener() {
 
+ostream &operator<<(ostream &os, FudbalskaEkipa &klub) {
+
+    if (dynamic_cast<Klub *>(&klub) != nullptr) {
+        os << dynamic_cast<Klub *>(&klub)->getImeKlub() << "\n" << klub.getTrener() << "\n" << dynamic_cast<Klub *>(&klub)->uspeh() << endl;
+    }
+    if (dynamic_cast<Reprezentacija *>(&klub) != nullptr) {
+        os << dynamic_cast<Reprezentacija *>(&klub)->getImeRep() << "\n" << klub.getTrener() << "\n" << dynamic_cast<Reprezentacija *>(&klub)->uspeh() << endl;
+    }
+
+
+    return os;
 }
+
+void najdobarTrener(FudbalskaEkipa **timovi, int n) {
+
+    int naj_uspesen = timovi[0]->uspeh(), brojac = 0;
+    for (int i = 1; i < n; i++) {
+        if (naj_uspesen < timovi[i]->uspeh()) {
+            naj_uspesen = timovi[i]->uspeh();
+            brojac = i;
+        }
+    }
+    cout << (*timovi[brojac]) << endl;
+}
+
 
 int main() {
     int n;
