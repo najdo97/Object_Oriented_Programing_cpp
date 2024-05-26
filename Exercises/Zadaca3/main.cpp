@@ -52,6 +52,15 @@ public:
         this->charArray = nullptr;
     }
 
+    CharSequence(char *charArray) {
+
+        this->charArray = new Character[strlen(charArray) + 1];
+        for (int i = 0; i < strlen(charArray); i++) {
+            this->charArray[i].setCh(charArray[i]);
+        }
+        this->arraySize = strlen(charArray);
+    }
+
     CharSequence(Character *charArray, int arraySize) {
         this->charArray = new Character[arraySize];
         for (int i = 0; i < arraySize; i++) {
@@ -80,26 +89,59 @@ public:
     }
 
     CharSequence &operator+=(const Character &c) {
-        
+
+        Character *tmp = new Character[this->arraySize + 1];
+
+        for (int i = 0; i < arraySize; i++) {
+            tmp[i] = this->charArray[i];
+        }
+        tmp[arraySize] = c;
+        this->arraySize++;
+        delete this->charArray;
+        this->charArray = tmp;
+
+        return *this;
     }
 
 
+    Character &operator[](int i) {
 
-    CharSequence &operator[](int i) {
-
+        return this->charArray[i];
     }
 
 
     bool operator==(const CharSequence &cs) {
-
+        if (this->arraySize != cs.arraySize) {
+            return false;
+        }
+        for (int i = 0; i < this->arraySize; i++) {
+            if (this->charArray[i].getCh() != cs.charArray[i].getCh()) {
+                return false;
+            }
+        }
+        return true;
     }
 
     int operator[](char c) {
-
+        int brojac = 0;
+        for (int i = 0; i < this->arraySize; i++) {
+            if (this->charArray[i].getCh() == c) {
+                brojac++;
+            }
+        }
+        return brojac;
     }
 
     CharSequence toUpperCase() {
+        CharSequence lowCase;
+        lowCase.charArray = new Character[this->arraySize];
+        lowCase.arraySize = this->arraySize;
+        for (int i = 0; i < this->arraySize; i++) {
 
+            lowCase.charArray[i].setCh((char) toupper(this->charArray[i].getCh()));
+
+        }
+        return lowCase;
     }
 
 
