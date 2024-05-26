@@ -50,6 +50,7 @@ public:
 
     CharSequence() {
         this->charArray = nullptr;
+        this->arraySize=0;
     }
 
     CharSequence(char *charArray) {
@@ -73,6 +74,7 @@ public:
         for (int i = 0; i < cs.arraySize; i++) {
             this->charArray[i] = cs.charArray[i];
         }
+        this->arraySize = cs.arraySize;
     }
 
     CharSequence &operator=(const CharSequence &cs) {
@@ -80,7 +82,9 @@ public:
         this->charArray = new Character[cs.arraySize];
         for (int i = 0; i < cs.arraySize; i++) {
             this->charArray[i] = cs.charArray[i];
+            // cout<<"vlaga"<<endl;
         }
+        this->arraySize = cs.arraySize;
         return *this;
     }
 
@@ -90,9 +94,16 @@ public:
 
     CharSequence &operator+=(const Character &c) {
 
+        if (arraySize == 0) {
+            this->charArray=new Character[1];
+
+            this->charArray[0] = c;
+            this->arraySize++;
+            return *this;
+        }
         Character *tmp = new Character[this->arraySize + 1];
 
-        for (int i = 0; i < arraySize; i++) {
+        for (int i = 0; i < this->arraySize; i++) {
             tmp[i] = this->charArray[i];
         }
         tmp[arraySize] = c;
@@ -146,7 +157,9 @@ public:
 
 
     friend ostream &operator<<(ostream &os, const CharSequence &sequence) {
-
+        for (int i = 0; i < sequence.arraySize; i++) {
+            os << sequence.charArray[i].getCh();
+        }
         return os;
     }
 };
@@ -198,7 +211,8 @@ int main() {
         cout << cs << endl;
     } else if (n == 6) {
         cout << "Testing CharSequence operator[char]" << endl;
-        CharSequence cs("If you don't read the newspaper, you're uninformed. If you read the newspaper, you're mis-informed.");
+        CharSequence cs(
+                "If you don't read the newspaper, you're uninformed. If you read the newspaper, you're mis-informed.");
         cout << cs['e'] << endl;
     } else if (n == 7) {
         cout << "Testing CharSequence toUpperCase" << endl;
