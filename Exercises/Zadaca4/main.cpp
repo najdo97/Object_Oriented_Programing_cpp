@@ -24,10 +24,6 @@ public:
         return showRooms;
     }
 
-    static float getDiscountStudent() {
-        return discount_student;
-    }
-
     float getTicketPrice() const {
         return ticket_price;
     }
@@ -135,6 +131,10 @@ public:
         float new_price = this->getTicketPrice();
 
 
+        if (isStudent) {
+            new_price = new_price - (new_price * getStudentDiscount());
+        }
+
         if (this->duartion > 2.5 && this->duartion <= 3.0) {
             new_price = new_price + 50;
         } else if (this->duartion > 3) {
@@ -143,7 +143,8 @@ public:
         if (this->isPremiere) {
             new_price = new_price + 60;
         }
-///neznam sho praime za popust
+
+
         return new_price;
     }
 };
@@ -154,7 +155,7 @@ bool searchCinema(Cinema **c, int n, char *title, bool premiere, bool isStudent)
 
             if (dynamic_cast<ThreeDCinema *>(c[i]) != nullptr) {
 
-                if (strcmp(dynamic_cast<ThreeDCinema *>(c[i])->getname(), title) == 0 && dynamic_cast<ThreeDCinema *>(c[i])->isPremiere1() == true) {
+                if (strcmp(dynamic_cast<ThreeDCinema *>(c[i])->getname(), title) == 0 ) {
 
                     cout << dynamic_cast<ThreeDCinema *>(c[i])->getname() << " " << dynamic_cast<ThreeDCinema *>(c[i])->price(isStudent) << endl;
                     return true;
@@ -189,7 +190,8 @@ void cheapestCinema(Cinema **halls, int n, bool isStudent) {
         }
     }
 
-    cout << "Cheapest Cinema: " << halls[min_idx]->getname() << halls[min_idx]->price(isStudent) << endl;
+    cout << "Cheapest movie hall: " << halls[min_idx]->getname() << " " << halls[min_idx]->price(isStudent) << endl;
+    cout << "3D cinema halls: " << halls_3D << " from total " << n << endl;
 
 }
 
