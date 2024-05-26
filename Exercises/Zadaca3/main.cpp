@@ -50,7 +50,7 @@ public:
 
     CharSequence() {
         this->charArray = nullptr;
-        this->arraySize=0;
+        this->arraySize = 0;
     }
 
     CharSequence(char *charArray) {
@@ -95,7 +95,7 @@ public:
     CharSequence &operator+=(const Character &c) {
 
         if (arraySize == 0) {
-            this->charArray=new Character[1];
+            this->charArray = new Character[1];
 
             this->charArray[0] = c;
             this->arraySize++;
@@ -113,9 +113,11 @@ public:
 
         return *this;
     }
+
     Character &operator[](int i) {
         return this->charArray[i];
     }
+
     bool operator==(const CharSequence &cs) {
         if (this->arraySize != cs.arraySize) {
             return false;
@@ -144,7 +146,7 @@ public:
         lowCase.arraySize = this->arraySize;
         for (int i = 0; i < this->arraySize; i++) {
 
-            lowCase.charArray[i].setCh((char)toupper(this->charArray[i].getCh()));
+            lowCase.charArray[i].setCh((char) toupper(this->charArray[i].getCh()));
 /// toupper()  & tolower() zimaat pukvi i pretvoraat vo pogolemi ili pomali bukvi
         }
         return lowCase;
