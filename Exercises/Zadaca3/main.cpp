@@ -113,14 +113,9 @@ public:
 
         return *this;
     }
-
-
     Character &operator[](int i) {
-
         return this->charArray[i];
     }
-
-
     bool operator==(const CharSequence &cs) {
         if (this->arraySize != cs.arraySize) {
             return false;
@@ -149,8 +144,8 @@ public:
         lowCase.arraySize = this->arraySize;
         for (int i = 0; i < this->arraySize; i++) {
 
-            lowCase.charArray[i].setCh((char) toupper(this->charArray[i].getCh()));
-
+            lowCase.charArray[i].setCh((char)toupper(this->charArray[i].getCh()));
+/// toupper()  & tolower() zimaat pukvi i pretvoraat vo pogolemi ili pomali bukvi
         }
         return lowCase;
     }
