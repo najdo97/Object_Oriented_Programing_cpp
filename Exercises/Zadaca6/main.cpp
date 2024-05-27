@@ -100,8 +100,8 @@ public:
     float price() override {
         float total = 0;
         if (this->isRaw) {
-            total = (100 + this->getResolution() * 20) + 50;
-        } else total = (100 + this->getResolution() * 20);
+            total = (100 + (int) this->getResolution() * 20) + 50;
+        } else total = (100 + (int) this->getResolution() * 20);
 
         return total;
     }
@@ -209,7 +209,7 @@ public:
             total = total * 2;
         }
 
-        return  total;
+        return total * days;
     }
 };
 
@@ -277,8 +277,8 @@ int main(int argc, char *argv[]) {
     cin >> days;
 
 
-    cout <<  "Price of production is: " << production(c, n, days)<<endl;
-    cout <<  "Most expensive camera used in production is: " << mostExpensiveCamera(c, n)<<endl;
+    cout << "Price of production is: " << production(c, n, days) << endl;
+    cout << "Most expensive camera used in production is: " << mostExpensiveCamera(c, n) << endl;
 
 
     return 0;
