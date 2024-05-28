@@ -54,6 +54,7 @@ public:
             }
         }
         strcpy(this->id_num, id_num);
+        this->collected_fund = 0;
 
         this->needed_fund = needed_fund;
     }
@@ -77,7 +78,7 @@ public:
     }
 
     DonaciskiApel &operator=(const DonaciskiApel &other) {
-        delete [] this->name;
+        delete[] this->name;
         this->name = new char[strlen(other.name) + 1];
         strcpy(this->name, other.name);
 
@@ -109,14 +110,16 @@ public:
         if ((this->needed_fund - this->collected_fund) < (d.needed_fund - d.collected_fund)) {
             return true;
         } else if ((this->needed_fund - this->collected_fund) == (d.needed_fund - d.collected_fund)) {
-            // todo - comapre by id
+            if (strlen(this->id_num) > strlen(d.id_num)) {
+                return true;
+            }
         }
 
         return false;
     }
 
     ~DonaciskiApel() {
-        delete [] this->name;
+        delete[] this->name;
     }
 };
 
@@ -165,7 +168,7 @@ public:
     DonaciskoDurstvo &operator=(const DonaciskoDurstvo &other) {
         strcpy(this->president, other.president);
 
-        delete [] this->apeli;
+        delete[] this->apeli;
         this->apeli = new DonaciskiApel[other.br_apeli];
         for (int i = 0; i < other.br_apeli; i++) {
             this->apeli[i] = other.apeli[i];
@@ -177,7 +180,7 @@ public:
     }
 
     ~DonaciskoDurstvo() {
-        delete []this->apeli;
+        delete[]this->apeli;
     }
 
     bool primiiDonacija(char *id, int donirana_suma) {
@@ -197,6 +200,14 @@ public:
                 return *this;
             }
         }
+        char *pom=new char[strlen(d.getID())+1];
+        strcpy(pom,d.getID());
+        for (int i = 0; i < strlen(d.getID()); i++) {
+            if (isalpha(pom[i]) == true) {
+                throw nonDigitException();
+            }
+        }
+
         DonaciskiApel *tmp = new DonaciskiApel[this->br_apeli + 1];
 
         for (int i = 0; i < this->br_apeli; i++) {
@@ -212,12 +223,25 @@ public:
     }
 
     friend ostream &operator<<(ostream &os, const DonaciskoDurstvo &durstvo) {
-        for (int i = 0; i < durstvo.br_apeli; i++) {
 
-            os << durstvo.apeli[i]; // trebda da se podredi po descending order
+        DonaciskiApel tmp;
+
+        for (int i = 0; i < durstvo.br_apeli - 1; i++) {
+            for (int j = i + 1; j < durstvo.br_apeli; j++) {
+                if (durstvo.apeli[i] < durstvo.apeli[j]) {
+                    tmp = durstvo.apeli[i];
+                    durstvo.apeli[i] = durstvo.apeli[j];
+                    durstvo.apeli[j] = tmp;
+                }
+            }
         }
 
-        os << "President: " << durstvo.president << endl;
+        for (int i = 0; i < durstvo.br_apeli; i++) {
+
+            os << durstvo.apeli[i];
+        }
+
+        os << "President:" << durstvo.president << endl;
         return os;
     }
 

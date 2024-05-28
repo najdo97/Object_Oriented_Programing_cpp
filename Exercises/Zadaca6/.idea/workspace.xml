@@ -20,7 +20,30 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="727c687c-2fb7-42c1-8815-558ad80c17f4" name="Changes" comment="" />
+    <list default="true" id="d25d6000-6949-4ff9-9c8c-7e713906a812" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/../Zadaca7/cmake-build-debug/.cmake/api/v1/reply/cache-v2-7cb11269f73d0f24b7a7.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Zadaca7/cmake-build-debug/.cmake/api/v1/reply/cmakeFiles-v1-9ddba7c5195305e3baf9.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Zadaca7/cmake-build-debug/.cmake/api/v1/reply/index-2024-05-28T10-03-15-0583.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Zadaca7/cmake-build-debug/.cmake/api/v1/reply/toolchains-v1-471bce94bfe13a5ea4fc.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Zadaca7/cmake-build-debug/CMakeCache.txt" beforeDir="false" afterPath="$PROJECT_DIR$/../Zadaca7/cmake-build-debug/CMakeCache.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Zadaca7/cmake-build-debug/CMakeFiles/3.27.8/CMakeCCompiler.cmake" beforeDir="false" afterPath="$PROJECT_DIR$/../Zadaca7/cmake-build-debug/CMakeFiles/3.27.8/CMakeCCompiler.cmake" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Zadaca7/cmake-build-debug/CMakeFiles/3.27.8/CMakeCXXCompiler.cmake" beforeDir="false" afterPath="$PROJECT_DIR$/../Zadaca7/cmake-build-debug/CMakeFiles/3.27.8/CMakeCXXCompiler.cmake" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Zadaca7/cmake-build-debug/CMakeFiles/3.27.8/CMakeDetermineCompilerABI_C.bin" beforeDir="false" afterPath="$PROJECT_DIR$/../Zadaca7/cmake-build-debug/CMakeFiles/3.27.8/CMakeDetermineCompilerABI_C.bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Zadaca7/cmake-build-debug/CMakeFiles/3.27.8/CMakeDetermineCompilerABI_CXX.bin" beforeDir="false" afterPath="$PROJECT_DIR$/../Zadaca7/cmake-build-debug/CMakeFiles/3.27.8/CMakeDetermineCompilerABI_CXX.bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Zadaca7/cmake-build-debug/CMakeFiles/3.27.8/CMakeRCCompiler.cmake" beforeDir="false" afterPath="$PROJECT_DIR$/../Zadaca7/cmake-build-debug/CMakeFiles/3.27.8/CMakeRCCompiler.cmake" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Zadaca7/cmake-build-debug/CMakeFiles/3.27.8/CMakeSystem.cmake" beforeDir="false" afterPath="$PROJECT_DIR$/../Zadaca7/cmake-build-debug/CMakeFiles/3.27.8/CMakeSystem.cmake" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Zadaca7/cmake-build-debug/CMakeFiles/3.27.8/CompilerIdC/a.exe" beforeDir="false" afterPath="$PROJECT_DIR$/../Zadaca7/cmake-build-debug/CMakeFiles/3.27.8/CompilerIdC/a.exe" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Zadaca7/cmake-build-debug/CMakeFiles/3.27.8/CompilerIdCXX/a.exe" beforeDir="false" afterPath="$PROJECT_DIR$/../Zadaca7/cmake-build-debug/CMakeFiles/3.27.8/CompilerIdCXX/a.exe" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Zadaca7/cmake-build-debug/CMakeFiles/CMakeConfigureLog.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/../Zadaca7/cmake-build-debug/CMakeFiles/CMakeConfigureLog.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Zadaca7/cmake-build-debug/CMakeFiles/Zadaca7.dir/main.cpp.obj" beforeDir="false" afterPath="$PROJECT_DIR$/../Zadaca7/cmake-build-debug/CMakeFiles/Zadaca7.dir/main.cpp.obj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Zadaca7/cmake-build-debug/CMakeFiles/clion-Debug-log.txt" beforeDir="false" afterPath="$PROJECT_DIR$/../Zadaca7/cmake-build-debug/CMakeFiles/clion-Debug-log.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Zadaca7/cmake-build-debug/CMakeFiles/clion-environment.txt" beforeDir="false" afterPath="$PROJECT_DIR$/../Zadaca7/cmake-build-debug/CMakeFiles/clion-environment.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Zadaca7/cmake-build-debug/CMakeFiles/rules.ninja" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Zadaca7/cmake-build-debug/Testing/Temporary/LastTest.log" beforeDir="false" afterPath="$PROJECT_DIR$/../Zadaca7/cmake-build-debug/Testing/Temporary/LastTest.log" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Zadaca7/cmake-build-debug/Zadaca7.exe" beforeDir="false" afterPath="$PROJECT_DIR$/../Zadaca7/cmake-build-debug/Zadaca7.exe" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Zadaca7/cmake-build-debug/cmake_install.cmake" beforeDir="false" afterPath="$PROJECT_DIR$/../Zadaca7/cmake-build-debug/cmake_install.cmake" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Zadaca7/main.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/../Zadaca7/main.cpp" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -39,9 +62,9 @@
     <option name="minorVersion" value="3.2" />
   </component>
   <component name="ProjectColorInfo"><![CDATA[{
-  "associatedIndex": 4
+  "associatedIndex": 1
 }]]></component>
-  <component name="ProjectId" id="2h5enhHuT6EymhoBlgN7Y5uJdaV" />
+  <component name="ProjectId" id="2h3UpQfRcVZefzcLTEnMFlaNiBX" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
@@ -55,7 +78,7 @@
     "cf.first.check.clang-format": "false",
     "cidr.known.project.marker": "true",
     "git-widget-placeholder": "main",
-    "last_opened_file_path": "C:/Users/Borjan/Desktop/Object_Oriented_Programing_cpp/Exercises/Zadaca6",
+    "last_opened_file_path": "C:/Users/Borjan/Desktop/Object_Oriented_Programing_cpp/Exercises/Zadaca7",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
@@ -79,12 +102,12 @@
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
-      <changelist id="727c687c-2fb7-42c1-8815-558ad80c17f4" name="Changes" comment="" />
-      <created>1716888533475</created>
+      <changelist id="d25d6000-6949-4ff9-9c8c-7e713906a812" name="Changes" comment="" />
+      <created>1716822436884</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
-      <updated>1716888533475</updated>
-      <workItem from="1716888534642" duration="2049000" />
+      <updated>1716822436884</updated>
+      <workItem from="1716822486032" duration="1248000" />
     </task>
     <servers />
   </component>
