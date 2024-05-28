@@ -100,18 +100,19 @@ public:
     float price() override {
         float total = 0;
         if (this->isRaw) {
-            total = (100 + (int) this->getResolution() * 20) + 50;
-        } else total = (100 + (int) this->getResolution() * 20);
-
+            total = (100 +  this->getResolution() * 20) + 50;
+        } else {
+            total = (100 + this->getResolution() * 20);
+        }
         return total;
     }
 
     float rentalPrice(int days) override {
         float total = 0;
         if (days <= 7) {
-            total = (this->price() / 100) * days;
+            total = (this->price() / 100.0) * days;
         } else if (days > 7) {
-            total = (this->price() / 100) * days;
+            total = (this->price() / 100.0) * days;
             total = total - (total * 0.2);
         }
         return total;
@@ -148,7 +149,7 @@ public:
         } else {
             total = this->getResolution() * 80;
 
-            total = total + (total * 0.4);
+         //   total = total + (total * 0.4);
         }
         return total;
     }
@@ -156,9 +157,9 @@ public:
     float rentalPrice(int days) override {
         float total = 0;
         if (days <= 7) {
-            total = (this->price() / 100) * days;
+            total = (this->price() / 100.0) * days;
         } else if (days > 7) {
-            total = (this->price() / 100) * days;
+            total = (this->price() / 100.0) * days;
             total = total - (total * 0.2);
         }
         return total;
@@ -226,9 +227,9 @@ Camera &mostExpensiveCamera(Camera **kameri, int n) {
     return *kameri[idx];
 }
 
-float production(Camera **kameri, int n, int days) {
+float production(Camera **kameri, int n, int days) {    //1,1,1
 
-    int total = 0;
+    float total = 0.0;
 
     for (int i = 0; i < n; i++) {
         total = total + kameri[i]->rentalPrice(days);
