@@ -49,7 +49,7 @@ public:
             throw tooLongException();
         }
         for (int i = 0; i < strlen(id_num); i++) {
-            if (isalpha(id_num[i]) == true) {
+            if (isalpha(id_num[i]) != 0) {
                 throw nonDigitException();
             }
         }
@@ -200,8 +200,8 @@ public:
                 return *this;
             }
         }
-        char *pom=new char[strlen(d.getID())+1];
-        strcpy(pom,d.getID());
+        char *pom = new char[strlen(d.getID()) + 1];
+        strcpy(pom, d.getID());
         for (int i = 0; i < strlen(d.getID()); i++) {
             if (isalpha(pom[i]) == true) {
                 throw nonDigitException();
@@ -264,13 +264,13 @@ int main() {
         try {
             DonaciskiApel edna(naziv, id, potrebnasuma);
             donacii += edna;
-        } catch (tooLongException &e) {
-            e.message();
-
         } catch (nonDigitException &e) {
             e.message();
         }
+        catch (tooLongException &e) {
+            e.message();
 
+        }
     }
 
     //donation
