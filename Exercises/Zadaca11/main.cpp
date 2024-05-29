@@ -19,7 +19,7 @@ private:
     char *name;
     char ingredients[100];
     float price;
-    static int discount;
+    int discount;
 public:
 
 
@@ -27,6 +27,7 @@ public:
         this->name = nullptr;
         strcpy(this->ingredients, "NaN");
         this->price = 0;
+        this->discount = 0;
     }
 
     IceCream(char *name, char *ingredients, float price) {
@@ -35,7 +36,9 @@ public:
 
         strcpy(this->ingredients, ingredients);
         this->price = price;
+        this->discount = 0;
     }
+
 
     IceCream(const IceCream &other) {
         this->name = new char[strlen(other.name) + 1];
@@ -43,6 +46,7 @@ public:
 
         strcpy(this->ingredients, other.ingredients);
         this->price = other.price;
+        this->discount = other.discount;
     }
 
     IceCream &operator=(const IceCream &other) {
@@ -52,21 +56,21 @@ public:
 
         strcpy(this->ingredients, other.ingredients);
         this->price = other.price;
-
+        this->discount = other.discount;
         return *this;
     }
 
     float discountPrice() {
-        float new_price = 0;
-        new_price = this->price - ((this->price / 100) * discount);
+        float new_price = this->price;
+        new_price = new_price - ((this->price / 100.0) * discount);
         return new_price;
     }
 
     friend ostream &operator<<(ostream &os, IceCream &cream) {
-        if (discount == 0) {
+        if (cream.discount == 0) {
             os << cream.name << ": " << cream.ingredients << " " << cream.price;
         } else {
-            os << cream.name << ": " << cream.ingredients << " " << cream.price << " " << cream.discountPrice();
+            os << cream.name << ": " << cream.ingredients << " " << cream.price << " (" << cream.discountPrice() << ")";
         }
 
         return os;
@@ -78,15 +82,16 @@ public:
     }
 
     IceCream &operator+(char *str) {
-        char *tmp = new char[strlen(this->name) + strlen(str) + 2];
+        char *tmp = new char[strlen(this->name) + strlen(str) + 4];
         strcat(tmp, this->name);
-        strcat(tmp, "+");
+
+        strcat(tmp, " + ");
         strcat(tmp, str);
 
         delete[]this->name;
         this->name = tmp;
 
-        this->price = this->price + 10;
+        this->price = this->price + 10.0;
         return *this;
     }
 
@@ -183,7 +188,6 @@ public:
     }
 };
 
-int IceCream::discount = 0;
 // DO NOT CHANGE THE MAIN FUNCTION, EXCEPT THE MARKED PART FOR HANDLING WITH THE EXCEPTION
 
 int main() {
@@ -212,7 +216,7 @@ int main() {
         cin >> discount;
         IceCream ic2(name, ingr, price);
         ic2.setDiscount(discount);
-        cout << "OPERATOR <<" << endl;
+        cout << "OPERATOR &lt;&lt;" << endl;
         cout << ic1 << endl;
         cout << ic2 << endl;
         cout << "OPERATOR ++" << endl;
