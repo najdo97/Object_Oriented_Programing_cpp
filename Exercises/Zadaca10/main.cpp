@@ -3,6 +3,13 @@
 
 using namespace std;
 
+class InvalidTeamName {
+private:
+public:
+    void message(char *team) {
+        cout << "Invalid team name: " << team << endl;
+    }
+};
 
 class Goal {
 
@@ -12,6 +19,17 @@ private:
     char goalScored_teamName[50];
 
 public:
+    char *getGoalScorer() const {
+        return goal_scorer;
+    }
+
+    int getMinuteScored() const {
+        return minute_scored;
+    }
+
+    const char *getTeamName() const {
+        return goalScored_teamName;
+    }
 
     Goal() {
         this->goal_scorer = nullptr;
@@ -47,7 +65,7 @@ public:
     }
 
     friend ostream &operator<<(ostream &os, const Goal &goal) {
-        os << goal.minute_scored << goal.goal_scorer << endl;
+        os << goal.minute_scored << " " <<goal.goal_scorer << endl;
         return os;
     }
 
@@ -58,18 +76,91 @@ public:
     }
 
     Goal operator--() {
-        --this->minute_scored;
+        this->minute_scored;
         return *this;
     }
-
 
 };
 
 class Game {
 private:
-
+    Goal *golovi;
+    int num;
+    char home_team[50];
+    char away_team[50];
 
 public:
+
+    Game() {
+        this->golovi = nullptr;
+        this->num = 0;
+        strcpy(this->home_team, "NoName");
+        strcpy(this->away_team, "NoName");
+    }
+
+    Game(char *home_team, char *away_team) {
+        this->golovi = nullptr;
+        this->num = 0;
+        strcpy(this->home_team, home_team);
+        strcpy(this->away_team, away_team);
+    }
+
+    Game(const Game &other) {
+        if (other.num != 0) {
+            this->golovi = new Goal[other.num];
+            for (int i = 0; i < other.num; i++) {
+                this->golovi[i] = other.golovi[i];
+            }
+        } else this->golovi = nullptr;
+        this->num = other.num;
+        strcpy(this->home_team, other.home_team);
+        strcpy(this->away_team, other.away_team);
+    }
+
+    Game &operator=(const Game &other) {
+        delete[] this->golovi;
+        if (other.num != 0) {
+            this->golovi = new Goal[other.num];
+            for (int i = 0; i < other.num; i++) {
+                this->golovi[i] = other.golovi[i];
+            }
+        } else this->golovi = nullptr;
+        this->num = other.num;
+        strcpy(this->home_team, other.home_team);
+        strcpy(this->away_team, other.away_team);
+
+        return *this;
+    }
+
+
+    Game &operator+=(const Goal &new_goal_scored) {
+
+        if (strcmp(this->home_team, new_goal_scored.getTeamName()) == 0 || strcmp(this->away_team, new_goal_scored.getTeamName()) == 0) {
+            Goal *tmp = new Goal[this->num + 1];
+            for (int i = 0; i < this->num; i++) {
+                tmp[i] = this->golovi[i];
+            }
+            tmp[this->num] = new_goal_scored;
+            this->num++;
+
+            delete[] this->golovi;
+            this->golovi = tmp;
+
+        } else {
+            throw InvalidTeamName();
+        }
+        return *this;
+    }
+
+    friend ostream &operator<<(ostream &os, const Game &game) {
+        os << game.home_team << " - " << game.away_team << endl;
+        for (int i = 0; i < game.num; i++) {
+            os << game.golovi[i];
+        }
+
+        return os;
+    }
+
 };
 
 int main() {
@@ -90,7 +181,7 @@ int main() {
         try {
             n += g;
         } catch (InvalidTeamName &e) {
-            cout << "Invalid team name: " << e.what() << endl;
+            e.message(team1);
         }
     }
     cout << n << endl;
