@@ -1,0 +1,3 @@
+C:/Users/Borjan/Desktop/Object_Oriented_Programing_cpp/Datoteki/Primer1/cmake-build-debug/CMakeFiles/Primer1.dir
+C:/Users/Borjan/Desktop/Object_Oriented_Programing_cpp/Datoteki/Primer1/cmake-build-debug/CMakeFiles/edit_cache.dir
+C:/Users/Borjan/Desktop/Object_Oriented_Programing_cpp/Datoteki/Primer1/cmake-build-debug/CMakeFiles/rebuild_cache.dir
