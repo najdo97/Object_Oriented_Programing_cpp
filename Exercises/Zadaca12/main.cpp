@@ -70,6 +70,26 @@ private:
     float price_share;
 
 public:
+
+    double totalSum() {
+        double vkupno = 0;
+        for (int i = 0; i < num_plans; i++) {
+            vkupno = vkupno + (this->investment_plans[i].getShares() * price_share);
+        }
+        return vkupno;
+    }
+
+    double newPlansSum() {
+        double vkupno = 0;
+        for (int i = 0; i < num_plans; i++) {
+            if (this->investment_plans[i].isToday1()) {
+                vkupno = vkupno + this->investment_plans[i].getSumInvestment();
+            }
+        }
+        return vkupno;
+    }
+
+
     const char *getFundName() const {
         return fund_name;
     }
@@ -154,14 +174,56 @@ public:
         InvestmentFund::operator=(other);
         return *this;
     };
+
+    double profit() {
+        double profitMoneyFund = 0;
+        profitMoneyFund = (this->totalSum() * provison / 100) / 365;
+
+        return profitMoneyFund;
+    }
+
 };
 
-class ActionFund {
+class ActionFund : public InvestmentFund {
 private:
+    static float yearly_provision;
+    static float entry_provision;
+
 public:
+    ActionFund() : InvestmentFund() {}
+
+    ActionFund(char *fund_name, InvestmentPlan *investment_plans, int num_plans, float price_share) : InvestmentFund(fund_name, investment_plans, num_plans, price_share) {}
+
+    ActionFund(const ActionFund &other) : InvestmentFund(other) {};
+
+    ActionFund &operator=(const ActionFund &other) {
+        InvestmentFund::operator=(other);
+        return *this;
+    }
+
+    double profit() {
+        double profitActionFund = 0;
+
+        profitActionFund = ((this->totalSum() * (yearly_provision / 100)) / 365) + (this->newPlansSum() * entry_provision / 100);
+
+        return profitActionFund;
+    }
+
+
 };
 
 float MoneyFund::provison = 1.0;
+float ActionFund::entry_provision = 3.0;
+float ActionFund::yearly_provision = 1.5;
+
+double totalProfit(InvestmentFund **funds, int n) {
+    double totalen = 0;
+    for (int i = 0; i < n; i++) {
+        totalen = totalen + funds[i]->profit();
+    }
+
+    return totalen;
+}
 
 int main() {
 
