@@ -3,6 +3,13 @@
 
 using namespace std;
 
+class RatingMissingException {
+public:
+    void message() {
+        cout << "Druze, nema rejtinzi" << endl;
+    }
+};
+
 class Person {
 private:
     char name[20];
@@ -39,6 +46,10 @@ protected:
     char title[30];
 
 public:
+    int getNumRatings() {
+        return this->numberRatings;
+    }
+
     Song() {
         this->numberPerformers = 0;
         this->ratings = nullptr;
@@ -79,9 +90,43 @@ public:
 
     int getnumberPerformers() { return numberPerformers; }
 
-    Person operator[](int i) { if (i < numberPerformers && i >= 0) return performers[i]; else return Person(); }
+    Person operator[](int i) {
+        if (i < numberPerformers && i >= 0) {
+            return performers[i];
+        } else return Person();
+    }
 
-    // complete the class
+    virtual float getTotalRating() {
+
+        if (this->numberRatings == 0) {
+            throw RatingMissingException();
+        } else {
+            int min = 10000000, max = 0;
+            float rating;
+            for (int i = 0; i < this->numberRatings; i++) {
+                if (this->ratings[i] > max) {
+                    max = this->ratings[i];
+                }
+                if (this->ratings[i] < min) {
+                    min = this->ratings[i];
+                }
+            }
+            rating = ((float) max + (float) min) / 2;
+            return rating;
+        }
+    }
+
+    virtual void print() {
+
+        for (int i = 0; i < this->numberPerformers; i++) {
+            this->performers[i].print();
+            if (i != this->numberPerformers - 1) {
+                cout << ",";
+            }
+        }
+cout<<":"<<Song::title<<endl;
+    }
+
 
 };
 
@@ -122,6 +167,7 @@ public:
 
     virtual ~Movie() { delete[] title; }
 
+
 };
 
 class MovieSong : public Song, public Movie {
@@ -153,7 +199,50 @@ public:
         return *this;
     };
 
+    float getTotalRating() {
+        return Song::getTotalRating() * ((float) this->popularity / (float) Movie::popularity);
+    }
+
+    void print() {
+
+        Song::print();
+        Movie::print();
+    }
+
 };
+
+double averageRating(Song **songs, int n) {
+    double average = 0.0;
+    int brojac = 0;
+    for (int i = 0; i < n; i++) {
+
+        if (dynamic_cast<MovieSong *>(songs[i]) != nullptr) {
+            if (dynamic_cast<MovieSong *>(songs[i])->getNumRatings() == 0) {
+                average = average + 5.0;
+                brojac++;
+            } else {
+                average = average + dynamic_cast<MovieSong *>(songs[i])->getTotalRating();
+                brojac++;
+            }
+        }
+
+    }
+    return average / (double) brojac;
+
+}
+
+void printSongs(char *performer, Song **songs, int n) {
+    for (int i = 0; i < n; i++) {
+        for (int j = 0; j < songs[i]->getnumberPerformers(); j++) {
+
+            if (songs[i]->operator[](j).operator==(performer)) {
+                songs[i]->print();
+            };
+
+        }
+    }
+}
+
 
 int main() {
 
@@ -161,6 +250,7 @@ int main() {
     int year, numberOfPerformers, ratings[20], rating, numberOfRatings, type, popularity, songPopularity;
     char name[40], title[30], perfomer[30];
 
+    char movieTitle[50];
     cin >> type;
 
     if (type == 1) //test class MovieSong
@@ -249,9 +339,9 @@ int main() {
             cin >> rating;
             ratings[i] = rating;
         }
-        cin >> title >> popularity >> songPopularity;
+        cin >> movieTitle >> popularity >> songPopularity;
 
-        MovieSong fp(title, performers, numberOfPerformers, ratings, numberOfRatings, title, popularity,
+        MovieSong fp(title, performers, numberOfPerformers, ratings, numberOfRatings, movieTitle, popularity,
                      songPopularity);
         fp.print();
 
@@ -329,8 +419,8 @@ int main() {
             if (opt == 1) {
                 pesni[j] = new Song(title, performers, numberOfPerformers, ratings, numberOfRatings);
             } else {
-                cin >> title >> popularity >> songPopularity;
-                pesni[j] = new MovieSong(title, performers, numberOfPerformers, ratings, numberOfRatings, title,
+                cin >> movieTitle >> popularity >> songPopularity;
+                pesni[j] = new MovieSong(title, performers, numberOfPerformers, ratings, numberOfRatings, movieTitle,
                                          popularity, songPopularity);
             }
         }
