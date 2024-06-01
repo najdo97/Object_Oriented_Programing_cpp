@@ -53,7 +53,7 @@ public:
 
     friend ostream &operator<<(ostream &os, const Pair &pair1) {
 
-        os <<"'"<< pair1.key << "' -> " << pair1.value << endl;
+        os << "'" << pair1.key << "' -> " << pair1.value << endl;
 
         return os;
     }
@@ -64,10 +64,11 @@ public:
         return *this;
     }
 
-    Pair &operator--(int) {
+    Pair operator--(int) {
 
+        Pair *tmp = new Pair(this->key, this->value);
         this->value--;
-        return *this;
+        return *tmp;
     }
 
     Pair operator*(Pair &other) {
