@@ -39,6 +39,12 @@ protected:
     char title[30];
 
 public:
+    Song() {
+        this->numberPerformers = 0;
+        this->ratings = nullptr;
+        this->numberRatings = 0;
+    }
+
     Song(char *title, Person *performers, int numberPerformers, int *ratings, int numberRatings) {
         strcpy(this->title, title);
         this->numberPerformers = numberPerformers;
@@ -85,6 +91,12 @@ private:
 protected:
     int popularity;
 public:
+
+    Movie() {
+        this->title = nullptr;
+        this->popularity = 0;
+    }
+
     Movie(char *title, int popularity) {
         this->popularity = popularity;
         this->title = new char[strlen(title) + 1];
@@ -112,6 +124,36 @@ public:
 
 };
 
+class MovieSong : public Song, public Movie {
+
+private:
+    int popularity;
+public:
+
+    MovieSong() : Song(), Movie() {
+        this->popularity = 0;
+    };
+
+    MovieSong(char *songTitle, Person *performers, int numberPerformers, int *ratings, int numberRatings,
+              char *movieTitle, int moviePopularity, int songPopularity) :
+            Song(songTitle, performers, numberPerformers, ratings, numberRatings), Movie(movieTitle, moviePopularity) {
+        this->popularity = songPopularity;
+    };
+
+    MovieSong(const MovieSong &other) : Song(other), Movie(other) {
+        this->popularity = other.popularity;
+    };
+
+    MovieSong &operator=(const MovieSong &other) {
+        Song::operator=(other);
+        Movie::operator=(other);
+
+        this->popularity = other.popularity;
+
+        return *this;
+    };
+
+};
 
 int main() {
 
@@ -137,7 +179,8 @@ int main() {
         cin >> title >> popularity >> songPopularity;
 
 
-        MovieSong ok(title, performers, numberOfPerformers, ratings, numberOfRatings, title, popularity, songPopularity);
+        MovieSong ok(title, performers, numberOfPerformers, ratings, numberOfRatings, title, popularity,
+                     songPopularity);
         cout << "Object of class MovieSong is created";
 
     } else if (type == 2) // function print in song
@@ -189,7 +232,8 @@ int main() {
         }
         cin >> title >> popularity >> songPopularity;
 
-        MovieSong fp(title, performers, numberOfPerformers, ratings, numberOfRatings, title, popularity, songPopularity);
+        MovieSong fp(title, performers, numberOfPerformers, ratings, numberOfRatings, title, popularity,
+                     songPopularity);
         cout << "Total rating: " << fp.getTotalRating() << endl;
 
     } else if (type == 5) //funkcija print vo MovieSong
@@ -207,7 +251,8 @@ int main() {
         }
         cin >> title >> popularity >> songPopularity;
 
-        MovieSong fp(title, performers, numberOfPerformers, ratings, numberOfRatings, title, popularity, songPopularity);
+        MovieSong fp(title, performers, numberOfPerformers, ratings, numberOfRatings, title, popularity,
+                     songPopularity);
         fp.print();
 
     } else if (type == 6) //all classes
@@ -225,7 +270,8 @@ int main() {
         }
         cin >> title >> popularity >> songPopularity;
 
-        Song *p = new MovieSong(title, performers, numberOfPerformers, ratings, numberOfRatings, title, popularity, songPopularity);
+        Song *p = new MovieSong(title, performers, numberOfPerformers, ratings, numberOfRatings, title, popularity,
+                                songPopularity);
         p->print();
         cout << "Total rating: " << p->getTotalRating() << endl;
         delete p;
@@ -253,7 +299,8 @@ int main() {
                 pesni[j] = new Song(title, performers, numberOfPerformers, ratings, numberOfRatings);
             } else {
                 cin >> title >> popularity >> songPopularity;
-                pesni[j] = new MovieSong(title, performers, numberOfPerformers, ratings, numberOfRatings, title, popularity, songPopularity);
+                pesni[j] = new MovieSong(title, performers, numberOfPerformers, ratings, numberOfRatings, title,
+                                         popularity, songPopularity);
             }
         }
 
@@ -283,7 +330,8 @@ int main() {
                 pesni[j] = new Song(title, performers, numberOfPerformers, ratings, numberOfRatings);
             } else {
                 cin >> title >> popularity >> songPopularity;
-                pesni[j] = new MovieSong(title, performers, numberOfPerformers, ratings, numberOfRatings, title, popularity, songPopularity);
+                pesni[j] = new MovieSong(title, performers, numberOfPerformers, ratings, numberOfRatings, title,
+                                         popularity, songPopularity);
             }
         }
         cin >> perfomer;
