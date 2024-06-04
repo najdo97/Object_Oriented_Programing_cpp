@@ -20,7 +20,7 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="8023dcb9-b758-4356-96b4-1123228fb7af" name="Changes" comment="" />
+    <list default="true" id="50f52a3e-b868-4dae-bba5-0745da93c274" name="Changes" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -39,9 +39,9 @@
     <option name="minorVersion" value="3.2" />
   </component>
   <component name="ProjectColorInfo"><![CDATA[{
-  "associatedIndex": 1
+  "associatedIndex": 0
 }]]></component>
-  <component name="ProjectId" id="2hGvXd5mE6msX4AosmOot8zyXEJ" />
+  <component name="ProjectId" id="2hH2GMMVQcWavjq4VjvsTxfJ2MT" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
@@ -55,6 +55,7 @@
     "cf.first.check.clang-format": "false",
     "cidr.known.project.marker": "true",
     "git-widget-placeholder": "main",
+    "last_opened_file_path": "C:/Users/Borjan/Desktop/Object_Oriented_Programing_cpp/Exercises/Zadaca14",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
@@ -78,12 +79,12 @@
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
-      <changelist id="8023dcb9-b758-4356-96b4-1123228fb7af" name="Changes" comment="" />
-      <created>1717233268777</created>
+      <changelist id="50f52a3e-b868-4dae-bba5-0745da93c274" name="Changes" comment="" />
+      <created>1717236585651</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
-      <updated>1717233268777</updated>
-      <workItem from="1717233270898" duration="5578000" />
+      <updated>1717236585651</updated>
+      <workItem from="1717236586781" duration="2603000" />
     </task>
     <servers />
   </component>
