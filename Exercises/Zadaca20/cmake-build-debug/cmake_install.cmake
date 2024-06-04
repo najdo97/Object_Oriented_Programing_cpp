@@ -1,8 +1,8 @@
-# Install script for directory: C:/Users/Borjan/Desktop/Object_Oriented_Programing_cpp/Exercises/Zadaca19
+# Install script for directory: C:/Users/Borjan/Desktop/Object_Oriented_Programing_cpp/Exercises/Zadaca20
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
-  set(CMAKE_INSTALL_PREFIX "C:/Program Files (x86)/Zadaca19")
+  set(CMAKE_INSTALL_PREFIX "C:/Program Files (x86)/Zadaca20")
 endif()
 string(REGEX REPLACE "/$" "" CMAKE_INSTALL_PREFIX "${CMAKE_INSTALL_PREFIX}")
 
@@ -45,5 +45,5 @@ endif()
 
 string(REPLACE ";" "\n" CMAKE_INSTALL_MANIFEST_CONTENT
        "${CMAKE_INSTALL_MANIFEST_FILES}")
-file(WRITE "C:/Users/Borjan/Desktop/Object_Oriented_Programing_cpp/Exercises/Zadaca19/cmake-build-debug/${CMAKE_INSTALL_MANIFEST}"
+file(WRITE "C:/Users/Borjan/Desktop/Object_Oriented_Programing_cpp/Exercises/Zadaca20/cmake-build-debug/${CMAKE_INSTALL_MANIFEST}"
      "${CMAKE_INSTALL_MANIFEST_CONTENT}")

@@ -1,0 +1,3 @@
+C:/Users/Borjan/Desktop/Object_Oriented_Programing_cpp/Exercises/Zadaca20/cmake-build-debug/CMakeFiles/Zadaca20.dir
+C:/Users/Borjan/Desktop/Object_Oriented_Programing_cpp/Exercises/Zadaca20/cmake-build-debug/CMakeFiles/edit_cache.dir
+C:/Users/Borjan/Desktop/Object_Oriented_Programing_cpp/Exercises/Zadaca20/cmake-build-debug/CMakeFiles/rebuild_cache.dir
